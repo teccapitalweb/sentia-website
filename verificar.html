@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SENTIA · Verificación de certificados</title>
+<link rel="icon" href="favicon.png">
+<style>
+@font-face{font-family:'Sora';src:url('fonts/sora-latin-700-normal.woff2') format('woff2');font-weight:700}
+@font-face{font-family:'Instrument Sans';src:url('fonts/instrument-sans-latin-400-normal.woff2') format('woff2');font-weight:400}
+@font-face{font-family:'Instrument Sans';src:url('fonts/instrument-sans-latin-600-normal.woff2') format('woff2');font-weight:600}
+:root{--bg:#f3f7ff;--ink:#0e1d40;--muted:#5b6b8f;--accent:#1b5df0;--accent-dark:#0d3fb8;--navy:#0a1f4d;--green:#2fbf2e;--stroke:#e3eaf8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:#fff;border:1px solid var(--stroke);border-radius:18px;box-shadow:0 22px 55px -25px rgba(16,50,130,.18);width:100%;max-width:480px;padding:34px 30px;text-align:center}
+.card img{height:56px;margin-bottom:12px}
+h1{font-family:'Sora',sans-serif;font-size:1.25rem;color:var(--navy)}
+.sub{color:var(--muted);font-size:.9rem;margin:6px 0 22px}
+input{width:100%;padding:12px 14px;border:1px solid var(--stroke);border-radius:10px;font-size:1rem;font-family:inherit;text-transform:uppercase;text-align:center}
+.btn{width:100%;margin-top:14px;padding:13px;border:none;border-radius:10px;background:var(--accent);color:#fff;font-size:1rem;font-weight:600;font-family:inherit;cursor:pointer}
+.btn:hover{background:var(--accent-dark)}
+.res{margin-top:20px;border-radius:12px;padding:18px;display:none;text-align:left}
+.res.ok{display:block;background:#e9f9ea;border:1px solid #bfe8c0}
+.res.err{display:block;background:#fdecec;border:1px solid #f2c5c5;color:#9c1c1c;text-align:center}
+.res.ok h3{color:#1e7a1d;font-size:1rem;margin-bottom:10px}
+.res.ok p{font-size:.92rem;margin:4px 0}
+.res.ok b{color:var(--navy)}
+.home{display:block;margin-top:18px;font-size:.85rem;color:var(--muted);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="card">
+  <img src="logo-icon-lg.png" alt="SENTIA">
+  <h1>Verificación de certificados</h1>
+  <p class="sub">Ingresa el folio impreso en el certificado para validar su autenticidad.</p>
+  <input id="folio" placeholder="SEN-XXXXXXX-XXXX">
+  <button class="btn" id="btn">Verificar</button>
+  <div class="res" id="res"></div>
+  <a class="home" href="index.html">← Volver a sentiamx.com</a>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDEOW7bZVFvN_2rLZTBSmTjshpgZg_-x70",
+  authDomain: "sentia-academy.firebaseapp.com",
+  projectId: "sentia-academy",
+  storageBucket: "sentia-academy.firebasestorage.app",
+  messagingSenderId: "137510320281",
+  appId: "1:137510320281:web:d0d26e7f5aa4eee5a56008"
+};
+const db = getFirestore(initializeApp(firebaseConfig));
+const $ = id => document.getElementById(id);
+
+async function verificar(){
+  const folio = $("folio").value.trim().toUpperCase();
+  const r = $("res");
+  if(!folio){ r.className="res err"; r.textContent="Escribe un folio."; return; }
+  r.className="res err"; r.textContent="Buscando…";
+  const snap = await getDoc(doc(db,"certificados",folio));
+  if(!snap.exists()){
+    r.className="res err";
+    r.textContent="El folio "+folio+" no corresponde a ningún certificado emitido por SENTIA Human Institute.";
+    return;
+  }
+  const c = snap.data();
+  r.className="res ok";
+  r.innerHTML = "<h3>✓ Certificado válido</h3>"+
+    "<p><b>Nombre:</b> "+c.nombre+"</p>"+
+    "<p><b>Curso:</b> "+c.curso+"</p>"+
+    "<p><b>Fecha de emisión:</b> "+c.fecha+"</p>"+
+    "<p><b>Folio:</b> "+c.folio+"</p>"+
+    "<p style='margin-top:10px;font-size:.85rem;color:#5b6b8f'>Emitido por SENTIA Human Institute · Coordinación Académica: Arlet Guzmán</p>";
+}
+$("btn").onclick = verificar;
+$("folio").addEventListener("keydown", e=>{ if(e.key==="Enter") verificar(); });
+const params = new URLSearchParams(location.search);
+if(params.get("folio")){ $("folio").value = params.get("folio"); verificar(); }
+</script>
+</body>
+</html>

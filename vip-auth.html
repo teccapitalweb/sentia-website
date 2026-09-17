@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Club SENTIA · Acceso</title>
+<link rel="icon" href="favicon.png">
+<style>
+@font-face{font-family:'Sora';src:url('fonts/sora-latin-700-normal.woff2') format('woff2');font-weight:700}
+@font-face{font-family:'Instrument Sans';src:url('fonts/instrument-sans-latin-400-normal.woff2') format('woff2');font-weight:400}
+@font-face{font-family:'Instrument Sans';src:url('fonts/instrument-sans-latin-600-normal.woff2') format('woff2');font-weight:600}
+:root{--bg:#f3f7ff;--ink:#0e1d40;--muted:#5b6b8f;--accent:#1b5df0;--accent-dark:#0d3fb8;--navy:#0a1f4d;--green:#2fbf2e;--stroke:#e3eaf8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:#fff;border:1px solid var(--stroke);border-radius:18px;box-shadow:0 22px 55px -25px rgba(16,50,130,.18);width:100%;max-width:420px;padding:34px 30px}
+.logo{display:flex;justify-content:center;margin-bottom:14px}.logo img{height:56px}
+h1{font-family:'Sora',sans-serif;font-size:1.35rem;text-align:center;color:var(--navy)}
+.sub{text-align:center;color:var(--muted);font-size:.92rem;margin:6px 0 22px}
+label{display:block;font-size:.85rem;font-weight:600;margin:14px 0 6px;color:var(--navy)}
+input{width:100%;padding:12px 14px;border:1px solid var(--stroke);border-radius:10px;font-size:1rem;font-family:inherit}
+input:focus{outline:2px solid var(--accent);border-color:transparent}
+.btn{width:100%;margin-top:20px;padding:13px;border:none;border-radius:10px;background:var(--accent);color:#fff;font-size:1rem;font-weight:600;font-family:inherit;cursor:pointer}
+.btn:hover{background:var(--accent-dark)} .btn:disabled{opacity:.6;cursor:wait}
+.switch{margin-top:18px;text-align:center;font-size:.9rem;color:var(--muted)}
+.switch a{color:var(--accent);font-weight:600;cursor:pointer;text-decoration:none}
+.msg{margin-top:14px;font-size:.88rem;text-align:center;border-radius:8px;padding:10px;display:none}
+.msg.err{display:block;background:#fdecec;color:#9c1c1c}
+.msg.ok{display:block;background:#e9f9ea;color:#1e7a1d}
+.forgot{display:block;text-align:right;font-size:.82rem;margin-top:8px;color:var(--muted);cursor:pointer}
+.home{display:block;text-align:center;margin-top:16px;font-size:.85rem;color:var(--muted);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo"><img src="logo-icon-lg.png" alt="SENTIA"></div>
+  <h1 id="title">Club SENTIA</h1>
+  <p class="sub" id="subtitle">Inicia sesión para acceder a tus cursos</p>
+
+  <div id="fNombre" style="display:none">
+    <label for="nombre">Nombre completo</label>
+    <input id="nombre" type="text" placeholder="Como aparecerá en tu certificado" autocomplete="name">
+  </div>
+
+  <label for="email">Correo electrónico</label>
+  <input id="email" type="email" placeholder="tucorreo@ejemplo.com" autocomplete="email">
+
+  <label for="pass">Contraseña</label>
+  <input id="pass" type="password" placeholder="Mínimo 6 caracteres" autocomplete="current-password">
+  <span class="forgot" id="forgot">¿Olvidaste tu contraseña?</span>
+
+  <button class="btn" id="submit">Entrar</button>
+  <div class="msg" id="msg"></div>
+
+  <p class="switch" id="switch">¿No tienes cuenta? <a id="toggle">Regístrate gratis</a></p>
+  <a class="home" href="index.html">← Volver a sentiamx.com</a>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDEOW7bZVFvN_2rLZTBSmTjshpgZg_-x70",
+  authDomain: "sentia-academy.firebaseapp.com",
+  projectId: "sentia-academy",
+  storageBucket: "sentia-academy.firebasestorage.app",
+  messagingSenderId: "137510320281",
+  appId: "1:137510320281:web:d0d26e7f5aa4eee5a56008"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let modo = "login";
+const $ = id => document.getElementById(id);
+const msg = (t, tipo) => { const m = $("msg"); m.textContent = t; m.className = "msg " + tipo; };
+
+$("toggle").onclick = () => {
+  modo = modo === "login" ? "registro" : "login";
+  $("fNombre").style.display = modo === "registro" ? "block" : "none";
+  $("title").textContent = modo === "registro" ? "Crea tu cuenta" : "Club SENTIA";
+  $("subtitle").textContent = modo === "registro" ? "Regístrate gratis para conocer el club" : "Inicia sesión para acceder a tus cursos";
+  $("submit").textContent = modo === "registro" ? "Registrarme" : "Entrar";
+  $("switch").firstChild.textContent = modo === "registro" ? "¿Ya tienes cuenta? " : "¿No tienes cuenta? ";
+  $("toggle").textContent = modo === "registro" ? "Inicia sesión" : "Regístrate gratis";
+  msg("", "");
+};
+
+const traducir = (c) => ({
+  "auth/invalid-credential": "Correo o contraseña incorrectos.",
+  "auth/wrong-password": "Correo o contraseña incorrectos.",
+  "auth/user-not-found": "No existe una cuenta con ese correo.",
+  "auth/email-already-in-use": "Ya existe una cuenta con ese correo. Inicia sesión.",
+  "auth/weak-password": "La contraseña debe tener al menos 6 caracteres.",
+  "auth/invalid-email": "Escribe un correo válido.",
+  "auth/too-many-requests": "Demasiados intentos, espera unos minutos.",
+}[c] || "Ocurrió un error, intenta de nuevo.");
+
+$("submit").onclick = async () => {
+  const email = $("email").value.trim(), pass = $("pass").value;
+  if (!email || !pass) { msg("Escribe tu correo y contraseña.", "err"); return; }
+  $("submit").disabled = true;
+  try {
+    if (modo === "registro") {
+      const nombre = $("nombre").value.trim();
+      if (!nombre) { msg("Escribe tu nombre completo.", "err"); $("submit").disabled = false; return; }
+      const cred = await createUserWithEmailAndPassword(auth, email, pass);
+      await updateProfile(cred.user, { displayName: nombre });
+      await setDoc(doc(db, "usuarios", cred.user.uid), {
+        nombre, email, vip: false, fechaVipDesde: null, rol: "alumno",
+        progreso: {}, creado: serverTimestamp()
+      });
+    } else {
+      await signInWithEmailAndPassword(auth, email, pass);
+    }
+    location.href = "vip-panel.html";
+  } catch (e) {
+    msg(traducir(e.code), "err");
+    $("submit").disabled = false;
+  }
+};
+
+$("forgot").onclick = async () => {
+  const email = $("email").value.trim();
+  if (!email) { msg("Escribe tu correo arriba y vuelve a dar clic.", "err"); return; }
+  try { await sendPasswordResetEmail(auth, email); msg("Te enviamos un correo para restablecer tu contraseña.", "ok"); }
+  catch (e) { msg(traducir(e.code), "err"); }
+};
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    // si ya hay sesión y su doc existe, mandarlo directo al panel
+    const snap = await getDoc(doc(db, "usuarios", user.uid));
+    if (snap.exists()) location.href = "vip-panel.html";
+  }
+});
+</script>
+</body>
+</html>

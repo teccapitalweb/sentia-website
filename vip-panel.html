@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Club SENTIA · Mis cursos</title>
+<link rel="icon" href="favicon.png">
+<style>
+@font-face{font-family:'Sora';src:url('fonts/sora-latin-700-normal.woff2') format('woff2');font-weight:700}
+@font-face{font-family:'Sora';src:url('fonts/sora-latin-800-normal.woff2') format('woff2');font-weight:800}
+@font-face{font-family:'Instrument Sans';src:url('fonts/instrument-sans-latin-400-normal.woff2') format('woff2');font-weight:400}
+@font-face{font-family:'Instrument Sans';src:url('fonts/instrument-sans-latin-600-normal.woff2') format('woff2');font-weight:600}
+:root{--bg:#f3f7ff;--ink:#0e1d40;--muted:#5b6b8f;--accent:#1b5df0;--accent-dark:#0d3fb8;--accent-soft:#e8effe;--navy:#0a1f4d;--green:#2fbf2e;--stroke:#e3eaf8;--shadow:0 22px 55px -25px rgba(16,50,130,.16)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+header{background:#fff;border-bottom:1px solid var(--stroke);position:sticky;top:0;z-index:10}
+.nav{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 20px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand img{height:38px}.brand b{font-family:'Sora',sans-serif}
+.nav-right{display:flex;align-items:center;gap:12px;font-size:.9rem}
+.badge{padding:4px 12px;border-radius:99px;font-weight:600;font-size:.78rem}
+.badge.vip{background:#e9f9ea;color:#1e7a1d}.badge.free{background:var(--accent-soft);color:var(--accent-dark)}
+.lnk{color:var(--muted);cursor:pointer;text-decoration:none}.lnk:hover{color:var(--accent)}
+.wrap{max-width:1120px;margin:0 auto;padding:30px 20px 70px}
+h1{font-family:'Sora',sans-serif;font-size:1.5rem;color:var(--navy);margin-bottom:4px}
+.sub{color:var(--muted);margin-bottom:26px;font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.curso{background:#fff;border:1px solid var(--stroke);border-radius:16px;box-shadow:var(--shadow);padding:22px;display:flex;flex-direction:column;gap:10px}
+.curso h3{font-family:'Sora',sans-serif;font-size:1.02rem;color:var(--navy);line-height:1.35}
+.curso .inst{font-size:.85rem;color:var(--accent-dark);font-weight:600}
+.curso p{font-size:.88rem;color:var(--muted);flex:1}
+.estado{font-size:.8rem;font-weight:600;padding:5px 12px;border-radius:99px;width:fit-content}
+.e-abierto{background:#e9f9ea;color:#1e7a1d}.e-bloq{background:#fff4e0;color:#9a6a00}.e-prox{background:#eef1f7;color:var(--muted)}
+.btnc{margin-top:6px;padding:11px;border:none;border-radius:10px;background:var(--accent);color:#fff;font-weight:600;font-family:inherit;font-size:.92rem;cursor:pointer;text-align:center;text-decoration:none}
+.btnc:hover{background:var(--accent-dark)}
+.btnc.sec{background:var(--accent-soft);color:var(--accent-dark)}
+.btnc[disabled]{background:#dfe6f4;color:#8a97b8;cursor:not-allowed}
+.banner{background:linear-gradient(120deg,var(--navy),var(--accent-dark));color:#fff;border-radius:16px;padding:26px;margin-bottom:28px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between}
+.banner h2{font-family:'Sora',sans-serif;font-size:1.15rem;margin-bottom:4px}
+.banner p{font-size:.9rem;opacity:.85}
+.btnw{background:var(--green);color:#fff;border:none;border-radius:10px;padding:12px 20px;font-weight:600;font-family:inherit;font-size:.95rem;cursor:pointer;text-decoration:none}
+/* vista curso */
+#vistaCurso{display:none}
+.volver{color:var(--accent);cursor:pointer;font-weight:600;font-size:.9rem;margin-bottom:16px;display:inline-block}
+.player{background:#000;border-radius:14px;overflow:hidden;aspect-ratio:16/9;margin-bottom:18px}
+.player iframe{width:100%;height:100%;border:0}
+.player .vacio{color:#fff;display:flex;align-items:center;justify-content:center;height:100%;opacity:.7;font-size:.95rem}
+.dos{display:grid;grid-template-columns:2fr 1fr;gap:22px}
+@media(max-width:800px){.dos{grid-template-columns:1fr}}
+.lista,.mats{background:#fff;border:1px solid var(--stroke);border-radius:14px;padding:18px}
+.lista h4,.mats h4{font-family:'Sora',sans-serif;color:var(--navy);margin-bottom:12px;font-size:.98rem}
+.clase{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;border-radius:10px;cursor:pointer;font-size:.92rem}
+.clase:hover{background:var(--accent-soft)}
+.clase.activa{background:var(--accent-soft);font-weight:600;color:var(--accent-dark)}
+.clase.cerrada{opacity:.5;cursor:not-allowed}
+.check{font-size:.78rem;color:#1e7a1d;font-weight:700}
+.mat{display:flex;align-items:center;gap:10px;padding:10px 4px;font-size:.9rem;border-bottom:1px solid var(--stroke)}
+.mat:last-child{border-bottom:none}
+.mat a{color:var(--accent);font-weight:600;text-decoration:none;margin-left:auto;white-space:nowrap}
+.mat.pend{color:var(--muted)}
+.acciones{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
+#msgPanel{max-width:1120px;margin:14px auto 0;padding:0 20px;color:#9c1c1c;font-size:.9rem}
+</style>
+</head>
+<body>
+<header>
+  <nav class="nav">
+    <a class="brand" href="index.html"><img src="logo-icon.png" alt="SENTIA"><b>Club SENTIA</b></a>
+    <div class="nav-right">
+      <span class="badge free" id="badge">…</span>
+      <a class="lnk" id="lnkAdmin" href="vip-admin.html" style="display:none">Admin</a>
+      <span class="lnk" id="salir">Cerrar sesión</span>
+    </div>
+  </nav>
+</header>
+<div id="msgPanel"></div>
+
+<div class="wrap" id="vistaCursos">
+  <h1 id="saludo">Hola</h1>
+  <p class="sub">Estos son los cursos incluidos en tu membresía del Club SENTIA.</p>
+  <div class="banner" id="bannerFree" style="display:none">
+    <div>
+      <h2>Activa tu membresía VIP</h2>
+      <p>Accede a los cursos completos, materiales descargables y certificado digital con QR y folio válido.</p>
+    </div>
+    <a class="btnw" id="btnWhats" target="_blank" rel="noopener">Quiero mi membresía →</a>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="wrap" id="vistaCurso">
+  <span class="volver" id="volver">← Volver a mis cursos</span>
+  <h1 id="cTitulo"></h1>
+  <p class="sub" id="cInst"></p>
+  <div class="player" id="player"><div class="vacio">Selecciona una clase</div></div>
+  <div class="dos">
+    <div class="lista">
+      <h4>Clases</h4>
+      <div id="clases"></div>
+      <div class="acciones">
+        <button class="btnc sec" id="btnVisto">Marcar clase como vista ✓</button>
+        <button class="btnc" id="btnCert" disabled>Generar certificado</button>
+      </div>
+    </div>
+    <div class="mats">
+      <h4>Materiales del curso</h4>
+      <div id="mats"></div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/sentia-catalog.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDEOW7bZVFvN_2rLZTBSmTjshpgZg_-x70",
+  authDomain: "sentia-academy.firebaseapp.com",
+  projectId: "sentia-academy",
+  storageBucket: "sentia-academy.firebasestorage.app",
+  messagingSenderId: "137510320281",
+  appId: "1:137510320281:web:d0d26e7f5aa4eee5a56008"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const $ = id => document.getElementById(id);
+const CURSOS = window.SENTIA_CURSOS.slice().sort((a,b)=>a.orden-b.orden);
+const CFG = window.SENTIA_CLUB;
+
+let U = null, UD = null, cursoActual = null, claseActual = 0;
+
+$("salir").onclick = () => signOut(auth).then(()=>location.href="vip-auth.html");
+$("btnWhats").href = "https://wa.me/" + CFG.whatsappVentas + "?text=" + encodeURIComponent("Hola, quiero activar mi membresía del Club SENTIA");
+
+function diasDesde(ts){
+  if(!ts) return 0;
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  return Math.floor((Date.now() - d.getTime()) / 86400000);
+}
+function cursoDesbloqueado(c){
+  if(!UD.vip) return false;
+  const dias = diasDesde(UD.fechaVipDesde);
+  return dias >= (c.orden - 1) * CFG.diasPorCurso;
+}
+function fechaDesbloqueo(c){
+  const base = UD.fechaVipDesde?.toDate ? UD.fechaVipDesde.toDate() : new Date();
+  const f = new Date(base.getTime() + (c.orden-1)*CFG.diasPorCurso*86400000);
+  return f.toLocaleDateString("es-MX",{day:"numeric",month:"long"});
+}
+function tieneVideos(c){ return c.videos.some(v=>v.videoId); }
+function vistos(c){ return (UD.progreso && UD.progreso[c.id]) || []; }
+
+function pintarCursos(){
+  $("saludo").textContent = "Hola, " + (UD.nombre || "").split(" ")[0];
+  $("badge").textContent = UD.vip ? "Membresía VIP activa" : "Cuenta gratuita";
+  $("badge").className = "badge " + (UD.vip ? "vip" : "free");
+  $("bannerFree").style.display = UD.vip ? "none" : "flex";
+  if(UD.rol === "admin") $("lnkAdmin").style.display = "inline";
+
+  const g = $("grid"); g.innerHTML = "";
+  CURSOS.forEach(c => {
+    const abierto = cursoDesbloqueado(c) && tieneVideos(c);
+    const prox = !tieneVideos(c);
+    const div = document.createElement("div");
+    div.className = "curso";
+    let estado, boton;
+    if(prox){ estado = '<span class="estado e-prox">Próximamente</span>'; boton = '<button class="btnc" disabled>Muy pronto</button>'; }
+    else if(abierto){ estado = '<span class="estado e-abierto">Disponible</span>'; boton = '<button class="btnc" data-open="'+c.id+'">Entrar al curso →</button>'; }
+    else if(UD.vip){ estado = '<span class="estado e-bloq">Se desbloquea el '+fechaDesbloqueo(c)+'</span>'; boton = '<button class="btnc" disabled>Bloqueado</button>'; }
+    else { estado = '<span class="estado e-bloq">Solo miembros VIP</span>'; boton = '<a class="btnc" target="_blank" rel="noopener" href="'+$("btnWhats").href+'">Activar membresía</a>'; }
+    div.innerHTML = estado + '<h3>'+c.titulo+'</h3>' +
+      (c.instructor ? '<span class="inst">Imparte: '+c.instructor+'</span>' : '') +
+      '<p>'+c.descripcion+'</p>' + boton;
+    g.appendChild(div);
+  });
+  g.querySelectorAll("[data-open]").forEach(b => b.onclick = () => abrirCurso(b.dataset.open));
+}
+
+function abrirCurso(id){
+  cursoActual = CURSOS.find(c=>c.id===id);
+  claseActual = -1;
+  $("vistaCursos").style.display = "none";
+  $("vistaCurso").style.display = "block";
+  $("cTitulo").textContent = cursoActual.titulo;
+  $("cInst").textContent = cursoActual.instructor ? "Imparte: " + cursoActual.instructor : "";
+  pintarClases(); pintarMats();
+  $("player").innerHTML = '<div class="vacio">Selecciona una clase</div>';
+  actualizarCert();
+  window.scrollTo(0,0);
+}
+$("volver").onclick = () => { $("vistaCurso").style.display="none"; $("vistaCursos").style.display="block"; pintarCursos(); };
+
+function claseAbierta(idx){
+  // secuencial: la clase n abre si la n-1 está vista (la 0 siempre abierta)
+  if(idx===0) return true;
+  return vistos(cursoActual).includes(idx-1);
+}
+function pintarClases(){
+  const cont = $("clases"); cont.innerHTML = "";
+  cursoActual.videos.forEach((v,idx)=>{
+    const abierta = claseAbierta(idx) && v.videoId;
+    const d = document.createElement("div");
+    d.className = "clase" + (idx===claseActual?" activa":"") + (abierta?"":" cerrada");
+    d.innerHTML = "<span>"+v.titulo+(v.videoId?"":" (próximamente)")+"</span>" +
+      (vistos(cursoActual).includes(idx) ? '<span class="check">VISTA ✓</span>' : "");
+    if(abierta) d.onclick = () => reproducir(idx);
+    cont.appendChild(d);
+  });
+}
+function reproducir(idx){
+  claseActual = idx;
+  const v = cursoActual.videos[idx];
+  $("player").innerHTML = '<iframe src="https://iframe.mediadelivery.net/embed/'+window.SENTIA_BUNNY_LIBRARY+'/'+v.videoId+'?autoplay=false" allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture" allowfullscreen></iframe>';
+  pintarClases();
+}
+$("btnVisto").onclick = async () => {
+  if(claseActual < 0) return;
+  const arr = vistos(cursoActual);
+  if(!arr.includes(claseActual)) arr.push(claseActual);
+  UD.progreso = UD.progreso || {};
+  UD.progreso[cursoActual.id] = arr;
+  await updateDoc(doc(db,"usuarios",U.uid), { ["progreso."+cursoActual.id]: arr });
+  pintarClases(); actualizarCert();
+};
+
+function cursoCompleto(){
+  const conVideo = cursoActual.videos.filter(v=>v.videoId).length;
+  return conVideo > 0 && cursoActual.videos.every((v,i)=>!v.videoId || vistos(cursoActual).includes(i));
+}
+function actualizarCert(){ $("btnCert").disabled = !cursoCompleto(); }
+
+function pintarMats(){
+  const m = $("mats"); m.innerHTML = "";
+  if(!cursoActual.materiales.length){ m.innerHTML = '<div class="mat pend">Materiales disponibles próximamente.</div>'; return; }
+  cursoActual.materiales.forEach(mat=>{
+    const d = document.createElement("div");
+    if(mat.url){ d.className="mat"; d.innerHTML = "<span>📄 "+mat.nombre+"</span><a href='"+mat.url+"' target='_blank' rel='noopener'>Descargar</a>"; }
+    else { d.className="mat pend"; d.innerHTML = "<span>📄 "+mat.nombre+" — próximamente</span>"; }
+    m.appendChild(d);
+  });
+}
+
+/* ================= CERTIFICADO ================= */
+async function imgData(url){
+  const r = await fetch(url); const b = await r.blob();
+  return new Promise(res=>{ const fr=new FileReader(); fr.onload=()=>res(fr.result); fr.readAsDataURL(b); });
+}
+function folioNuevo(){
+  const t = Date.now().toString(36).toUpperCase();
+  const r = Math.random().toString(36).slice(2,6).toUpperCase();
+  return "SEN-"+t+"-"+r;
+}
+$("btnCert").onclick = async () => {
+  $("btnCert").disabled = true; $("btnCert").textContent = "Generando…";
+  try{
+    const folio = folioNuevo();
+    const fecha = new Date().toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"});
+    await setDoc(doc(db,"certificados",folio),{
+      folio, nombre: UD.nombre, curso: cursoActual.titulo, fecha,
+      uid: U.uid, creado: serverTimestamp()
+    });
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({orientation:"landscape",unit:"pt",format:"letter"}); // 792x612
+    const W=792,H=612, NAVY="#0a1f4d", BLUE="#1b5df0";
+    pdf.setFillColor(243,247,255); pdf.rect(0,0,W,H,"F");
+    pdf.setDrawColor(10,31,77); pdf.setLineWidth(3); pdf.rect(24,24,W-48,H-48);
+    pdf.setDrawColor(27,93,240); pdf.setLineWidth(1); pdf.rect(32,32,W-64,H-64);
+    try{ const logo = await imgData("logo-icon-lg.png"); pdf.addImage(logo,"PNG",W/2-38,52,76,76); }catch(e){}
+    pdf.setFont("helvetica","bold"); pdf.setTextColor(NAVY); pdf.setFontSize(26);
+    pdf.text("SENTIA HUMAN INSTITUTE",W/2,158,{align:"center"});
+    pdf.setFontSize(13); pdf.setTextColor(BLUE);
+    pdf.text("Psicología · Educación · Desarrollo Humano",W/2,178,{align:"center"});
+    pdf.setFontSize(15); pdf.setTextColor(90,105,140); pdf.setFont("helvetica","normal");
+    pdf.text("Otorga el presente certificado a:",W/2,225,{align:"center"});
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(30); pdf.setTextColor(NAVY);
+    pdf.text(UD.nombre,W/2,265,{align:"center"});
+    pdf.setFont("helvetica","normal"); pdf.setFontSize(14); pdf.setTextColor(90,105,140);
+    pdf.text("Por haber concluido satisfactoriamente el curso:",W/2,300,{align:"center"});
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(16); pdf.setTextColor(BLUE);
+    const lineas = pdf.splitTextToSize(cursoActual.titulo, 560);
+    pdf.text(lineas,W/2,328,{align:"center"});
+    pdf.setFont("helvetica","normal"); pdf.setFontSize(12); pdf.setTextColor(90,105,140);
+    pdf.text("Tehuacán, Puebla, México · "+fecha,W/2,392,{align:"center"});
+    // firma
+    try{ const firma = await imgData("assets/firma.png"); pdf.addImage(firma,"PNG",W/2-70,420,140,55); }catch(e){}
+    pdf.setDrawColor(10,31,77); pdf.setLineWidth(1); pdf.line(W/2-100,482,W/2+100,482);
+    pdf.setFont("helvetica","bold"); pdf.setFontSize(12); pdf.setTextColor(NAVY);
+    pdf.text(CFG.coordinadora,W/2,498,{align:"center"});
+    pdf.setFont("helvetica","normal"); pdf.setFontSize(10); pdf.setTextColor(90,105,140);
+    pdf.text("Coordinación Académica",W/2,512,{align:"center"});
+    // QR + folio
+    try{
+      const qr = await imgData("https://api.qrserver.com/v1/create-qr-code/?size=180x180&data="+encodeURIComponent(CFG.dominio+"/verificar.html?folio="+folio));
+      pdf.addImage(qr,"PNG",W-140,H-150,80,80);
+    }catch(e){}
+    pdf.setFontSize(9); pdf.setTextColor(NAVY);
+    pdf.text("Folio: "+folio,W-100,H-58,{align:"center"});
+    pdf.text("Verifícalo en "+CFG.dominio.replace("https://","")+"/verificar.html",60,H-58);
+    pdf.save("Certificado_SENTIA_"+folio+".pdf");
+  }catch(e){
+    console.error(e); $("msgPanel").textContent = "No se pudo generar el certificado, intenta de nuevo.";
+  }
+  $("btnCert").textContent = "Generar certificado"; actualizarCert();
+};
+
+onAuthStateChanged(auth, async (user) => {
+  if(!user){ location.href = "vip-auth.html"; return; }
+  U = user;
+  const snap = await getDoc(doc(db,"usuarios",user.uid));
+  if(!snap.exists()){
+    await setDoc(doc(db,"usuarios",user.uid),{ nombre:user.displayName||"", email:user.email, vip:false, fechaVipDesde:null, rol:"alumno", progreso:{}, creado:serverTimestamp() });
+    UD = (await getDoc(doc(db,"usuarios",user.uid))).data();
+  } else UD = snap.data();
+  pintarCursos();
+});
+</script>
+</body>
+</html>

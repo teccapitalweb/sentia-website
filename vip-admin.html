@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Club SENTIA · Admin</title>
+<link rel="icon" href="favicon.png">
+<style>
+@font-face{font-family:'Sora';src:url('fonts/sora-latin-700-normal.woff2') format('woff2');font-weight:700}
+@font-face{font-family:'Instrument Sans';src:url('fonts/instrument-sans-latin-400-normal.woff2') format('woff2');font-weight:400}
+@font-face{font-family:'Instrument Sans';src:url('fonts/instrument-sans-latin-600-normal.woff2') format('woff2');font-weight:600}
+:root{--bg:#f3f7ff;--ink:#0e1d40;--muted:#5b6b8f;--accent:#1b5df0;--accent-dark:#0d3fb8;--accent-soft:#e8effe;--navy:#0a1f4d;--stroke:#e3eaf8}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Instrument Sans',sans-serif;background:var(--bg);color:var(--ink)}
+header{background:#fff;border-bottom:1px solid var(--stroke)}
+.nav{max-width:1120px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 20px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand img{height:36px}.brand b{font-family:'Sora',sans-serif}
+.lnk{color:var(--muted);cursor:pointer;font-size:.9rem;text-decoration:none}
+.wrap{max-width:1120px;margin:0 auto;padding:28px 20px 70px}
+h1{font-family:'Sora',sans-serif;color:var(--navy);font-size:1.4rem;margin-bottom:6px}
+.sub{color:var(--muted);font-size:.92rem;margin-bottom:22px}
+.stats{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+.stat{background:#fff;border:1px solid var(--stroke);border-radius:12px;padding:14px 22px}
+.stat b{font-family:'Sora',sans-serif;font-size:1.4rem;color:var(--accent-dark);display:block}
+.stat span{font-size:.82rem;color:var(--muted)}
+.buscar{width:100%;max-width:420px;padding:12px 14px;border:1px solid var(--stroke);border-radius:10px;font-size:.95rem;font-family:inherit;margin-bottom:18px}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--stroke);border-radius:12px;overflow:hidden}
+th{background:var(--navy);color:#fff;text-align:left;padding:12px 14px;font-size:.82rem}
+td{padding:11px 14px;border-top:1px solid var(--stroke);font-size:.9rem;vertical-align:middle}
+tr:hover td{background:var(--accent-soft)}
+.tag{padding:3px 10px;border-radius:99px;font-size:.75rem;font-weight:600}
+.tag.si{background:#e9f9ea;color:#1e7a1d}.tag.no{background:#eef1f7;color:var(--muted)}
+button{border:none;border-radius:8px;padding:8px 12px;font-family:inherit;font-weight:600;font-size:.82rem;cursor:pointer}
+.on{background:var(--accent);color:#fff}.off{background:#fdecec;color:#9c1c1c}
+#denegado{display:none;text-align:center;padding:80px 20px;color:var(--muted)}
+#cargando{text-align:center;padding:60px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header><nav class="nav">
+  <a class="brand" href="vip-panel.html"><img src="logo-icon.png" alt="SENTIA"><b>Admin · Club SENTIA</b></a>
+  <a class="lnk" href="vip-panel.html">← Volver al panel</a>
+</nav></header>
+
+<div id="cargando">Cargando…</div>
+<div id="denegado"><h1>Acceso restringido</h1><p>Esta sección es solo para administradores.</p></div>
+
+<div class="wrap" id="contenido" style="display:none">
+  <h1>Alumnos del club</h1>
+  <p class="sub">Activa o desactiva la membresía VIP. Al activar, el drip de cursos inicia desde hoy.</p>
+  <div class="stats">
+    <div class="stat"><b id="sTot">0</b><span>Registrados</span></div>
+    <div class="stat"><b id="sVip">0</b><span>VIP activos</span></div>
+  </div>
+  <input class="buscar" id="buscar" placeholder="Buscar por nombre o correo…">
+  <table>
+    <thead><tr><th>Nombre</th><th>Correo</th><th>VIP</th><th>VIP desde</th><th>Acción</th></tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDEOW7bZVFvN_2rLZTBSmTjshpgZg_-x70",
+  authDomain: "sentia-academy.firebaseapp.com",
+  projectId: "sentia-academy",
+  storageBucket: "sentia-academy.firebasestorage.app",
+  messagingSenderId: "137510320281",
+  appId: "1:137510320281:web:d0d26e7f5aa4eee5a56008"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const $ = id => document.getElementById(id);
+let USUARIOS = [];
+
+function fFecha(ts){
+  if(!ts) return "—";
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  return d.toLocaleDateString("es-MX",{day:"2-digit",month:"short",year:"numeric"});
+}
+function pintar(filtro=""){
+  const t = $("tbody"); t.innerHTML = "";
+  const f = filtro.toLowerCase();
+  const lista = USUARIOS.filter(u => !f || (u.nombre||"").toLowerCase().includes(f) || (u.email||"").toLowerCase().includes(f));
+  lista.forEach(u=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = "<td>"+(u.nombre||"—")+(u.rol==="admin"?" 👑":"")+"</td><td>"+(u.email||"—")+"</td>" +
+      '<td><span class="tag '+(u.vip?"si":"no")+'">'+(u.vip?"Activa":"Sin VIP")+"</span></td>" +
+      "<td>"+fFecha(u.fechaVipDesde)+"</td>" +
+      '<td><button class="'+(u.vip?"off":"on")+'" data-id="'+u.id+'">'+(u.vip?"Desactivar":"Activar VIP")+"</button></td>";
+    t.appendChild(tr);
+  });
+  t.querySelectorAll("button").forEach(b=> b.onclick = ()=>toggleVip(b.dataset.id));
+  $("sTot").textContent = USUARIOS.length;
+  $("sVip").textContent = USUARIOS.filter(u=>u.vip).length;
+}
+async function toggleVip(id){
+  const u = USUARIOS.find(x=>x.id===id);
+  const nuevo = !u.vip;
+  if(!confirm((nuevo?"¿Activar":"¿Desactivar")+" la membresía VIP de "+(u.nombre||u.email)+"?")) return;
+  await updateDoc(doc(db,"usuarios",id), nuevo
+    ? { vip:true, fechaVipDesde: serverTimestamp() }
+    : { vip:false });
+  await cargar();
+}
+async function cargar(){
+  const snap = await getDocs(collection(db,"usuarios"));
+  USUARIOS = snap.docs.map(d=>({id:d.id, ...d.data()}))
+    .sort((a,b)=>(b.creado?.seconds||0)-(a.creado?.seconds||0));
+  pintar($("buscar").value);
+}
+$("buscar") && ($("buscar").oninput = e=>pintar(e.target.value));
+
+onAuthStateChanged(auth, async (user)=>{
+  if(!user){ location.href="vip-auth.html"; return; }
+  const me = await getDoc(doc(db,"usuarios",user.uid));
+  $("cargando").style.display="none";
+  if(!me.exists() || me.data().rol!=="admin"){ $("denegado").style.display="block"; return; }
+  $("contenido").style.display="block";
+  await cargar();
+});
+</script>
+</body>
+</html>
