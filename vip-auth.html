@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Acceso · Club SENTIA</title>
-<!-- SENTIA-AUTH v5 · cerebritos + titulo bicolor + verde izq -->
+<!-- SENTIA-AUTH v6 · cerebritos + titulo bicolor + verde izq -->
 <meta name="description" content="Inicia sesión o crea tu cuenta en el Club SENTIA: psicología, educación y desarrollo humano con certificado verificable.">
 <link rel="icon" type="image/png" href="assets/icon-sentia.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -188,7 +188,6 @@ body.modo-dia .logo-day{display:block}
 .hero-trust{font-size:.72rem;color:var(--faint);margin-top:2px}
 </style>
 
-<link rel="stylesheet" href="mobile.css">
 <!-- ═══ Instalable como app (ver manifest.json / sw.js / pwa.js) ═══ -->
 <link rel="manifest" href="manifest.json">
 <meta name="mobile-web-app-capable" content="yes">
@@ -474,11 +473,7 @@ async function actualizarPrecioHero(){
    Se conserva la función por si se reactiva, pero NO se ejecuta. */
 // actualizarPrecioHero();
 
-/* CTA "Regístrate Gratis" → activa el tab de registro y enfoca el nombre */
-  document.querySelector('[data-tab="register"]')?.click();
-  document.querySelector('.auth-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  setTimeout(() => document.getElementById('re-name')?.focus?.(), 450);
-});
+/* CTA eliminado — registro directo en el formulario */
 
 async function ensureMiembroDoc(user, displayName, origen){
   if (!user || !user.uid) return { ok:false, reason:'no-user' };

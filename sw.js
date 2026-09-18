@@ -13,7 +13,7 @@
                                las fuentes de Google siempre van directo a la red.
    ═══════════════════════════════════════════════════════════════════════════ */
 
-const VERSION = 'sentia-v5';
+const VERSION = 'sentia-v6';
 const CACHE_SHELL = VERSION + '-shell';
 const CACHE_RUNTIME = VERSION + '-runtime';
 
