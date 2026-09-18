@@ -14,12 +14,12 @@
   --bg-deep:#050a16; --bg:#081225; --surface:#0b1530; --surface-2:#0f1e3a;
   --line:rgba(63,123,255,.12); --line-soft:rgba(255,255,255,.06);
   --primary:#1b5df0; --primary-soft:#3f7bff; --primary-deep:#0d3fb8;
-  --accent:#2fbf2e; --accent-soft:#3ddc5a;
+  --accent:#2fbf2e; --accent-soft:#3ddc5a; --accent-deep:#137a33;
   --text:#eaf2ff; --muted:#94a3b8; --faint:#5b6b86;
   --danger:#f87171; --danger-bg:rgba(248,113,113,.12);
   --ok:#2fbf2e; --ok-bg:rgba(47,191,46,.12);
   --glass:rgba(13,26,52,.55); --glass-brd:rgba(63,123,255,.14);
-  --glow-blue:rgba(27,93,240,.45); --glow-green:rgba(47,191,46,.32);
+  --glow-blue:rgba(27,93,240,.45); --glow-green:rgba(19,122,51,.55);
   --radius:18px; --radius-sm:12px;
   --font-display:'Sora',sans-serif; --font-body:'Manrope',sans-serif; --font-mono:'JetBrains Mono',monospace;
 }
@@ -30,7 +30,7 @@ body.modo-dia{
   --danger:#dc2626; --danger-bg:rgba(220,38,38,.08);
   --ok:#1e8f1d; --ok-bg:rgba(15,157,88,.10);
   --glass:rgba(255,255,255,.72); --glass-brd:rgba(27,93,240,.18);
-  --glow-blue:rgba(27,93,240,.22); --glow-green:rgba(47,191,46,.18);
+  --glow-blue:rgba(27,93,240,.22); --glow-green:rgba(19,122,51,.26);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -45,7 +45,7 @@ input[type=number]{-moz-appearance:textfield}
 .theme-btn svg{width:18px;height:18px}
 .split{display:grid;grid-template-columns:1.05fr .95fr;min-height:100vh}
 .hero{position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:46px 54px;overflow:hidden;border-right:1px solid var(--line);background:var(--bg-deep)}
-.hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(50vw 50vw at 8% -8%, var(--glow-blue), transparent 60%),radial-gradient(46vw 46vw at 96% 4%, var(--glow-green), transparent 58%),radial-gradient(40vw 40vw at 70% 112%, var(--glow-blue), transparent 60%);opacity:.85}
+.hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(50vw 50vw at 8% -8%, var(--glow-blue), transparent 60%),radial-gradient(46vw 46vw at 96% 4%, var(--glow-green), transparent 58%),radial-gradient(40vw 40vw at 70% 112%, var(--glow-blue), transparent 60%),radial-gradient(34vw 34vw at 18% 82%, var(--glow-green), transparent 62%);opacity:.9}
 .hero::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.05;background-image:linear-gradient(var(--text) 1px,transparent 1px),linear-gradient(90deg,var(--text) 1px,transparent 1px);background-size:46px 46px;mask-image:radial-gradient(circle at 30% 40%,#000,transparent 80%)}
 .hero > *{position:relative;z-index:1}
 .lockup{display:flex;flex-direction:column;gap:10px;animation:rv .6s both}
@@ -60,7 +60,7 @@ body.modo-dia .logo-day{display:block}
 .hero-mid .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent);animation:pulse 2.2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 .hero-mid h1{font-family:var(--font-display);font-weight:800;font-size:clamp(2.2rem,3.2vw,3.05rem);line-height:1.08;letter-spacing:-.025em;text-wrap:balance;animation:rv .7s .08s both}
-.hero-mid h1 .grad{background:linear-gradient(110deg,var(--primary-soft),var(--accent-soft));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-mid h1 .grad{background:linear-gradient(110deg,var(--primary-soft) 20%,var(--accent) 75%,var(--accent-deep));-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero-mid p{color:var(--muted);font-size:1.02rem;line-height:1.6;margin-top:18px;max-width:42ch;animation:rv .7s .16s both}
 .metrics{display:flex;gap:42px;animation:rv .7s .24s both}
 .metrics .m b{font-family:var(--font-display);font-weight:800;font-size:1.7rem;display:block;background:linear-gradient(110deg,var(--primary-soft),var(--accent-soft));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -210,6 +210,7 @@ body.modo-dia .logo-day{display:block}
         <span class="eyebrow"><span class="dot"></span>Membres&iacute;a profesional</span>
         <h1>Domina la psicolog&iacute;a y la intervenci&oacute;n que tu carrera <span class="grad">te est&aacute; pidiendo.</span></h1>
         <p>Cursos de psicolog&iacute;a, educaci&oacute;n y desarrollo humano, clases en vivo con especialistas y certificados con folio oficial.</p>
+        <div class="hero-marquee" aria-hidden="true"><div class="track"><img src="assets/cursos-mini/curso-01.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-02.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-03.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-04.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-05.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-06.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-07.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-08.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-09.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-01.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-02.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-03.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-04.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-05.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-06.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-07.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-08.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-09.webp" alt="" loading="lazy"></div></div>
         
         <!-- MODIFICADO: el "al día" se recalcula en vivo con el precio mensual -->
         <p class="hero-hook">Todo esto <b>empezando gratis</b>:</p>
