@@ -2,7 +2,7 @@
   "id": "/",
   "name": "SENTIA México",
   "short_name": "SENTIA",
-  "description": "Formación especializada en biomedicina, microbiología y medicina general: cursos en vivo con grabación, capacitación empresarial y certificación verificable.",
+  "description": "Formación especializada en psicología, educación y desarrollo humano: cursos en vivo con grabación, capacitación empresarial y certificación verificable.",
   "start_url": "./?source=pwa",
   "scope": "./",
   "display": "standalone",
