@@ -45,8 +45,8 @@ input[type=number]{-moz-appearance:textfield}
 .theme-btn svg{width:18px;height:18px}
 .split{display:grid;grid-template-columns:1.05fr .95fr;min-height:100vh}
 .hero{position:relative;display:flex;flex-direction:column;justify-content:space-between;padding:46px 54px;overflow:hidden;border-right:1px solid var(--line);background:var(--bg-deep)}
-.hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(50vw 50vw at 8% -8%, var(--glow-blue), transparent 60%),radial-gradient(46vw 46vw at 96% 4%, var(--glow-green), transparent 58%),radial-gradient(40vw 40vw at 70% 112%, var(--glow-blue), transparent 60%),radial-gradient(34vw 34vw at 18% 82%, var(--glow-green), transparent 62%);opacity:.9}
-.hero::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.05;background-image:linear-gradient(var(--text) 1px,transparent 1px),linear-gradient(90deg,var(--text) 1px,transparent 1px);background-size:46px 46px;mask-image:radial-gradient(circle at 30% 40%,#000,transparent 80%)}
+.hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(52vw 52vw at 4% -6%, var(--glow-green), transparent 62%),radial-gradient(44vw 44vw at 96% 8%, var(--glow-blue), transparent 58%),radial-gradient(38vw 38vw at 72% 112%, var(--glow-blue), transparent 60%),radial-gradient(30vw 30vw at 12% 86%, var(--glow-green), transparent 60%);opacity:.92}
+.hero::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.06;background-image:url("assets/icon-sentia.png");background-size:64px 64px;background-repeat:space;mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,.5) 26%,transparent 55%)}
 .hero > *{position:relative;z-index:1}
 .lockup{display:flex;flex-direction:column;gap:10px;animation:rv .6s both}
 .logo-link{display:inline-block;width:max-content;line-height:0}
@@ -156,8 +156,8 @@ body.modo-dia .logo-day{display:block}
   border:1px solid var(--line);box-shadow:0 10px 26px rgba(0,0,0,.45)}
 .hero-hook{margin:18px 0 10px;font-size:.95rem;font-weight:700;color:var(--text)}
 .hero-hook b{color:var(--primary-soft)}
-.hero-benefits{list-style:none;display:flex;flex-direction:column;gap:9px;margin:0 0 6px;padding:0}
-.hero-benefits li{display:flex;gap:9px;align-items:flex-start;font-size:.86rem;color:var(--muted);line-height:1.45}
+.hero-benefits{margin-top:14px;list-style:none;display:flex;flex-direction:column;gap:9px;margin:0 0 6px;padding:0}
+.hero-benefits li{display:flex;gap:7px;align-items:flex-start;font-size:.86rem;color:var(--muted);line-height:1.45;line-height:1.4}
 .hero-benefits li b{color:var(--text);font-weight:600}
 .hero-benefits svg{width:17px;height:17px;flex:none;margin-top:2px;stroke:var(--accent-soft);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .hero-tools{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 8px}
@@ -166,7 +166,7 @@ body.modo-dia .logo-day{display:block}
 .hero-price{display:flex;gap:10px;margin:10px 0 14px;flex-wrap:wrap}
 .hero-price .opt{flex:1;min-width:150px;background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;position:relative}
 .hero-price .opt--star{border-color:var(--accent)}
-.hero-price .opt b{display:block;font-size:1.5rem;font-weight:800;color:var(--text);line-height:1}
+.hero-price .opt b{display:block;font-size:1.85rem;font-weight:800;color:var(--text);line-height:1}
 .hero-price .opt small{display:block;margin-top:5px;font-size:.72rem;color:var(--muted);line-height:1.5}
 .hero-price .tachado{text-decoration:line-through;color:var(--faint);margin-right:4px}
 .hero-price .badge{position:absolute;top:-9px;right:10px;font-family:var(--font-mono);font-size:.6rem;font-weight:700;
@@ -203,12 +203,12 @@ body.modo-dia .logo-day{display:block}
 <div class="split">
   <section class="hero">
     <div class="lockup">
-      <a class="logo-link" href="index.html"><span style="display:inline-flex;align-items:center;gap:10px"><img src="assets/icon-sentia.png" alt="SENTIA" style="width:46px;height:46px;object-fit:contain"><span style="font-family:var(--font-head),'Sora',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:.02em;color:#f2f6ff">SEN<span style="color:#3f7bff">TIA</span></span></span></a>
+      <a class="logo-link" href="index.html"><span style="display:inline-flex;align-items:center;gap:10px"><img src="assets/icon-sentia.png" alt="SENTIA" style="width:62px;height:62px;object-fit:contain"><span style="font-family:var(--font-head),'Sora',sans-serif;font-weight:800;font-size:1.85rem;letter-spacing:.02em;color:#f2f6ff">SEN<span style="color:#3f7bff">TIA</span></span></span></a>
       <span class="kicker">Instituto &middot; Biomedicina &middot; Microbiolog&iacute;a</span>
     </div>
     <div class="hero-mid">
         <span class="eyebrow"><span class="dot"></span>Membres&iacute;a profesional</span>
-        <h1>Domina la psicolog&iacute;a y la intervenci&oacute;n que tu carrera <span class="grad">te est&aacute; pidiendo.</span></h1>
+        <h1>Domina la <span style="color:var(--accent)">psicolog&iacute;a</span> y la intervenci&oacute;n que <span style="color:var(--primary-soft)">tu carrera</span> te est&aacute; pidiendo.</h1>
         <p>Cursos de psicolog&iacute;a, educaci&oacute;n y desarrollo humano, clases en vivo con especialistas y certificados con folio oficial.</p>
         <div class="hero-marquee" aria-hidden="true"><div class="track"><img src="assets/cursos-mini/curso-01.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-02.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-03.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-04.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-05.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-06.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-07.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-08.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-09.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-01.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-02.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-03.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-04.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-05.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-06.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-07.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-08.webp" alt="" loading="lazy"><img src="assets/cursos-mini/curso-09.webp" alt="" loading="lazy"></div></div>
         
@@ -227,11 +227,6 @@ body.modo-dia .logo-day{display:block}
         <!-- MODIFICADO: sin precios en el auth. CTA único de registro gratuito;
              los planes se muestran dentro del panel al momento de activar membresía. -->
         <div class="hero-price">
-          <div class="opt opt--star" style="flex:1;text-align:center;cursor:pointer;" id="cta-registro-gratis" role="button" tabindex="0">
-            <span class="badge">Sin tarjeta</span>
-            <b>Reg&iacute;strate Gratis</b>
-            <small>Crea tu cuenta y prueba las primeras clases sin costo<br>Activa tu membres&iacute;a cuando quieras</small>
-          </div>
         </div>
         <!-- ⚠️ BORRADORES: reemplazar con testimonios REALES antes de pautar fuerte -->
         <p class="hero-refs-title">Referencias</p>
@@ -240,7 +235,6 @@ body.modo-dia .logo-day{display:block}
           <div class="hero-ref"><span class="avi">DS</span><div style="flex:1;"><div class="bub"><b>Mtro. Diego Salinas <small>&middot; Docente</small></b><p>Los formatos y checklists los uso a diario en mi trabajo. Las clases en vivo me actualizaron en semanas.</p></div></div></div>
         </div>
         <p class="hero-trust">Pago seguro con Stripe &middot; Acceso inmediato &middot; Sin permanencia</p>
-      </div>
       </div>
   </section>
 
@@ -480,7 +474,6 @@ async function actualizarPrecioHero(){
 // actualizarPrecioHero();
 
 /* CTA "Regístrate Gratis" → activa el tab de registro y enfoca el nombre */
-document.getElementById('cta-registro-gratis')?.addEventListener('click', () => {
   document.querySelector('[data-tab="register"]')?.click();
   document.querySelector('.auth-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   setTimeout(() => document.getElementById('re-name')?.focus?.(), 450);
