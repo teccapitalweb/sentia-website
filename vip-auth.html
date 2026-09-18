@@ -24,7 +24,7 @@ html{-webkit-text-size-adjust:100%}
 body{
   font-family:var(--font-body); color:var(--ink); background:var(--bg);
   min-height:100vh; display:flex; flex-direction:column; align-items:center;
-  padding:28px 16px 40px; position:relative; overflow-x:hidden;
+  padding:28px 20px 40px; position:relative; overflow-x:hidden;
 }
 /* fondo suave propio de SENTIA: manchas azul/verde sobre claro */
 body::before,body::after{content:"";position:fixed;border-radius:50%;filter:blur(90px);z-index:-1;pointer-events:none}
@@ -128,6 +128,7 @@ body::after{width:460px;height:460px;right:-140px;bottom:-120px;background:rgba(
 
 /* ---------- testimonios profesionales ---------- */
 .refs{width:100%;max-width:440px;margin-top:26px}
+.refs h2{text-align:left !important}
 .refs h2{font-family:var(--font-head);font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);text-align:center;margin-bottom:12px}
 .ref-card{
   background:var(--card);border:1px solid var(--line);border-left:4px solid var(--blue);
@@ -140,6 +141,32 @@ body::after{width:460px;height:460px;right:-140px;bottom:-120px;background:rgba(
 .ref-av.b{background:var(--blue)} .ref-av.g{background:var(--green)}
 .ref-who strong{font-size:.82rem;color:var(--navy);display:block;line-height:1.2}
 .ref-who span{font-size:.74rem;color:var(--muted)}
+
+
+/* ---------- layout 2 columnas ---------- */
+.layout{width:100%;max-width:1060px;display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:start;margin-top:26px}
+.hero{padding-top:6px}
+.hero h1{font-family:var(--font-head);font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:800;color:var(--navy);line-height:1.16}
+.hero h1 .az{color:var(--blue)} .hero h1 .vr{color:var(--green)}
+.hero .lead{font-size:.98rem;color:var(--muted);line-height:1.6;margin:14px 0 20px;max-width:46ch}
+.hero-benefits{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.hero-benefits li{display:flex;align-items:flex-start;gap:10px;font-size:.93rem;color:var(--ink);line-height:1.45}
+.hero-benefits li svg{width:18px;height:18px;color:var(--green);flex:none;margin-top:1px}
+.hero-benefits b{font-weight:700;color:var(--navy)}
+.tools-line{display:flex;flex-wrap:wrap;gap:8px;margin:2px 0 20px;padding-left:28px}
+.tools-line span{font-size:.76rem;font-weight:600;color:var(--blue-d);background:rgba(27,93,240,.08);
+  border:1px solid rgba(27,93,240,.18);border-radius:999px;padding:5px 12px}
+.free-banner{display:inline-flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);
+  border-radius:14px;padding:12px 18px;box-shadow:0 6px 18px rgba(10,31,77,.07)}
+.free-banner .fb-dot{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(47,191,46,.18);flex:none}
+.free-banner strong{font-family:var(--font-head);font-size:.95rem;color:var(--navy);display:block;line-height:1.2}
+.free-banner small{font-size:.76rem;color:var(--muted)}
+.side{position:sticky;top:24px}
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr;gap:26px;max-width:480px}
+  .hero{order:2}.side{order:1;position:static}
+  .tools-line{padding-left:0}
+}
 
 footer{margin-top:30px;text-align:center;font-size:.76rem;color:var(--faint)}
 footer a{color:var(--blue);text-decoration:none;font-weight:600}
@@ -164,7 +191,43 @@ footer a:hover{text-decoration:underline}
 </a>
 <div class="club-pill">Club de membresía</div>
 
-<div class="card">
+<div class="layout">
+  <div class="hero">
+    <h1>Impulsa tu práctica en <span class="az">psicología</span> y <span class="vr">educación</span> con respaldo profesional.</h1>
+    <p class="lead">Cursos en vivo y grabados con especialistas, herramientas listas para aplicar y certificados con folio verificable.</p>
+    <ul class="hero-benefits">
+      <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg><span><b>Biblioteca de cursos</b> de psicología, educación y desarrollo humano</span></li>
+      <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg><span><b>Clases en vivo</b> con especialistas y acceso a las grabaciones</span></li>
+      <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg><span><b>Certificados con folio oficial</b> verificables en línea</span></li>
+      <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg><span><b>Herramientas profesionales</b> incluidas en cada curso:</span></li>
+    </ul>
+    <div class="tools-line">
+      <span>Certificado QR</span><span>Manual por curso</span><span>Checklists periciales</span><span>Matriz psicosocial</span>
+    </div>
+    <div class="free-banner">
+      <span class="fb-dot"></span>
+      <span><strong>Empieza gratis, sin tarjeta</strong><small>Crea tu cuenta y activa tu membresía cuando quieras</small></span>
+    </div>
+    <div class="refs" style="max-width:none;margin-top:30px">
+  <h2>Lo que dicen nuestros alumnos</h2>
+  <div class="ref-card">
+    <p>"El curso de guarda y custodia y el de primeros auxilios psicológicos me ordenaron la práctica. El certificado con folio lo presenté en mi institución sin problema."</p>
+    <div class="ref-who">
+      <span class="ref-av b">LM</span>
+      <span><strong>Psic. Laura Méndez</strong><span>Psicóloga clínica</span></span>
+    </div>
+  </div>
+  <div class="ref-card">
+    <p>"Los formatos y checklists los uso a diario en mi trabajo. Las clases en vivo me actualizaron en semanas."</p>
+    <div class="ref-who">
+      <span class="ref-av g">DS</span>
+      <span><strong>Mtro. Diego Salinas</strong><span>Docente</span></span>
+    </div>
+  </div>
+</div>
+  </div>
+  <div class="side">
+    <div class="card">
   <h1 id="card-title">Crea tu cuenta</h1>
   <p class="sub" id="card-sub">Empieza gratis, sin tarjeta. Activa tu membresía cuando quieras.</p>
 
@@ -244,32 +307,6 @@ footer a:hover{text-decoration:underline}
 
   <div class="free-note"><span class="dot"></span> Registro gratis · sin tarjeta <span class="dot"></span> Cancela cuando quieras</div>
 </div>
-
-<div class="perks">
-  <h2>Tu membresía incluye</h2>
-  <ul>
-    <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg> Certificado QR</li>
-    <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg> Manual por curso</li>
-    <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg> Checklists periciales</li>
-    <li><svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg> Matriz psicosocial</li>
-  </ul>
-</div>
-
-<div class="refs">
-  <h2>Lo que dicen nuestros alumnos</h2>
-  <div class="ref-card">
-    <p>"El curso de guarda y custodia y el de primeros auxilios psicológicos me ordenaron la práctica. El certificado con folio lo presenté en mi institución sin problema."</p>
-    <div class="ref-who">
-      <span class="ref-av b">LM</span>
-      <span><strong>Psic. Laura Méndez</strong><span>Psicóloga clínica</span></span>
-    </div>
-  </div>
-  <div class="ref-card">
-    <p>"Los formatos y checklists los uso a diario en mi trabajo. Las clases en vivo me actualizaron en semanas."</p>
-    <div class="ref-who">
-      <span class="ref-av g">DS</span>
-      <span><strong>Mtro. Diego Salinas</strong><span>Docente</span></span>
-    </div>
   </div>
 </div>
 
