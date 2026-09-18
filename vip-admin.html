@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SENTIA Academy — Panel Admin</title>
+  <link rel="icon" type="image/png" href="assets/icon-sentia.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --verde: #2fbf2e; --verde-medio: #3ddc5a; --verde-claro: #5eff7a;
+      --verde-deep: #137a33;
+      --lima: #3ddc5a; --amarillo: #fbbf24; --naranja: #f97316;
+      --azul: #1b5df0; --azul-d: #0d3fb8; --azul-l: #3f7bff;
+      --morado: #8b5cf6; --rojo: #ef4444;
+      --bg: #f3f7ff; --sidebar-bg: #0a1550; --white: #ffffff;
+      --text: #0f172a; --muted: #5b6b86; --border: #dde7f8; --card: #ffffff;
+      --font: 'Sora', 'Plus Jakarta Sans', sans-serif; --sidebar-w: 240px;
+      --accent: #2fbf2e; --primary: #1b5df0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text); }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 56px; background: linear-gradient(90deg, var(--sidebar-bg), #0d2366);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 10px; }
+    .topbar-logo {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--verde-claro);
+      display: flex; align-items: center; justify-content: center;
+      color: #0a1f4d; font-weight: 800; font-size: .85rem;
+    }
+    .topbar-name { font-weight: 700; font-size: .95rem; color: #fff; }
+    .topbar-badge {
+      font-size: .7rem; font-weight: 700; color: #0a1f4d;
+      background: var(--verde); color: #fff; padding: 2px 10px; border-radius: 100px;
+    }
+    .topbar-right { display: flex; align-items: center; gap: 14px; }
+    .admin-tag { font-size: .78rem; font-weight: 700; color: var(--azul-l); background: rgba(27,93,240,.18); padding: 4px 12px; border-radius: 100px; }
+    .btn-salir { font-size: .82rem; font-weight: 600; color: rgba(255,255,255,.5); padding: 6px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,.1); cursor: pointer; }
+    .btn-salir:hover { color: var(--rojo); border-color: var(--rojo); }
+
+    /* ── LAYOUT ── */
+    .layout { display: flex; margin-top: 52px; min-height: calc(100vh - 52px); }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--sidebar-w); flex-shrink: 0;
+      background: var(--sidebar-bg);
+      position: fixed; top: 52px; left: 0; bottom: 0;
+      overflow-y: auto; padding: 20px 0;
+    }
+    .sidebar::-webkit-scrollbar { width: 0; }
+    .sidebar-section { padding: 0 14px; margin-bottom: 24px; }
+    .sidebar-label { font-size: .65rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.25); padding: 0 6px; margin-bottom: 6px; }
+    .sidebar-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 9px 10px; border-radius: 10px; cursor: pointer; margin-bottom: 2px;
+      transition: background .15s; color: rgba(255,255,255,.55); font-size: .875rem; font-weight: 500;
+    }
+    .sidebar-item:hover { background: rgba(255,255,255,.06); color: #fff; }
+    .sidebar-item.active { background: rgba(47,191,46,.12); color: var(--verde-claro); border-left: 3px solid var(--verde); }
+    .sidebar-item-left { display: flex; align-items: center; gap: 10px; }
+    .sidebar-item-icon { font-size: 1rem; width: 20px; text-align: center; }
+    .s-badge { font-size: .68rem; font-weight: 700; min-width: 20px; height: 20px; border-radius: 100px; display: flex; align-items: center; justify-content: center; padding: 0 6px; background: var(--verde-claro); color: #0a1f4d; }
+
+    /* ── MAIN ── */
+    .main { flex: 1; margin-left: var(--sidebar-w); padding: 28px; }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── PAGE HEADER ── */
+    .page-header { margin-bottom: 24px; }
+    .page-header h2 { font-size: 1.3rem; font-weight: 800; margin-bottom: 4px; }
+    .page-header p { font-size: .88rem; color: var(--muted); }
+
+    /* ── STATS ROW ── */
+    .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+    .stat-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px 20px;
+    }
+    .stat-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+    .icon-verde { background: rgba(47,191,46,.12); }
+    .icon-azul { background: rgba(59,130,246,.12); }
+    .icon-amarillo { background: rgba(251,191,36,.12); }
+    .icon-naranja { background: rgba(249,115,22,.12); }
+    .stat-trend { font-size: .72rem; font-weight: 700; padding: 3px 8px; border-radius: 100px; }
+    .trend-up { color: var(--verde-medio); background: rgba(47,191,46,.12); }
+    .trend-down { color: var(--rojo); background: rgba(239,68,68,.1); }
+    .stat-num { font-size: 1.8rem; font-weight: 800; line-height: 1; }
+    .stat-label { font-size: .78rem; color: var(--muted); margin-top: 4px; }
+
+    /* ── TABLE ── */
+    .table-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 24px; }
+    .table-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+    .table-header h3 { font-size: .95rem; font-weight: 700; }
+    .table-actions { display: flex; gap: 8px; }
+    .btn-add { background: linear-gradient(135deg, var(--azul), var(--verde-deep)); color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-size: .82rem; font-weight: 700; cursor: pointer; font-family: var(--font); transition: background .2s; }
+    .btn-add:hover { background: linear-gradient(135deg, var(--azul-d), var(--verde)); filter: brightness(1.1); }
+    .search-input {
+      border: 1px solid var(--border); border-radius: 8px; padding: 7px 12px;
+      font-size: .82rem; font-family: var(--font); outline: none; width: 200px;
+    }
+    .search-input:focus { border-color: var(--verde-claro); }
+    table { width: 100%; border-collapse: collapse; }
+    thead th { padding: 11px 16px; text-align: left; font-size: .75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; background: #f7faff; border-bottom: 1px solid var(--border); }
+    tbody td { padding: 13px 16px; font-size: .84rem; border-bottom: 1px solid var(--border); }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: #f8faf6; }
+    .member-name { font-weight: 600; }
+    .member-email { color: var(--muted); font-size: .78rem; }
+    .status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 100px; font-size: .72rem; font-weight: 700; }
+    .status-activo { background: rgba(47,191,46,.12); color: var(--verde-medio); }
+    .status-vencido { background: rgba(239,68,68,.1); color: var(--rojo); }
+    .status-pendiente { background: rgba(251,191,36,.12); color: #92400e; }
+    .action-btns { display: flex; gap: 6px; }
+    .btn-accion { border: none; border-radius: 7px; padding: 5px 10px; font-size: .72rem; font-weight: 600; cursor: pointer; font-family: var(--font); transition: all .15s; }
+    .btn-ver-a { background: rgba(59,130,246,.1); color: var(--azul); }
+    .btn-desactivar { background: rgba(239,68,68,.08); color: var(--rojo); }
+    .btn-activar { background: rgba(47,191,46,.12); color: var(--verde-medio); }
+
+    /* ── CONTENT MANAGER ── */
+    .content-form { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; margin-bottom: 24px; }
+    .content-form h3 { font-size: .95rem; font-weight: 700; margin-bottom: 18px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: .78rem; font-weight: 600; color: var(--muted); }
+    .form-group input, .form-group select, .form-group textarea {
+      border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px;
+      font-size: .88rem; font-family: var(--font); outline: none; transition: border-color .2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--verde-claro); }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+
+    /* ══ SESIONES EN VIVO ══════════════════════════════════════════ */
+    .ses-card { background:#fff; border:1.5px solid var(--border); border-radius:18px; padding:28px; margin-bottom:20px; }
+    .ses-card-header { display:flex; align-items:center; gap:14px; margin-bottom:26px; padding-bottom:20px; border-bottom:1.5px solid var(--border); }
+    .ses-card-icon { width:46px; height:46px; background:linear-gradient(135deg,#1e40af,#60a5fa); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; }
+    .ses-card-title { font-size:1rem; font-weight:700; }
+    .ses-card-sub { font-size:.78rem; color:var(--muted); margin-top:2px; }
+    .ses-row { display:flex; gap:14px; margin-bottom:16px; flex-wrap:wrap; }
+    .ses-field { display:flex; flex-direction:column; gap:7px; flex:1; min-width:160px; }
+    .ses-field-wide { flex:2; }
+    .ses-label { font-size:.76rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.03em; }
+    .ses-input-wrap { display:flex; }
+    .ses-input { width:100%; padding:11px 14px; border:1.5px solid var(--border); border-radius:10px; font-size:.88rem; font-family:var(--font); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .ses-input:focus { border-color:var(--verde-claro); box-shadow:0 0 0 3px rgba(47,191,46,.12); }
+    .ses-btn { margin-top:18px; background:linear-gradient(135deg,var(--verde),var(--verde-claro)); color:#fff; border:none; border-radius:12px; padding:13px 28px; font-size:.92rem; font-weight:700; font-family:var(--font); cursor:pointer; display:flex; align-items:center; gap:8px; transition:opacity .2s,transform .15s; }
+    .ses-btn:hover { opacity:.9; transform:translateY(-1px); }
+
+    /* — Fecha + Hora row — */
+    .ses-datetime-row { display:flex; gap:14px; margin-bottom:16px; align-items:flex-start; flex-wrap:wrap; background:linear-gradient(135deg,#f0f7eb,#e8f5e0); border-radius:14px; padding:18px; border:1.5px solid #d0e8c8; }
+
+    /* — Picker genérico — */
+    .ses-picker-block { position:relative; display:flex; flex-direction:column; gap:7px; min-width:160px; }
+    .ses-picker-label { font-size:.76rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.03em; }
+    .ses-picker-display { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:11px 16px; background:#fff; border:2px solid #c5ddb8; border-radius:12px; cursor:pointer; font-size:.9rem; font-weight:600; color:var(--verde); user-select:none; transition:border-color .2s,box-shadow .2s; min-width:160px; }
+    .ses-picker-display:hover { border-color:var(--verde-claro); box-shadow:0 0 0 3px rgba(96,165,250,.1); }
+    .ses-picker-dropdown { display:none; position:absolute; top:calc(100% + 6px); left:0; z-index:200; background:#fff; border:1.5px solid var(--border); border-radius:14px; box-shadow:0 8px 32px rgba(0,0,0,.14); min-width:260px; overflow:hidden; animation:_dropIn .15s ease; }
+    .ses-picker-dropdown.open { display:block; }
+    @keyframes _dropIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+
+    /* — Calendario — */
+    .cal-nav { display:flex; align-items:center; justify-content:space-between; padding:14px 16px 10px; }
+    .cal-nav span { font-size:.92rem; font-weight:700; color:var(--text); }
+    .cal-nav button { background:none; border:none; cursor:pointer; font-size:1.2rem; color:var(--verde); font-weight:700; padding:2px 8px; border-radius:6px; transition:background .15s; }
+    .cal-nav button:hover { background:var(--bg); }
+    .cal-dias-header { display:grid; grid-template-columns:repeat(7,1fr); padding:0 10px 6px; }
+    .cal-dias-header span { text-align:center; font-size:.72rem; font-weight:700; color:var(--muted); }
+    .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); padding:0 10px 14px; gap:3px; }
+    .cal-day { text-align:center; padding:7px 2px; border-radius:8px; font-size:.83rem; cursor:pointer; font-weight:500; transition:background .15s,color .15s; }
+    .cal-day:hover:not(.cal-empty):not(.cal-pasado) { background:rgba(27,93,240,.15); color:var(--verde); }
+    .cal-day.cal-hoy { border:2px solid var(--verde-claro); color:var(--verde); font-weight:700; }
+    .cal-day.cal-sel { background:var(--verde); color:#fff !important; font-weight:700; border-radius:8px; }
+    .cal-day.cal-empty, .cal-day.cal-pasado { color:#ccc; cursor:default; }
+    .cal-day.cal-pasado:hover { background:none; }
+
+    /* — Hora picker — */
+    .hora-picker-inner { display:flex; align-items:center; gap:4px; padding:16px 16px 10px; }
+    .hora-col { display:flex; flex-direction:column; align-items:center; gap:6px; }
+    .hora-col-label { font-size:.72rem; font-weight:700; color:var(--muted); }
+    .hora-scroll { display:flex; flex-direction:column; gap:2px; max-height:168px; overflow-y:auto; scrollbar-width:none; }
+    .hora-scroll::-webkit-scrollbar { display:none; }
+    .hora-item { padding:7px 18px; border-radius:8px; font-size:.88rem; font-weight:500; cursor:pointer; text-align:center; transition:background .15s,color .15s; }
+    .hora-item:hover { background:rgba(27,93,240,.15); color:var(--verde); }
+    .hora-item.sel { background:var(--verde); color:#fff; font-weight:700; }
+    .hora-sep { font-size:1.4rem; font-weight:700; color:var(--verde); padding-bottom:4px; }
+    .ampm-scroll { gap:6px; }
+    .hora-confirm { width:calc(100% - 32px); margin:0 16px 14px; background:var(--verde); color:#fff; border:none; border-radius:10px; padding:9px; font-size:.85rem; font-weight:700; font-family:var(--font); cursor:pointer; }
+    .form-full { grid-column: 1 / -1; }
+
+    /* ── STATS PAGE ── */
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+    .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+    .chart-card h3 { font-size: .9rem; font-weight: 700; margin-bottom: 16px; }
+    .bar-chart { display: flex; flex-direction: column; gap: 10px; }
+    .bar-row { display: flex; align-items: center; gap: 12px; }
+    .bar-row-label {
+      font-size: .82rem;
+      width: 150px;
+      flex-shrink: 0;
+      color: var(--text, #1a2010);
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    @media (max-width: 640px) { .bar-row-label { width: 120px; font-size: .78rem; } }
+    .bar-wrap { flex: 1; height: 8px; background: var(--bg); border-radius: 100px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 100px; transition: width .8s ease; }
+    .bar-count { font-size: .75rem; font-weight: 600; width: 30px; text-align: right; flex-shrink: 0; }
+
+    /* ── MODAL ── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 500; align-items: center; justify-content: center; padding: 24px; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: var(--card); border-radius: 16px; width: 100%; max-width: 480px; padding: 28px; animation: scaleIn .2s ease; }
+    @keyframes scaleIn { from { transform: scale(.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .modal h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
+    .modal-btns { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
+    .btn-cancel { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 9px 18px; font-size: .84rem; font-weight: 600; cursor: pointer; font-family: var(--font); }
+    .btn-confirm { background: var(--verde); color: #fff; border: none; border-radius: 8px; padding: 9px 18px; font-size: .84rem; font-weight: 600; cursor: pointer; font-family: var(--font); }
+
+    /* ===== COLOR PICKER (swatches) ===== */
+    .agro-color-picker { display: flex; flex-direction: column; gap: 10px; }
+    .swatches-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+    .swatch {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 10px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+      padding: 0;
+      outline: none;
+    }
+    .swatch:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,.12); }
+    .swatch.active {
+      border-color: #fff;
+      box-shadow: 0 0 0 2px var(--verde,#1e40af), 0 4px 10px rgba(30,64,175,.3);
+    }
+    .swatch.active::after {
+      content: '✓';
+      position: absolute;
+      inset: 0;
+      color: #fff;
+      font-weight: 900;
+      font-size: 16px;
+      display: grid;
+      place-items: center;
+      text-shadow: 0 1px 2px rgba(0,0,0,.5);
+    }
+    .custom-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--bg,#f4f6f3);
+      border: 1.5px dashed var(--border,#cdd5c9);
+      color: var(--text,#1a2010);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-family: var(--font), inherit;
+      font-size: .85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .15s ease;
+      width: 100%;
+      justify-content: center;
+    }
+    .custom-toggle:hover { background: #eaf3ec; border-color: #60a5fa; }
+    .custom-toggle.active { background: #eaf3ec; border-color: var(--verde,#1e40af); border-style: solid; }
+    .custom-toggle__dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #1e40af;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.1);
+      transition: background .15s ease;
+      flex-shrink: 0;
+    }
+    .custom-picker-wrap {
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: var(--bg,#f4f6f3);
+      border-radius: 10px;
+    }
+    #curso-color {
+      width: 48px;
+      height: 40px;
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 2px;
+      background: #fff;
+    }
+    #curso-color::-webkit-color-swatch-wrapper { padding: 0; }
+    #curso-color::-webkit-color-swatch { border: none; border-radius: 6px; }
+    #curso-color::-moz-color-swatch { border: none; border-radius: 6px; }
+    .custom-picker-hex {
+      font-family: ui-monospace, 'SF Mono', Consolas, monospace;
+      font-weight: 700;
+      color: var(--text,#1a2010);
+      text-transform: uppercase;
+      font-size: .9rem;
+      letter-spacing: .05em;
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">BA</div>
+    <span class="topbar-name">SENTIA Academy</span>
+    <span class="topbar-badge">Admin</span>
+  </div>
+  <div class="topbar-right">
+    <span class="admin-tag">🔐 Panel de Control</span>
+    <div class="btn-salir" onclick="cerrarSesion()">Salir</div>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">General</div>
+      <div class="sidebar-item active" onclick="showPage('dashboard', this)">
+        <div class="sidebar-item-left"><span class="sidebar-item-icon">📊</span> Dashboard</div>
+      </div>
+      <div class="sidebar-item" onclick="showPage('miembros', this)">
+        <div class="sidebar-item-left"><span class="sidebar-item-icon">👥</span> Miembros</div>
+        <span class="s-badge" id="badge-miembros">0</span>
+      </div>
+      <div class="sidebar-item" onclick="showPage('pendientes', this)">
+        <div class="sidebar-item-left"><span class="sidebar-item-icon">⏳</span> Pendientes</div>
+        <span class="s-badge" style="background:var(--naranja);color:#fff" id="badge-pendientes">0</span>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Contenido</div>
+      <div class="sidebar-item" onclick="showPage('cursos-admin', this)">
+        <div class="sidebar-item-left"><span class="sidebar-item-icon">🎓</span> Cursos</div>
+      </div>
+
+      <div class="sidebar-item" onclick="showPage('pdfs-admin', this)">
+        <div class="sidebar-item-left"><span class="sidebar-item-icon">📄</span> PDFs</div>
+      </div>
+      <div class="sidebar-item" onclick="showPage('sesiones-admin', this)">
+        <div class="sidebar-item-left"><span class="sidebar-item-icon">🎥</span> Webinars</div>
+      </div>
+      <div class="sidebar-item" onclick="showPage('avisos-admin', this)">
+        <div class="sidebar-item-left"><span class="sidebar-item-icon">📢</span> Avisos</div>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Reportes</div>
+      <div class="sidebar-item" onclick="showPage('stats', this)">
+        <div class="sidebar-item-left"><span class="sidebar-item-icon">📈</span> Estadísticas</div>
+      </div>
+      <div class="sidebar-item" onclick="showPage('pagos', this)">
+        <div class="sidebar-item-left"><span class="sidebar-item-icon">💰</span> Pagos</div>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Sistema</div>
+      <div class="sidebar-item" onclick="showPage('config-admin', this)">
+        <div class="sidebar-item-left"><span class="sidebar-item-icon">⚙️</span> Configuración</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <h2>📊 Dashboard</h2>
+        <p>Resumen general de SENTIA Academy</p>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-icon icon-verde">👥</div>
+            <span class="stat-trend trend-up" id="dash-trend-miembros">—</span>
+          </div>
+          <div class="stat-num" id="dash-miembros-activos">—</div>
+          <div class="stat-label">Miembros activos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-icon icon-naranja">⏳</div>
+            <span class="stat-trend trend-down" id="dash-trend-pendientes">—</span>
+          </div>
+          <div class="stat-num" id="dash-pendientes">—</div>
+          <div class="stat-label">Accesos por aprobar</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-icon icon-azul">🎓</div>
+            <span class="stat-trend trend-up" id="dash-trend-cursos">—</span>
+          </div>
+          <div class="stat-num" id="dash-cursos">—</div>
+          <div class="stat-label">Cursos publicados</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-top">
+            <div class="stat-icon icon-morado">📡</div>
+            <span class="stat-trend trend-up" id="dash-trend-sesiones">—</span>
+          </div>
+          <div class="stat-num" id="dash-sesiones">—</div>
+          <div class="stat-label">Sesiones programadas</div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-header">
+          <h3>👥 Miembros recientes</h3>
+          <div class="table-actions">
+            <button class="btn-add" onclick="showPage('miembros', document.querySelector('[onclick*=miembros]'))">Ver todos</button>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>Nombre</th><th>Plan</th><th>Vence</th><th>Estado</th><th>Acciones</th></tr></thead>
+          <tbody id="tbody-dash-miembros">
+            <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MIEMBROS -->
+    <div class="page" id="page-miembros">
+      <div class="page-header">
+        <h2>👥 Miembros</h2>
+        <p>Gestiona todos los miembros de SENTIA Academy</p>
+      </div>
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Todos los miembros (<span id="total-miembros">0</span>)</h3>
+          <div class="table-actions">
+            <input class="search-input" placeholder="🔍 Buscar miembro...">
+            <button class="btn-add" onclick="openModal()">+ Agregar</button>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>Nombre</th><th>WhatsApp</th><th>Plan</th><th>Vence</th><th>Estado</th><th>Acciones</th></tr></thead>
+          <tbody id="tbody-miembros">
+            <tr>
+              <td><div class="member-name">Miguel A. García</div><div class="member-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="701d191705151c301117021f0415135e131f1d">[email&#160;protected]</a></div></td>
+              <td>+52 236 106 6811</td><td>PRO Mensual</td><td>1 Mayo 2026</td>
+              <td><span class="status-badge status-activo">✅ Activo</span></td>
+              <td><div class="action-btns"><button class="btn-accion btn-ver-a">Ver</button><button class="btn-accion btn-desactivar">Desactivar</button></div></td>
+            </tr>
+            <tr>
+              <td><div class="member-name">Ana L. Hernández</div><div class="member-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="18797679587f75797174367b7775">[email&#160;protected]</a></div></td>
+              <td>+52 222 456 7890</td><td>PRO Mensual</td><td>15 Abril 2026</td>
+              <td><span class="status-badge status-activo">✅ Activo</span></td>
+              <td><div class="action-btns"><button class="btn-accion btn-ver-a">Ver</button><button class="btn-accion btn-desactivar">Desactivar</button></div></td>
+            </tr>
+            <tr>
+              <td><div class="member-name">Carlos R. Mendoza</div><div class="member-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8deeecffe1e2fecdebecffe0a3e0f5">[email&#160;protected]</a></div></td>
+              <td>+52 311 234 5678</td><td>PRO Mensual</td><td>3 Abril 2026</td>
+              <td><span class="status-badge status-vencido">❌ Vencido</span></td>
+              <td><div class="action-btns"><button class="btn-accion btn-ver-a">Ver</button><button class="btn-accion btn-activar">Activar</button></div></td>
+            </tr>
+            <tr>
+              <td><div class="member-name">Laura P. Torres</div><div class="member-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ea868b9f988baa898598988f85c48792">[email&#160;protected]</a></div></td>
+              <td>+52 777 123 4567</td><td>PRO Mensual</td><td>—</td>
+              <td><span class="status-badge status-pendiente">⏳ Pendiente</span></td>
+              <td><div class="action-btns"><button class="btn-accion btn-activar">Aprobar</button><button class="btn-accion btn-desactivar">Rechazar</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PENDIENTES -->
+    <div class="page" id="page-pendientes">
+      <div class="page-header">
+        <h2>⏳ Accesos pendientes</h2>
+        <p>Clientes que pagaron pero aún no crearon su cuenta</p>
+      </div>
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Pagos pendientes de registro (<span id="total-pendientes">0</span>)</h3>
+        </div>
+        <table>
+          <thead><tr><th>Nombre</th><th>Email</th><th>Plan</th><th>Vence</th><th>Fecha pago</th><th>Acciones</th></tr></thead>
+          <tbody id="tbody-pendientes">
+            <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px;">Sin pagos pendientes 🎉</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CURSOS ADMIN -->
+    <div class="page" id="page-cursos-admin">
+      <div class="page-header">
+        <h2>🎓 Biomédico de Cursos</h2>
+        <p>Crea y administra los cursos del portal VIP</p>
+        <button type="button" id="syncSentiaBunnyBtn" class="btn-confirm" onclick="sincronizarCatalogoSentiaBunny()" style="margin-top:14px;">▶ Sincronizar 31 videos Bunny</button>
+      </div>
+
+      <!-- FORM NUEVO CURSO -->
+      <div class="content-form" style="margin-bottom:24px;">
+        <h3>➕ Crear nuevo curso</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Título del curso</label>
+            <input type="text" id="curso-titulo" placeholder="Ej: Laboratorio de Maíz">
+          </div>
+          <div class="form-group">
+            <label>Categoría</label>
+            <select id="curso-categoria">
+              <option>Laboratorio</option>
+              <option>Agronomía</option>
+              <option>Bioinsumos</option>
+              <option>IA Agrícola</option>
+              <option>Biomédico</option>
+              <option>Sanidad Vegetal</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Color del curso</label>
+            <div class="agro-color-picker">
+              <div class="swatches-grid" id="swatches-grid">
+                <button type="button" class="swatch active" style="background:#1e40af;" title="Verde AgroTec" onclick="seleccionarSwatch('#1e40af', this)"></button>
+                <button type="button" class="swatch" style="background:#2d8a3e;" title="Verde campo" onclick="seleccionarSwatch('#2d8a3e', this)"></button>
+                <button type="button" class="swatch" style="background:#60a5fa;" title="Verde lima" onclick="seleccionarSwatch('#60a5fa', this)"></button>
+                <button type="button" class="swatch" style="background:#8bc34a;" title="Verde primavera" onclick="seleccionarSwatch('#8bc34a', this)"></button>
+                <button type="button" class="swatch" style="background:#4a7c2e;" title="Verde oliva" onclick="seleccionarSwatch('#4a7c2e', this)"></button>
+                <button type="button" class="swatch" style="background:#0d4a8f;" title="Azul riego" onclick="seleccionarSwatch('#0d4a8f', this)"></button>
+                <button type="button" class="swatch" style="background:#f9a825;" title="Amarillo maíz" onclick="seleccionarSwatch('#f9a825', this)"></button>
+                <button type="button" class="swatch" style="background:#ef6c00;" title="Naranja cosecha" onclick="seleccionarSwatch('#ef6c00', this)"></button>
+                <button type="button" class="swatch" style="background:#d84315;" title="Rojo tomate" onclick="seleccionarSwatch('#d84315', this)"></button>
+                <button type="button" class="swatch" style="background:#8b5a2b;" title="Café tierra" onclick="seleccionarSwatch('#8b5a2b', this)"></button>
+                <button type="button" class="swatch" style="background:#5d4037;" title="Chocolate suelo" onclick="seleccionarSwatch('#5d4037', this)"></button>
+                <button type="button" class="swatch" style="background:#546e7a;" title="Gris piedra" onclick="seleccionarSwatch('#546e7a', this)"></button>
+              </div>
+              <button type="button" class="custom-toggle" id="custom-toggle-btn" onclick="toggleColorCustom()">
+                <span class="custom-toggle__dot" id="custom-toggle-dot"></span>
+                <span id="custom-toggle-label">🎨 Color personalizado</span>
+              </button>
+              <div class="custom-picker-wrap" id="custom-picker-wrap" style="display:none;">
+                <input type="color" id="curso-color" value="#1e40af" oninput="onCustomColorChange()">
+                <span class="custom-picker-hex" id="custom-hex">#1A6B2F</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-group form-full">
+            <label>URL de foto promocional</label>
+            <input type="text" id="curso-foto" placeholder="https://drive.google.com/uc?id=TU_ID_AQUI">
+            <small style="color:var(--muted);font-size:.72rem;">Drive: Compartir → Cualquier persona → copiar ID del link → pegar como https://drive.google.com/uc?id=XXXX</small>
+          </div>
+          <div class="form-group">
+            <label>🔒 Fecha de desbloqueo <span style="font-weight:400;color:var(--muted);">(dejar vacío = disponible ya)</span></label>
+            <input type="date" id="curso-fecha-desbloqueo">
+          </div>
+          <div class="form-group form-full">
+            <label>Descripción</label>
+            <textarea id="curso-desc" placeholder="Describe el contenido del curso..." style="min-height:80px;"></textarea>
+          </div>
+        </div>
+        <button class="btn-add" onclick="crearCurso()">✅ Crear curso</button>
+      </div>
+
+      <!-- LISTA DE CURSOS -->
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Cursos publicados</h3>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Curso</th>
+              <th>Categoría</th>
+              <th>Clases</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-cursos">
+            <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px;">No hay cursos creados aún</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- DETALLE CURSO ADMIN -->
+    <div class="page" id="page-detalle-curso-admin">
+      <div class="page-header">
+        <button onclick="showPage('cursos-admin', document.querySelector('[onclick*=cursos-admin]')); " style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 16px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:var(--font);margin-bottom:16px;">← Volver a cursos</button>
+        <h2 id="detalle-curso-titulo">Clases del curso</h2>
+        <p style="color:var(--muted);font-size:.88rem;" id="detalle-curso-desc"></p>
+      </div>
+
+      <!-- EDITAR FECHA DE DESBLOQUEO -->
+      <div class="content-form" style="margin-bottom:24px;border-left:4px solid #f59e0b;background:linear-gradient(135deg,#fffbeb,#fff);">
+        <h3 style="display:flex;align-items:center;gap:8px;">
+          <span>📅 Fecha de lanzamiento</span>
+          <span id="estado-fecha-badge" style="font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border-radius:100px;background:#fef3c7;color:#92400e;">—</span>
+        </h3>
+        <p style="color:var(--muted);font-size:.82rem;margin:4px 0 14px;">Controla cuándo este curso se desbloquea para los socios. Si lo dejas vacío, queda disponible inmediatamente.</p>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nueva fecha de desbloqueo</label>
+            <input type="date" id="editar-curso-fecha">
+          </div>
+          <div class="form-group" style="display:flex;align-items:flex-end;gap:10px;">
+            <button class="btn-add" onclick="actualizarFechaDesbloqueo()" style="background:#d97706;margin:0;">💾 Guardar fecha</button>
+            <button class="btn-add" onclick="quitarFechaDesbloqueo()" style="background:transparent;color:#92400e;border:1px solid #f59e0b;margin:0;">🔓 Desbloquear ahora</button>
+          </div>
+        </div>
+        <div id="fecha-preview" style="margin-top:12px;font-size:.82rem;color:var(--muted);"></div>
+      </div>
+
+      <!-- AGREGAR CLASE -->
+      <div class="content-form" style="margin-bottom:24px;">
+        <h3>➕ Agregar clase</h3>
+        <input type="hidden" id="clase-curso-id">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Título de la clase</label>
+            <input type="text" id="clase-titulo" placeholder="Ej: Introducción y preparación del suelo">
+          </div>
+          <div class="form-group">
+            <label>Número de clase</label>
+            <input type="number" id="clase-num" placeholder="1" min="1">
+          </div>
+          <div class="form-group form-full">
+            <label>Link de Google Drive del video</label>
+            <input type="text" id="clase-drive-url" placeholder="https://drive.google.com/file/d/XXXXXXXX/view">
+            <small style="color:var(--muted);font-size:.75rem;margin-top:4px;display:block;">Asegúrate que el video sea público ("Cualquier persona con el link")</small>
+          </div>
+        </div>
+        <button class="btn-add" onclick="agregarClase()">✅ Agregar clase</button>
+      </div>
+
+      <!-- AGREGAR MATERIAL -->
+      <div class="content-form" style="margin-bottom:24px;">
+        <h3>📁 Agregar material de apoyo</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nombre del material</label>
+            <input type="text" id="mat-titulo" placeholder="Ej: Guía de fertirrigación">
+          </div>
+          <div class="form-group">
+            <label>Tipo</label>
+            <select id="mat-tipo">
+              <option>Temario</option>
+              <option>PDF</option>
+              <option>PowerPoint</option>
+              <option>Word</option>
+              <option>Excel</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="form-group form-full">
+            <label>Link de Google Drive</label>
+            <input type="text" id="mat-url" placeholder="https://drive.google.com/file/d/XXXXXXXX/view">
+          </div>
+        </div>
+        <button class="btn-add" onclick="agregarMaterial()">✅ Agregar material</button>
+      </div>
+
+      <!-- LISTA CLASES -->
+      <div class="table-card" style="margin-bottom:16px;">
+        <div class="table-header"><h3>📹 Clases</h3></div>
+        <table>
+          <thead><tr><th>#</th><th>Título</th><th>Drive ID</th><th>Acciones</th></tr></thead>
+          <tbody id="tbody-clases-admin">
+            <tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px;">No hay clases aún</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- LISTA MATERIALES -->
+      <div class="table-card">
+        <div class="table-header"><h3>📁 Materiales</h3></div>
+        <table>
+          <thead><tr><th>Nombre</th><th>Tipo</th><th>Acciones</th></tr></thead>
+          <tbody id="tbody-materiales-admin">
+            <tr><td colspan="3" style="text-align:center;color:var(--muted);padding:20px;">No hay materiales aún</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+
+    <!-- PDFs ADMIN -->
+    <div class="page" id="page-pdfs-admin">
+      <div class="page-header"><h2>📄 Biomédico de PDFs</h2></div>
+      <div class="content-form">
+        <h3>➕ Agregar nuevo PDF</h3>
+        <div class="form-grid">
+          <div class="form-group"><label>Título del PDF</label><input type="text" id="pdf-titulo" placeholder="Ej: Guía de fertirrigación en chile serrano"></div>
+          <div class="form-group"><label>Páginas</label><input type="number" id="pdf-paginas" placeholder="8"></div>
+          <div class="form-group form-full"><label>URL del PDF (Google Drive o link directo)</label><input type="text" id="pdf-url" placeholder="https://drive.google.com/..."></div>
+        </div>
+        <button class="btn-add" onclick="publicarPDF()">✅ Publicar PDF</button>
+      </div>
+      <div class="table-card">
+        <div class="table-header"><h3>PDFs publicados (<span id="total-pdfs">0</span>)</h3></div>
+        <table>
+          <thead><tr><th>Título</th><th>Páginas</th><th>Acciones</th></tr></thead>
+          <tbody id="tbody-pdfs">
+            <tr><td colspan="3" style="text-align:center;color:var(--muted);padding:24px;">No hay PDFs publicados aún</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SESIONES ADMIN -->
+    <div class="page" id="page-sesiones-admin">
+      <div class="page-header"><h2>🎥 Webinars</h2></div>
+
+      <div class="ses-card">
+        <div class="ses-card-header">
+          <div class="ses-card-icon">📡</div>
+          <div>
+            <div class="ses-card-title">Nuevo webinar</div>
+            <div class="ses-card-sub">Se notificará a todos los miembros activos</div>
+          </div>
+        </div>
+
+        <!-- Título + Instructor -->
+        <div class="ses-row">
+          <div class="ses-field ses-field-wide">
+            <div class="ses-label">🎤 Título de la sesión</div>
+            <div class="ses-input-wrap">
+              <input id="ses-titulo" type="text" class="ses-input" placeholder="Ej: Q&A Bioinsumos con Ing. García">
+            </div>
+          </div>
+          <div class="ses-field">
+            <div class="ses-label">👨‍🏫 Instructor</div>
+            <div class="ses-input-wrap">
+              <input id="ses-instructor" type="text" class="ses-input" placeholder="Ing. García">
+            </div>
+          </div>
+        </div>
+
+        <!-- Fecha + Hora (pickers custom) -->
+        <div class="ses-datetime-row">
+
+          <!-- FECHA PICKER -->
+          <div class="ses-picker-block" id="bloque-fecha">
+            <div class="ses-picker-label">📅 Fecha</div>
+            <div class="ses-picker-display" id="fecha-display" onclick="togglePicker('fecha')">
+              <span id="fecha-texto">Seleccionar fecha</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <input type="hidden" id="ses-fecha">
+            <div class="ses-picker-dropdown" id="picker-fecha">
+              <div class="cal-nav">
+                <button onclick="cambiarMes(-1)">‹</button>
+                <span id="cal-mes-label"></span>
+                <button onclick="cambiarMes(1)">›</button>
+              </div>
+              <div class="cal-dias-header">
+                <span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sa</span><span>Do</span>
+              </div>
+              <div class="cal-grid" id="cal-grid"></div>
+            </div>
+          </div>
+
+          <!-- HORA PICKER -->
+          <div class="ses-picker-block" id="bloque-hora">
+            <div class="ses-picker-label">🕐 Hora</div>
+            <div class="ses-picker-display" id="hora-display" onclick="togglePicker('hora')">
+              <span id="hora-texto">Seleccionar hora</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <input type="hidden" id="ses-hora">
+            <div class="ses-picker-dropdown" id="picker-hora">
+              <div class="hora-picker-inner">
+                <div class="hora-col">
+                  <div class="hora-col-label">Hora</div>
+                  <div class="hora-scroll" id="hora-scroll"></div>
+                </div>
+                <div class="hora-sep">:</div>
+                <div class="hora-col">
+                  <div class="hora-col-label">Min</div>
+                  <div class="hora-scroll" id="min-scroll"></div>
+                </div>
+                <div class="hora-col">
+                  <div class="hora-col-label">&nbsp;</div>
+                  <div class="hora-scroll ampm-scroll" id="ampm-scroll">
+                    <div class="hora-item" onclick="selAmPm('AM')">AM</div>
+                    <div class="hora-item" onclick="selAmPm('PM')">PM</div>
+                  </div>
+                </div>
+              </div>
+              <button class="hora-confirm" onclick="confirmarHora()">✔ Confirmar</button>
+            </div>
+          </div>
+
+          <!-- LINK -->
+          <div class="ses-field ses-field-wide">
+            <div class="ses-label">🔗 Link de acceso</div>
+            <div class="ses-input-wrap">
+              <input id="ses-link" type="text" class="ses-input" placeholder="https://zoom.us/j/... o Meet o WhatsApp">
+            </div>
+          </div>
+        </div>
+
+        <button class="ses-btn" onclick="programarSesion()">
+          <span>📡</span> Programar sesión en vivo
+        </button>
+      </div>
+
+      <!-- TABLA -->
+      <div class="table-card">
+        <div class="table-header"><h3>📅 Sesiones programadas</h3></div>
+        <table>
+          <thead><tr><th>Título</th><th>Instructor</th><th>Fecha y hora</th><th>Link</th><th>Estado</th><th>Acciones</th></tr></thead>
+          <tbody id="tbody-sesiones">
+            <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px;">No hay sesiones programadas aún</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- AVISOS / NOTIFICACIONES MANUALES -->
+    <div class="page" id="page-avisos-admin">
+      <div class="page-header">
+        <h2>📢 Avisos personalizados</h2>
+        <p>Envía mensajes directos al panel de notificaciones de todos los socios</p>
+      </div>
+
+      <div class="ses-card">
+        <div class="ses-card-header">
+          <div class="ses-card-icon" style="background:linear-gradient(135deg,#c4b5fd,#a78bfa);">📢</div>
+          <div>
+            <div class="ses-card-title">Nuevo aviso para los socios</div>
+            <div class="ses-card-sub">Se publicará al instante en la sección "🔔 Notificaciones" del portal VIP</div>
+          </div>
+        </div>
+
+        <!-- Título + Emoji -->
+        <div class="ses-row">
+          <div class="ses-field ses-field-wide">
+            <div class="ses-label">📣 Título del aviso</div>
+            <div class="ses-input-wrap">
+              <input id="aviso-titulo" type="text" class="ses-input" placeholder="Ej: ¡Mantenimiento programado este domingo!">
+            </div>
+          </div>
+          <div class="ses-field">
+            <div class="ses-label">Emoji (opcional)</div>
+            <div class="ses-input-wrap">
+              <input id="aviso-emoji" type="text" class="ses-input" placeholder="📣" maxlength="4">
+            </div>
+          </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="ses-row">
+          <div class="ses-field ses-field-wide" style="width:100%;">
+            <div class="ses-label">Mensaje</div>
+            <div class="ses-input-wrap">
+              <textarea id="aviso-desc" class="ses-input" rows="4" style="min-height:90px;resize:vertical;" placeholder="Escribe el mensaje que verán los socios..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Link opcional -->
+        <div class="ses-row">
+          <div class="ses-field ses-field-wide" style="width:100%;">
+            <div class="ses-label">🔗 Link (opcional)</div>
+            <div class="ses-input-wrap">
+              <input id="aviso-link" type="text" class="ses-input" placeholder="https://... (si lo dejas vacío, la notificación no será clickeable)">
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-add" id="btn-enviar-aviso" onclick="enviarAvisoManual()">📤 Enviar aviso a todos</button>
+      </div>
+
+      <!-- HISTORIAL DE NOTIFICACIONES -->
+      <div class="table-card" style="margin-top:24px;">
+        <div class="table-header">
+          <h3>📜 Historial de notificaciones</h3>
+          <span style="font-size:.78rem;color:var(--muted);">Últimas 50 notificaciones enviadas</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Título</th>
+              <th>Enviada</th>
+              <th>Origen</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-notificaciones">
+            <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px;">Cargando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="page" id="page-stats">
+      <div class="page-header"><h2>📈 Estadísticas</h2></div>
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon icon-verde">👥</div></div><div class="stat-num" id="stats-miembros">—</div><div class="stat-label">Miembros activos</div></div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon icon-azul">🎓</div></div><div class="stat-num" id="stats-cursos">—</div><div class="stat-label">Cursos publicados</div></div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon icon-morado">👁️</div></div><div class="stat-num" id="stats-clases-vistas">—</div><div class="stat-label">Clases completadas</div></div>
+        <div class="stat-card"><div class="stat-card-top"><div class="stat-icon icon-naranja">📡</div></div><div class="stat-num" id="stats-sesiones">—</div><div class="stat-label">Sesiones programadas</div></div>
+      </div>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3>📊 Cursos más vistos</h3>
+          <div class="bar-chart" id="chart-contenido">
+            <p style="color:var(--muted);font-size:.82rem;">Cargando...</p>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h3>👥 Nuevos miembros por mes</h3>
+          <div class="bar-chart" id="chart-miembros-mes">
+            <p style="color:var(--muted);font-size:.82rem;">Cargando...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGOS -->
+    <div class="page" id="page-pagos">
+      <div class="page-header"><h2>💰 Control de pagos</h2></div>
+      <div class="table-card">
+        <div class="table-header">
+          <h3>Pagos registrados (<span id="total-pagos">0</span>)</h3>
+        </div>
+        <table>
+          <thead><tr><th>Miembro</th><th>Plan</th><th>Monto</th><th>Fecha</th><th>Estado</th></tr></thead>
+          <tbody id="tbody-pagos">
+            <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px;">Sin pagos registrados aún</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CONFIG ADMIN -->
+    <div class="page" id="page-config-admin">
+      <div class="page-header"><h2>⚙️ Configuración</h2></div>
+      <div class="content-form">
+        <h3>Datos del club</h3>
+        <div class="form-grid">
+          <div class="form-group"><label>Nombre del club</label><input type="text" id="cfg-nombre" value="SENTIA Academy"></div>
+          <div class="form-group"><label>Precio mensual (MXN)</label><input type="number" id="cfg-precio" value="299"></div>
+          <div class="form-group"><label>WhatsApp del admin</label><input type="text" id="cfg-whatsapp" value="+52 236 106 6811"></div>
+          <div class="form-group"><label>Email de contacto</label><input type="email" id="cfg-email" value="agrotecamerica480@gmail.com"></div>
+          <div class="form-group form-full"><label>🔗 Link del grupo WhatsApp VIP</label><input type="text" id="cfg-grupo-wa" placeholder="https://chat.whatsapp.com/..."></div>
+          <div class="form-group form-full"><label>💬 Mensaje de bienvenida (portal del socio)</label><input type="text" id="cfg-bienvenida" placeholder="Tienes acceso completo a todos los cursos y materiales"></div>
+        </div>
+        <button class="btn-add" onclick="guardarConfig()">💾 Guardar cambios</button>
+        <span id="cfg-status" style="margin-left:14px;font-size:.82rem;color:var(--verde-claro);display:none;">✅ Guardado</span>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<!-- MODAL AGREGAR MIEMBRO -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3>➕ Agregar nuevo miembro</h3>
+    <div class="form-group" style="margin-bottom:12px"><label>Nombre completo</label><input type="text" id="m-nombre" placeholder="Nombre del alumno"></div>
+    <div class="form-group" style="margin-bottom:12px"><label>Email</label><input type="email" id="m-email" placeholder="correo@email.com"></div>
+    <div class="form-group" style="margin-bottom:12px"><label>WhatsApp</label><input type="text" id="m-wa" placeholder="+52 xxx xxx xxxx"></div>
+    <div class="form-group"><label>Vence</label><input type="date"></div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="btn-confirm" onclick="agregarMiembro()">✅ Agregar</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ Firebase Compat SDK (sin módulos, sin scope issues) ═══ -->
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+<script src="assets/sentia-bunny-catalog.js"></script>
+
+<script>
+// ── Init ─────────────────────────────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey: "AIzaSyDEOW7bZVFvN_2rLZTBSmTjshpgZg_-x70",
+  authDomain: "sentia-academy.firebaseapp.com",
+  projectId: "sentia-academy",
+  storageBucket: "sentia-academy.firebasestorage.app",
+  messagingSenderId: "137510320281",
+  appId: "1:137510320281:web:d0d26e7f5aa4eee5a56008"
+};
+firebase.initializeApp(firebaseConfig);
+const db   = firebase.firestore();
+const auth = firebase.auth();
+
+// ── Navegación ───────────────────────────────────────────────────────────────
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+}
+function openModal()  { document.getElementById('modalOverlay').classList.add('active'); }
+function closeModal() { document.getElementById('modalOverlay').classList.remove('active'); }
+document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+
+function aprobarMiembro(btn) {
+  const row = btn.closest('tr');
+  const nombre = row.querySelector('.member-name').textContent;
+  if (confirm('¿Aprobar acceso VIP a ' + nombre + '?')) {
+    btn.closest('.action-btns').innerHTML = '<span style="color:var(--verde-medio);font-size:.8rem;font-weight:700">✅ Aprobado</span>';
+    row.querySelector('.status-badge').className = 'status-badge status-activo';
+    row.querySelector('.status-badge').textContent = '✅ Activo';
+  }
+}
+
+function cerrarSesion() {
+  if (confirm('¿Cerrar sesión de admin?')) {
+    auth.signOut().then(() => { window.location.href = 'index.html'; });
+  }
+}
+
+// ── Toast ────────────────────────────────────────────────────────────────────
+function showToast(msg, tipo) {
+  tipo = tipo || 'success';
+  const old = document.getElementById('_toast');
+  if (old) old.remove();
+  const t = document.createElement('div');
+  t.id = '_toast';
+  t.textContent = msg;
+  t.style.cssText = 'position:fixed;bottom:28px;right:28px;z-index:9999;padding:12px 22px;border-radius:10px;font-size:14px;font-weight:500;color:#fff;box-shadow:0 4px 18px rgba(0,0,0,0.22);background:' + (tipo==='error'?'#dc2626':'#16a34a') + ';pointer-events:none;';
+  document.body.appendChild(t);
+  setTimeout(function(){ t.remove(); }, 3200);
+}
+
+// ── Auth Guard ───────────────────────────────────────────────────────────────
+auth.onAuthStateChanged(function(user) {
+  if (!user) { window.location.href = 'index.html'; return; }
+  db.collection('admins').doc(user.uid).get().then(function(snap) {
+    if (!snap.exists) {
+      alert('No tienes permisos de administrador.');
+      auth.signOut();
+      window.location.href = 'index.html';
+    }
+  });
+});
+
+// ══ PICKERS CUSTOM ══════════════════════════════════════════════════════════
+var _calFecha = { anio: new Date().getFullYear(), mes: new Date().getMonth() };
+var _selHora = { h: null, m: null, ampm: 'AM' };
+var MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+function togglePicker(tipo) {
+  var id = 'picker-' + tipo;
+  var el = document.getElementById(id);
+  var isOpen = el.classList.contains('open');
+  document.querySelectorAll('.ses-picker-dropdown').forEach(function(d){ d.classList.remove('open'); });
+  if (!isOpen) {
+    el.classList.add('open');
+    if (tipo === 'fecha') renderCalendario();
+    if (tipo === 'hora') renderHoraPicker();
+  }
+}
+
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.ses-picker-block')) {
+    document.querySelectorAll('.ses-picker-dropdown').forEach(function(d){ d.classList.remove('open'); });
+  }
+});
+
+function cambiarMes(delta) {
+  _calFecha.mes += delta;
+  if (_calFecha.mes > 11) { _calFecha.mes = 0; _calFecha.anio++; }
+  if (_calFecha.mes < 0)  { _calFecha.mes = 11; _calFecha.anio--; }
+  renderCalendario();
+}
+
+function renderCalendario() {
+  var hoy = new Date(); hoy.setHours(0,0,0,0);
+  var label = document.getElementById('cal-mes-label');
+  label.textContent = MESES[_calFecha.mes] + ' ' + _calFecha.anio;
+  var grid = document.getElementById('cal-grid');
+  var primerDia = new Date(_calFecha.anio, _calFecha.mes, 1);
+  var diasEnMes = new Date(_calFecha.anio, _calFecha.mes + 1, 0).getDate();
+  var inicioSemana = (primerDia.getDay() + 6) % 7; // Lu=0
+  var selVal = document.getElementById('ses-fecha').value;
+  var html = '';
+  for (var i = 0; i < inicioSemana; i++) html += '<div class="cal-day cal-empty"></div>';
+  for (var d = 1; d <= diasEnMes; d++) {
+    var thisDate = new Date(_calFecha.anio, _calFecha.mes, d);
+    var yyyy = _calFecha.anio;
+    var mm = String(_calFecha.mes+1).padStart(2,'0');
+    var dd = String(d).padStart(2,'0');
+    var val = yyyy+'-'+mm+'-'+dd;
+    var cls = 'cal-day';
+    if (thisDate < hoy) cls += ' cal-pasado';
+    else if (thisDate.toDateString() === hoy.toDateString()) cls += ' cal-hoy';
+    if (val === selVal) cls += ' cal-sel';
+    html += '<div class="'+cls+'" onclick="selFecha(\''+val+'\')">'+d+'</div>';
+  }
+  grid.innerHTML = html;
+}
+
+function selFecha(val) {
+  document.getElementById('ses-fecha').value = val;
+  var p = val.split('-');
+  var d = new Date(p[0], p[1]-1, p[2]);
+  document.getElementById('fecha-texto').textContent = d.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'});
+  document.getElementById('fecha-display').style.color = 'var(--verde)';
+  renderCalendario();
+  document.getElementById('picker-fecha').classList.remove('open');
+}
+
+function renderHoraPicker() {
+  var hs = document.getElementById('hora-scroll');
+  var ms = document.getElementById('min-scroll');
+  var html = '';
+  for (var h = 1; h <= 12; h++) {
+    var sel = _selHora.h === h ? ' sel' : '';
+    html += '<div class="hora-item'+sel+'" onclick="selHora('+h+')">'+String(h).padStart(2,'0')+'</div>';
+  }
+  hs.innerHTML = html;
+  html = '';
+  [0,5,10,15,20,25,30,35,40,45,50,55].forEach(function(m){
+    var sel = _selHora.m === m ? ' sel' : '';
+    html += '<div class="hora-item'+sel+'" onclick="selMin('+m+')">'+String(m).padStart(2,'0')+'</div>';
+  });
+  ms.innerHTML = html;
+  document.querySelectorAll('#ampm-scroll .hora-item').forEach(function(el){
+    el.classList.toggle('sel', el.textContent === _selHora.ampm);
+  });
+}
+
+function selHora(h) { _selHora.h = h; renderHoraPicker(); }
+function selMin(m)  { _selHora.m = m; renderHoraPicker(); }
+function selAmPm(v) { _selHora.ampm = v; renderHoraPicker(); }
+
+function confirmarHora() {
+  if (_selHora.h === null || _selHora.m === null) { showToast('⚠️ Elige hora y minutos','error'); return; }
+  var h24 = _selHora.ampm === 'PM' ? (_selHora.h === 12 ? 12 : _selHora.h + 12) : (_selHora.h === 12 ? 0 : _selHora.h);
+  var val = String(h24).padStart(2,'0') + ':' + String(_selHora.m).padStart(2,'0');
+  document.getElementById('ses-hora').value = val;
+  document.getElementById('hora-texto').textContent = String(_selHora.h).padStart(2,'0') + ':' + String(_selHora.m).padStart(2,'0') + ' ' + _selHora.ampm;
+  document.getElementById('hora-display').style.color = 'var(--verde)';
+  document.getElementById('picker-hora').classList.remove('open');
+}
+
+// ── Sesiones Firebase ────────────────────────────────────────────────────────
+function programarSesion() {
+  var titulo     = (document.getElementById('ses-titulo').value||'').trim();
+  var instructor = (document.getElementById('ses-instructor').value||'').trim();
+  var fecha      = document.getElementById('ses-fecha').value;
+  var hora       = document.getElementById('ses-hora').value;
+  var link       = (document.getElementById('ses-link').value||'').trim();
+  if (!titulo||!fecha||!hora) { showToast('⚠️ Título, fecha y hora son obligatorios','error'); return; }
+  db.collection('sesiones').add({ titulo:titulo, instructor:instructor, fechaHora:fecha+'T'+hora, link:link, fecha:new Date().toISOString() })
+    .then(function(){
+      showToast('✅ Webinar programado — los miembros ya pueden verla');
+      // Notificar a los socios
+      var fechaLeg = new Date(fecha+'T'+hora).toLocaleDateString('es-MX', { weekday:'long', day:'numeric', month:'long' })
+                   + ' a las ' + new Date(fecha+'T'+hora).toLocaleTimeString('es-MX', { hour:'2-digit', minute:'2-digit' });
+      crearNotificacionAuto('webinar', {
+        titulo: 'Nuevo webinar: ' + titulo,
+        descripcion: (instructor ? 'Con ' + instructor + ' · ' : '') + fechaLeg,
+        emoji: '🎥',
+        link: link || null
+      });
+      ['ses-titulo','ses-instructor','ses-link'].forEach(function(id){ document.getElementById(id).value=''; });
+      document.getElementById('ses-fecha').value=''; document.getElementById('ses-hora').value='';
+      document.getElementById('fecha-texto').textContent='Seleccionar fecha';
+      document.getElementById('hora-texto').textContent='Seleccionar hora';
+      _selHora = {h:null,m:null,ampm:'AM'};
+    });
+}
+
+// ========== HELPER: CREAR NOTIFICACIÓN ==========
+function crearNotificacionAuto(tipo, datos) {
+  try {
+    db.collection('notificaciones').add({
+      tipo: tipo,                         // 'curso' | 'clase' | 'webinar' | 'material' | 'aviso'
+      titulo: datos.titulo || '',
+      descripcion: datos.descripcion || '',
+      emoji: datos.emoji || '',
+      link: datos.link || null,
+      fecha: new Date().toISOString(),
+      enviadoPor: 'sistema'
+    });
+  } catch (e) {
+    console.warn('No se pudo crear notificación:', e);
+  }
+}
+
+// ========== FORMULARIO MANUAL: ENVIAR AVISO ==========
+function enviarAvisoManual() {
+  var tituloEl = document.getElementById('aviso-titulo');
+  var descEl   = document.getElementById('aviso-desc');
+  var emojiEl  = document.getElementById('aviso-emoji');
+  var linkEl   = document.getElementById('aviso-link');
+  var btn      = document.getElementById('btn-enviar-aviso');
+
+  var titulo = (tituloEl ? tituloEl.value : '').trim();
+  var desc   = (descEl   ? descEl.value   : '').trim();
+  var emoji  = (emojiEl  ? emojiEl.value  : '').trim() || '📣';
+  var link   = (linkEl   ? linkEl.value   : '').trim();
+
+  if (!titulo) {
+    showToast('⚠️ El título del aviso es obligatorio', 'error');
+    return;
+  }
+
+  if (btn) { btn.disabled = true; btn.textContent = '📤 Enviando...'; }
+
+  db.collection('notificaciones').add({
+    tipo: 'aviso',
+    titulo: titulo,
+    descripcion: desc,
+    emoji: emoji,
+    link: link || null,
+    fecha: new Date().toISOString(),
+    enviadoPor: 'admin'
+  }).then(function() {
+    showToast('✅ Aviso enviado a todos los socios');
+    if (tituloEl) tituloEl.value = '';
+    if (descEl)   descEl.value = '';
+    if (emojiEl)  emojiEl.value = '';
+    if (linkEl)   linkEl.value = '';
+    if (btn) { btn.disabled = false; btn.textContent = '📤 Enviar aviso a todos'; }
+  }).catch(function(err) {
+    console.error(err);
+    showToast('❌ Error al enviar el aviso', 'error');
+    if (btn) { btn.disabled = false; btn.textContent = '📤 Enviar aviso a todos'; }
+  });
+}
+
+function eliminarNotificacion(id) {
+  if (!confirm('¿Eliminar esta notificación? Desaparecerá del portal VIP.')) return;
+  db.collection('notificaciones').doc(id).delete().then(function() {
+    showToast('Notificación eliminada');
+  });
+}
+
+// Listener: mostrar historial de notificaciones en el admin
+db.collection('notificaciones').orderBy('fecha', 'desc').limit(50).onSnapshot(function(snap) {
+  var tbody = document.getElementById('tbody-notificaciones');
+  if (!tbody) return;
+  if (snap.empty) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px;">Aún no se han enviado notificaciones</td></tr>';
+    return;
+  }
+  var mapaTipo = {
+    curso:    { label: 'Curso',    color: '#16a34a' },
+    clase:    { label: 'Clase',    color: '#2563eb' },
+    webinar:  { label: 'Webinar',  color: '#dc2626' },
+    material: { label: 'Material', color: '#d97706' },
+    aviso:    { label: 'Aviso',    color: '#7c3aed' }
+  };
+  tbody.innerHTML = snap.docs.map(function(d) {
+    var n = d.data();
+    var t = mapaTipo[n.tipo] || { label: n.tipo || '—', color: '#6b7867' };
+    var fechaTxt = n.fecha ? new Date(n.fecha).toLocaleString('es-MX', {
+      day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit'
+    }) : '—';
+    var origen = n.enviadoPor === 'admin' ? '👤 Manual' : '⚙️ Automática';
+    var emoji = n.emoji ? n.emoji + ' ' : '';
+    return '<tr>' +
+      '<td><span style="background:' + t.color + '20;color:' + t.color + ';padding:3px 10px;border-radius:100px;font-size:.72rem;font-weight:700;">' + t.label + '</span></td>' +
+      '<td>' + emoji + (n.titulo || '—') + '</td>' +
+      '<td style="font-size:.78rem;color:var(--muted);">' + fechaTxt + '</td>' +
+      '<td style="font-size:.78rem;color:var(--muted);">' + origen + '</td>' +
+      '<td><button class="btn-accion btn-desactivar" onclick="eliminarNotificacion(\'' + d.id + '\')">Eliminar</button></td>' +
+      '</tr>';
+  }).join('');
+});
+function eliminarSesion(id) {
+  if (!confirm('¿Eliminar esta sesión?')) return;
+  db.collection('sesiones').doc(id).delete().then(function(){ showToast('Sesión eliminada'); });
+}
+db.collection('sesiones').orderBy('fechaHora').onSnapshot(function(snap) {
+  var tbody = document.getElementById('tbody-sesiones');
+  if (!tbody) return;
+  if (snap.empty) { tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px;">No hay sesiones programadas aún</td></tr>'; return; }
+  var ahora = new Date();
+  tbody.innerHTML = snap.docs.map(function(d){
+    var s=d.data(); var dt=new Date(s.fechaHora);
+    var esHoy=dt.toDateString()===ahora.toDateString(), pasada=dt<ahora;
+    var estado=pasada?'<span class="status-badge status-vencido">Finalizada</span>':esHoy?'<span class="status-badge status-activo">🔴 Hoy</span>':'<span class="status-badge status-pendiente">Próxima</span>';
+    var fechaStr=dt.toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})+' '+dt.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+    var linkBtn=s.link?'<a href="'+s.link+'" target="_blank"><button class="btn-accion btn-ver-a">Abrir</button></a>':'<span style="color:var(--muted);font-size:.8rem;">Sin link</span>';
+    return '<tr><td><div class="member-name">'+(s.titulo||'—')+'</div></td><td>'+(s.instructor||'—')+'</td><td>'+fechaStr+'</td><td>'+linkBtn+'</td><td>'+estado+'</td><td><div class="action-btns"><button class="btn-accion btn-desactivar" onclick="eliminarSesion(\''+d.id+'\')">Eliminar</button></div></td></tr>';
+  }).join('');
+});
+// ════════════════════════════════════════════════════════════════════════════
+
+// ── Miembros en tiempo real ───────────────────────────────────────────────────
+db.collection('miembros').onSnapshot(function(snap) {
+  var activos    = snap.docs.filter(function(d){ return d.data().estado === 'activo'; }).length;
+  var pendientes = snap.docs.filter(function(d){ return d.data().estado === 'pendiente'; }).length;
+  var total      = snap.docs.length;
+
+  // Stats dashboard
+  var elActivos    = document.getElementById('dash-miembros-activos');
+  var elPendientes = document.getElementById('dash-pendientes');
+  var elTrendM     = document.getElementById('dash-trend-miembros');
+  var elTrendP     = document.getElementById('dash-trend-pendientes');
+  if (elActivos)    elActivos.textContent    = activos;
+  if (elPendientes) elPendientes.textContent = pendientes;
+  if (elTrendM)     elTrendM.textContent     = total + ' total';
+  if (elTrendP)     elTrendP.textContent     = pendientes > 0 ? pendientes + ' por aprobar' : 'Sin pendientes';
+
+  // Sidebar badges
+  var badgeMiembros   = document.getElementById('badge-miembros');
+  var badgePendientes = document.getElementById('badge-pendientes');
+  var totalEl         = document.getElementById('total-miembros');
+  if (badgeMiembros)   badgeMiembros.textContent   = activos;
+  if (badgePendientes) badgePendientes.textContent = pendientes;
+  if (totalEl)         totalEl.textContent         = total;
+
+
+  // Tabla miembros recientes en dashboard (últimos 5)
+  var tbodyDash = document.getElementById('tbody-dash-miembros');
+  if (tbodyDash) {
+    var recientes = snap.docs.slice(-5).reverse();
+    tbodyDash.innerHTML = recientes.map(function(d) {
+      var m = d.data();
+      var sc = m.estado==='activo' ? 'status-activo' : m.estado==='pendiente' ? 'status-pendiente' : 'status-vencido';
+      var sl = m.estado==='activo' ? '✅ Activo' : m.estado==='pendiente' ? '⏳ Pendiente' : '❌ Vencido';
+      return '<tr><td><div class="member-name">'+(m.nombre||'—')+'</div><div class="member-email">'+(m.email||'')+'</div></td>'
+        +'<td>'+(m.plan||'PRO')+'</td><td>'+(m.vence||'—')+'</td>'
+        +'<td><span class="status-badge '+sc+'">'+sl+'</span></td>'
+        +'<td><div class="action-btns">'
+        +'<button class="btn-accion btn-activar" onclick="cambiarEstado(\''+d.id+'\',\'activo\')">Activar</button>'
+        +'<button class="btn-accion btn-desactivar" onclick="cambiarEstado(\''+d.id+'\',\'inactivo\')">Desactivar</button>'
+        +'</div></td></tr>';
+    }).join('');
+  }
+
+  // Tabla miembros completa
+  var tbody = document.getElementById('tbody-miembros');
+  if (!tbody) return;
+  tbody.innerHTML = snap.docs.map(function(d) {
+    var m = d.data();
+    var sc = m.estado==='activo' ? 'status-activo' : m.estado==='pendiente' ? 'status-pendiente' : 'status-vencido';
+    var sl = m.estado==='activo' ? '✅ Activo' : m.estado==='pendiente' ? '⏳ Pendiente' : '❌ Vencido';
+    return '<tr><td><div class="member-name">'+m.nombre+'</div><div class="member-email">'+m.email+'</div></td><td>'+(m.whatsapp||'—')+'</td><td>'+(m.plan||'PRO')+'</td><td>'+(m.vence||'—')+'</td><td><span class="status-badge '+sc+'">'+sl+'</span></td><td><div class="action-btns"><button class="btn-accion btn-activar" onclick="cambiarEstado(\''+d.id+'\',\'activo\')">Activar</button><button class="btn-accion btn-desactivar" onclick="cambiarEstado(\''+d.id+'\',\'inactivo\')">Desactivar</button></div></td></tr>';
+  }).join('');
+});
+
+// ── CONFIGURACIÓN ────────────────────────────────────────────────────────────
+// Cargar config al iniciar
+db.collection('config').doc('club').get().then(function(snap) {
+  if (!snap.exists) return;
+  var c = snap.data();
+  if (c.nombre)     document.getElementById('cfg-nombre').value     = c.nombre;
+  if (c.precio)     document.getElementById('cfg-precio').value     = c.precio;
+  if (c.whatsapp)   document.getElementById('cfg-whatsapp').value   = c.whatsapp;
+  if (c.email)      document.getElementById('cfg-email').value      = c.email;
+  if (c.grupoWa)    document.getElementById('cfg-grupo-wa').value   = c.grupoWa;
+  if (c.bienvenida) document.getElementById('cfg-bienvenida').value = c.bienvenida;
+});
+
+function guardarConfig() {
+  var data = {
+    nombre:     document.getElementById('cfg-nombre').value.trim(),
+    precio:     document.getElementById('cfg-precio').value,
+    whatsapp:   document.getElementById('cfg-whatsapp').value.trim(),
+    email:      document.getElementById('cfg-email').value.trim(),
+    grupoWa:    document.getElementById('cfg-grupo-wa').value.trim(),
+    bienvenida: document.getElementById('cfg-bienvenida').value.trim(),
+    updatedAt:  new Date().toISOString()
+  };
+  db.collection('config').doc('club').set(data, { merge: true }).then(function() {
+    showToast('✅ Configuración guardada');
+    var st = document.getElementById('cfg-status');
+    if (st) { st.style.display = 'inline'; setTimeout(function(){ st.style.display = 'none'; }, 3000); }
+  });
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── PAGOS desde Firebase ─────────────────────────────────────────────────────
+db.collection('pagos').orderBy('fecha', 'desc').onSnapshot(function(snap) {
+  var totalEl = document.getElementById('total-pagos');
+  var tbody   = document.getElementById('tbody-pagos');
+  if (totalEl) totalEl.textContent = snap.docs.length;
+  if (!tbody) return;
+
+  if (snap.empty) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px;">Sin pagos registrados aún</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = snap.docs.map(function(d) {
+    var p = d.data();
+    var fecha = p.fecha ? new Date(p.fecha).toLocaleDateString('es-MX', { day:'numeric', month:'short', year:'numeric' }) : '—';
+    return '<tr>'
+      + '<td><div class="member-name">' + (p.nombre || '—') + '</div><div class="member-email">' + (p.email || '') + '</div></td>'
+      + '<td>' + (p.plan || '—') + '</td>'
+      + '<td>' + (p.monto || '—') + '</td>'
+      + '<td>' + fecha + '</td>'
+      + '<td><span class="status-badge status-activo">✅ Confirmado</span></td>'
+      + '</tr>';
+  }).join('');
+});
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── ESTADÍSTICAS ─────────────────────────────────────────────────────────────
+var colores = ['var(--azul)','var(--verde-claro)','var(--morado)','var(--naranja)','var(--rojo)','var(--amarillo)'];
+
+function renderBarChart(containerId, items, maxVal) {
+  var el = document.getElementById(containerId);
+  if (!el) return;
+  if (items.length === 0) { el.innerHTML = '<p style="color:var(--muted);font-size:.82rem;">Sin datos aún</p>'; return; }
+  el.innerHTML = items.map(function(item, i) {
+    var pct = maxVal > 0 ? Math.round(item.val / maxVal * 100) : 0;
+    var safeLabel = String(item.label).replace(/"/g, '&quot;');
+    return '<div class="bar-row">'
+      + '<span class="bar-row-label" title="' + safeLabel + '">' + item.label + '</span>'
+      + '<div class="bar-wrap"><div class="bar-fill" style="width:' + pct + '%;background:' + colores[i % colores.length] + ';transition:width .6s ease;"></div></div>'
+      + '<span class="bar-count">' + item.val + '</span>'
+      + '</div>';
+  }).join('');
+}
+
+// Stats: miembros activos + cursos + sesiones
+db.collection('miembros').onSnapshot(function(snap) {
+  var activos = snap.docs.filter(function(d){ return d.data().estado === 'activo'; }).length;
+  var el = document.getElementById('stats-miembros');
+  if (el) el.textContent = activos;
+
+  // Miembros por mes
+  var porMes = {};
+  snap.docs.forEach(function(d) {
+    var fecha = d.data().fechaRegistro;
+    if (!fecha) return;
+    var dt = new Date(fecha);
+    var key = dt.toLocaleDateString('es-MX', { month: 'short', year: 'numeric' });
+    porMes[key] = (porMes[key] || 0) + 1;
+  });
+  var meses = Object.keys(porMes).slice(-4).reverse();
+  var maxMes = Math.max.apply(null, meses.map(function(k){ return porMes[k]; })) || 1;
+  renderBarChart('chart-miembros-mes', meses.map(function(k){
+    return { label: k, val: porMes[k] };
+  }), maxMes);
+});
+
+db.collection('cursos').onSnapshot(function(snap) {
+  var el = document.getElementById('stats-cursos');
+  if (el) el.textContent = snap.docs.length;
+});
+
+db.collection('sesiones').onSnapshot(function(snap) {
+  var ahora = new Date();
+  var proximas = snap.docs.filter(function(d){ return new Date(d.data().fechaHora) >= ahora; }).length;
+  var el = document.getElementById('stats-sesiones');
+  if (el) el.textContent = proximas;
+});
+
+// Cursos más vistos: leer progreso + cruzar con nombres de cursos
+Promise.all([
+  db.collection('progreso').get(),
+  db.collection('cursos').get()
+]).then(function(results) {
+  var progresoSnap = results[0];
+  var cursosSnap   = results[1];
+
+  var cursoNombres = {};
+  cursosSnap.docs.forEach(function(d) {
+    cursoNombres[d.id] = (d.data().emoji || '🎓') + ' ' + (d.data().titulo || d.id);
+  });
+
+  var conteo = {};
+  var totalClases = 0;
+  progresoSnap.docs.forEach(function(d) {
+    var data = d.data();
+    Object.keys(data).forEach(function(cursoId) {
+      var clasesVistas = Array.isArray(data[cursoId]) ? data[cursoId].length : 0;
+      conteo[cursoId] = (conteo[cursoId] || 0) + clasesVistas;
+      totalClases += clasesVistas;
+    });
+  });
+
+  var elClases = document.getElementById('stats-clases-vistas');
+  if (elClases) elClases.textContent = totalClases;
+
+  var ranking = Object.keys(conteo)
+    // Filtrar cursos fantasma (que ya no existen en la colección 'cursos')
+    .filter(function(id) { return !!cursoNombres[id]; })
+    .map(function(id) { return { label: cursoNombres[id], val: conteo[id] }; })
+    .sort(function(a, b) { return b.val - a.val; })
+    .slice(0, 5);
+
+  var maxVal = ranking.length > 0 ? ranking[0].val : 1;
+  renderBarChart('chart-contenido', ranking, maxVal);
+});
+// ─────────────────────────────────────────────────────────────────────────────
+
+// ── Pagos pendientes (pagaron pero no crearon cuenta) ────────────────────────
+db.collection('pagos_pendientes').onSnapshot(function(snap) {
+  var total = snap.docs.length;
+  var totalEl = document.getElementById('total-pendientes');
+  var badgeEl = document.getElementById('badge-pendientes');
+  if (totalEl) totalEl.textContent = total;
+  if (badgeEl) badgeEl.textContent = total;
+
+  // Stat dashboard
+  var elPend  = document.getElementById('dash-pendientes');
+  var elTrend = document.getElementById('dash-trend-pendientes');
+  if (elPend)  elPend.textContent  = total;
+  if (elTrend) elTrend.textContent = total > 0 ? total + ' sin registrar' : 'Sin pendientes';
+
+  var tbody = document.getElementById('tbody-pendientes');
+  if (!tbody) return;
+
+  if (snap.empty) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:24px;">Sin pagos pendientes 🎉</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = snap.docs.map(function(d) {
+    var p = d.data();
+    var fecha = p.fechaPago ? new Date(p.fechaPago).toLocaleDateString('es-MX', { day:'numeric', month:'short', year:'numeric' }) : '—';
+    var waLink = p.email ? 'https://wa.me/52' + (p.whatsapp || '').replace(/\D/g,'') : '#';
+    var msg = encodeURIComponent('Hola ' + (p.nombre || '') + ', ya procesamos tu pago de SENTIA Academy 🌿 Para acceder al portal solo crea tu cuenta en: https://sentiamx.com con el email ' + p.email);
+    return '<tr>'
+      + '<td><div class="member-name">' + (p.nombre || '—') + '</div></td>'
+      + '<td>' + (p.email || '—') + '</td>'
+      + '<td>' + (p.plan || '—') + '</td>'
+      + '<td>' + (p.vence || '—') + '</td>'
+      + '<td>' + fecha + '</td>'
+      + '<td><div class="action-btns">'
+      + '<a href="https://wa.me/' + (p.whatsapp||'').replace(/\D/g,'') + '?text=' + msg + '" target="_blank"><button class="btn-accion btn-activar">💬 WhatsApp</button></a>'
+      + '<button class="btn-accion btn-desactivar" onclick="eliminarPendiente(\'' + d.id + '\')">🗑 Eliminar</button>'
+      + '</div></td>'
+      + '</tr>';
+  }).join('');
+});
+
+function eliminarPendiente(id) {
+  if (!confirm('¿Eliminar este pago pendiente?')) return;
+  db.collection('pagos_pendientes').doc(id).delete()
+    .then(function() { showToast('Registro eliminado'); });
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
+function cambiarEstado(id, estado) {
+  db.collection('miembros').doc(id).update({ estado: estado });
+  showToast('Estado actualizado: ' + estado);
+}
+
+function agregarMiembro() {
+  var nombre = document.getElementById('m-nombre').value.trim();
+  var email  = document.getElementById('m-email').value.trim();
+  var wa     = document.getElementById('m-wa').value.trim();
+  var vence  = document.getElementById('m-vence').value;
+  if (!nombre || !email) { showToast('⚠️ Nombre y email son obligatorios','error'); return; }
+  db.collection('miembros').add({ nombre:nombre, email:email, whatsapp:wa, vence:vence, estado:'activo', plan:'PRO Mensual', fechaRegistro: new Date().toISOString() })
+    .then(function(){ showToast('✅ Miembro agregado exitosamente'); closeModal(); });
+}
+
+
+
+// ── PDFs ─────────────────────────────────────────────────────────────────────
+function publicarPDF() {
+  var titulo  = document.getElementById('pdf-titulo').value.trim();
+  var paginas = document.getElementById('pdf-paginas').value;
+  var url     = document.getElementById('pdf-url').value.trim();
+  if (!titulo || !url) { showToast('⚠️ Título y URL son obligatorios','error'); return; }
+  db.collection('pdfs').add({ titulo:titulo, paginas:paginas, url:url, fecha: new Date().toISOString() })
+    .then(function(){
+      showToast('✅ PDF publicado — ya aparece en el portal VIP');
+      crearNotificacionAuto('material', {
+        titulo: 'Nuevo material: ' + titulo,
+        descripcion: paginas ? 'PDF · ' + paginas + ' páginas disponibles para descarga' : 'Nuevo PDF disponible para descarga',
+        emoji: '📄',
+        link: url
+      });
+      document.getElementById('pdf-titulo').value='';
+      document.getElementById('pdf-url').value='';
+    });
+}
+
+function eliminarPDF(id) {
+  if (!confirm('¿Eliminar este PDF?')) return;
+  db.collection('pdfs').doc(id).delete().then(function(){ showToast('PDF eliminado'); });
+}
+
+db.collection('pdfs').onSnapshot(function(snap) {
+  var totalEl = document.getElementById('total-pdfs');
+  var tbody   = document.getElementById('tbody-pdfs');
+  if (totalEl) totalEl.textContent = snap.docs.length;
+  if (!tbody) return;
+  if (snap.empty) {
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--muted);padding:24px;">No hay PDFs publicados aún</td></tr>';
+    return;
+  }
+  tbody.innerHTML = snap.docs.map(function(d) {
+    var p = d.data();
+    return '<tr>'
+      + '<td><div class="member-name">' + (p.titulo||'—') + '</div></td>'
+      + '<td>' + (p.paginas||'—') + '</td>'
+      + '<td><div class="action-btns">'
+      + '<a href="' + (p.url||'#') + '" target="_blank"><button class="btn-accion btn-ver-a">Ver</button></a>'
+      + '<button class="btn-accion btn-desactivar" onclick="eliminarPDF(\'' + d.id + '\')">Eliminar</button>'
+      + '</div></td>'
+      + '</tr>';
+  }).join('');
+});
+
+// ══════════════════════════════════════════════════════════════════════════════
+// ── CURSOS ────────────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════════════════════
+var cursoActivoId = null;
+
+function normalizarTituloBunny(texto) {
+  return String(texto || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function puntajeTituloBunny(a, b) {
+  var na = normalizarTituloBunny(a);
+  var nb = normalizarTituloBunny(b);
+  if (!na || !nb) return 0;
+  if (na === nb) return 1;
+  if (na.indexOf(nb) >= 0 || nb.indexOf(na) >= 0) return 0.9;
+  var ta = na.split(' ').filter(function(x){ return x.length > 2; });
+  var tb = nb.split(' ').filter(function(x){ return x.length > 2; });
+  var union = {};
+  var inter = 0;
+  ta.forEach(function(x){ union[x] = true; });
+  tb.forEach(function(x){ if (union[x]) inter++; union[x] = true; });
+  var total = Object.keys(union).length;
+  return total ? inter / total : 0;
+}
+
+async function sincronizarCatalogoSentiaBunny() {
+  var catalogo = window.SENTIA_BUNNY_CATALOG || [];
+  if (!catalogo.length) {
+    showToast('❌ No se encontró assets/sentia-bunny-catalog.js', 'error');
+    return;
+  }
+  if (!confirm('Se vincularán 31 videos de Bunny con los cursos existentes. Los materiales se conservarán. ¿Continuar?')) return;
+
+  var boton = document.getElementById('syncSentiaBunnyBtn');
+  if (boton) { boton.disabled = true; boton.textContent = 'Sincronizando…'; }
+  try {
+    var snap = await db.collection('cursos').get();
+    var usados = {};
+    var vinculados = 0;
+    var videos = 0;
+    var sinCoincidencia = [];
+    var batch = db.batch();
+
+    snap.docs.forEach(function(docCurso) {
+      var curso = docCurso.data() || {};
+      var mejor = null;
+      var mejorIndice = -1;
+      var mejorPuntaje = 0;
+
+      catalogo.forEach(function(item, indice) {
+        if (usados[indice]) return;
+        var puntaje = curso.bunnyCollectionId === item.collectionId
+          ? 2
+          : puntajeTituloBunny(curso.titulo, item.titulo);
+        if (puntaje > mejorPuntaje) {
+          mejor = item;
+          mejorIndice = indice;
+          mejorPuntaje = puntaje;
+        }
+      });
+
+      if (!mejor || mejorPuntaje < 0.52) {
+        sinCoincidencia.push(curso.titulo || docCurso.id);
+        return;
+      }
+      usados[mejorIndice] = true;
+
+      var clasesAnteriores = curso.clases || [];
+      var sesionesAnteriores = curso.sesiones || [];
+      var sesiones = mejor.sesiones.map(function(sesion, indice) {
+        var numero = sesion.numero || (indice + 1);
+        var anterior = sesionesAnteriores.find(function(x){ return Number(x.numero) === Number(numero); }) || {};
+        var nueva = Object.assign({}, anterior, sesion, {
+          numero: numero,
+          provider: 'bunny',
+          videoId: sesion.videoId
+        });
+        if (anterior.url && !nueva.driveUrlAnterior) nueva.driveUrlAnterior = anterior.url;
+        delete nueva.url;
+        return nueva;
+      });
+      var clases = mejor.sesiones.map(function(sesion, indice) {
+        var num = sesion.numero || (indice + 1);
+        var anterior = clasesAnteriores.find(function(x){ return Number(x.num) === Number(num); }) || {};
+        var nueva = Object.assign({}, anterior, {
+          num: num,
+          titulo: sesion.titulo,
+          provider: 'bunny',
+          videoId: sesion.videoId
+        });
+        if (anterior.driveId && !nueva.driveIdAnterior) nueva.driveIdAnterior = anterior.driveId;
+        delete nueva.driveId;
+        return nueva;
+      });
+
+      batch.update(docCurso.ref, {
+        sesiones: sesiones,
+        clases: clases,
+        bunnyCollectionId: mejor.collectionId,
+        bunnySincronizadoEn: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      vinculados++;
+      videos += sesiones.length;
+    });
+
+    if (vinculados) await batch.commit();
+    console.log('[Bunny sync] cursos:', vinculados, 'videos:', videos, 'sin coincidencia:', sinCoincidencia);
+    var mensaje = '✅ Bunny sincronizado: ' + vinculados + ' cursos y ' + videos + ' videos.';
+    if (sinCoincidencia.length) mensaje += ' Sin coincidencia: ' + sinCoincidencia.join(', ');
+    showToast(mensaje, sinCoincidencia.length ? 'error' : undefined);
+  } catch (error) {
+    console.error('[Bunny sync]', error);
+    showToast('❌ No se pudo sincronizar: ' + error.message, 'error');
+  } finally {
+    if (boton) { boton.disabled = false; boton.textContent = '▶ Sincronizar 31 videos Bunny'; }
+  }
+}
+
+function loadCursos() {
+  db.collection('cursos').onSnapshot(function(snap) {
+    var cursos = snap.docs.map(function(d){ return Object.assign({id:d.id}, d.data()); });
+
+    // Stat dashboard
+    var elCursos = document.getElementById('dash-cursos');
+    var elTrendC = document.getElementById('dash-trend-cursos');
+    if (elCursos) elCursos.textContent = cursos.length;
+    if (elTrendC) elTrendC.textContent = cursos.length > 0 ? cursos.length + ' publicados' : 'Sin cursos';
+
+    var tbody = document.getElementById('tbody-cursos');
+    if (!tbody) return;
+    if (cursos.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:24px;">No hay cursos creados aún</td></tr>';
+      return;
+    }
+    var hoy = new Date(); hoy.setHours(0,0,0,0);
+    tbody.innerHTML = cursos.map(function(c){
+      var bloqueado = false;
+      var estadoHTML = '<span class="status-badge status-activo">✅ Disponible</span>';
+      if (c.fechaDesbloqueo) {
+        var fd = new Date(c.fechaDesbloqueo + 'T00:00:00');
+        if (fd > hoy) {
+          bloqueado = true;
+          var fechaStr = fd.toLocaleDateString('es-MX', {day:'numeric',month:'short',year:'numeric'});
+          estadoHTML = '<span class="status-badge" style="background:rgba(185,28,28,.1);color:#b91c1c;">🔒 '+fechaStr+'</span>';
+        }
+      }
+      var fotoTag = c.foto ? '<img src="'+c.foto+'" style="width:36px;height:36px;border-radius:6px;object-fit:cover;vertical-align:middle;margin-right:8px;">' : (c.emoji||'🎓')+' ';
+      return '<tr><td><div class="member-name">'+fotoTag+c.titulo+'</div></td><td>'+(c.categoria||'—')+'</td><td>'+((c.clases||[]).length)+' clases</td><td>'+estadoHTML+'</td><td><div class="action-btns"><button class="btn-accion btn-ver-a" onclick="abrirDetalleCurso(\''+c.id+'\')">Gestionar</button><button class="btn-accion btn-desactivar" onclick="eliminarCurso(\''+c.id+'\')">Eliminar</button></div></td></tr>';
+    }).join('');
+  });
+}
+loadCursos();
+
+// Sesiones — stat dashboard
+db.collection('sesiones').onSnapshot(function(snap) {
+  var ahora = new Date();
+  var proximas = snap.docs.filter(function(d){ return new Date(d.data().fechaHora) >= ahora; }).length;
+  var elSes  = document.getElementById('dash-sesiones');
+  var elTrS  = document.getElementById('dash-trend-sesiones');
+  if (elSes) elSes.textContent = proximas;
+  if (elTrS) elTrS.textContent = proximas > 0 ? proximas + ' próximas' : 'Sin sesiones';
+});
+
+// ===== COLOR PICKER (swatches) =====
+function seleccionarSwatch(color, el) {
+  var input = document.getElementById('curso-color');
+  if (input) input.value = color;
+
+  var swatches = document.querySelectorAll('.swatches-grid .swatch');
+  for (var i = 0; i < swatches.length; i++) swatches[i].classList.remove('active');
+  if (el) el.classList.add('active');
+
+  var dot = document.getElementById('custom-toggle-dot');
+  if (dot) dot.style.background = color;
+
+  // Si el picker custom estaba abierto, ciérralo
+  var wrap = document.getElementById('custom-picker-wrap');
+  var btn  = document.getElementById('custom-toggle-btn');
+  var lbl  = document.getElementById('custom-toggle-label');
+  if (wrap) wrap.style.display = 'none';
+  if (btn)  btn.classList.remove('active');
+  if (lbl)  lbl.textContent = '🎨 Color personalizado';
+}
+
+function toggleColorCustom() {
+  var wrap  = document.getElementById('custom-picker-wrap');
+  var btn   = document.getElementById('custom-toggle-btn');
+  var lbl   = document.getElementById('custom-toggle-label');
+  if (!wrap) return;
+  var isOpen = wrap.style.display && wrap.style.display !== 'none';
+  if (isOpen) {
+    wrap.style.display = 'none';
+    if (btn) btn.classList.remove('active');
+    if (lbl) lbl.textContent = '🎨 Color personalizado';
+  } else {
+    wrap.style.display = 'flex';
+    if (btn) btn.classList.add('active');
+    if (lbl) lbl.textContent = '🎨 Elige tu color exacto';
+    var swatches = document.querySelectorAll('.swatches-grid .swatch');
+    for (var i = 0; i < swatches.length; i++) swatches[i].classList.remove('active');
+    onCustomColorChange();
+  }
+}
+
+function onCustomColorChange() {
+  var input = document.getElementById('curso-color');
+  if (!input) return;
+  var color = input.value;
+  var hex = document.getElementById('custom-hex');
+  var dot = document.getElementById('custom-toggle-dot');
+  if (hex) hex.textContent = color.toUpperCase();
+  if (dot) dot.style.background = color;
+}
+
+function crearCurso() {
+  var titulo           = (document.getElementById('curso-titulo').value || '').trim();
+  var emojiEl          = document.getElementById('curso-emoji');
+  var emoji            = emojiEl ? ((emojiEl.value || '').trim() || '🎓') : '🎓';
+  var categoria        = document.getElementById('curso-categoria').value;
+  var color            = document.getElementById('curso-color').value;
+  var desc             = (document.getElementById('curso-desc').value   || '').trim();
+  var foto             = (document.getElementById('curso-foto').value   || '').trim();
+  var fechaDesbloqueo  = document.getElementById('curso-fecha-desbloqueo').value || null;
+  if (!titulo) { showToast('⚠️ El título es obligatorio','error'); return; }
+  var datos = { titulo:titulo, emoji:emoji, categoria:categoria, color:color, descripcion:desc, foto:foto, fechaDesbloqueo:fechaDesbloqueo, clases:[], sesiones:[], materiales:[], fecha: new Date().toISOString() };
+  db.collection('cursos').add(datos)
+    .then(function(ref){
+      showToast('✅ Curso creado — ya aparece en el portal VIP');
+      // Notificar a los socios
+      crearNotificacionAuto('curso', {
+        titulo: 'Nuevo curso: ' + titulo,
+        descripcion: desc || 'Nuevo curso disponible en tu biblioteca',
+        emoji: emoji,
+        link: null
+      });
+      document.getElementById('curso-titulo').value = '';
+      document.getElementById('curso-desc').value   = '';
+      if (emojiEl) emojiEl.value = '';
+      document.getElementById('curso-foto').value   = '';
+      document.getElementById('curso-fecha-desbloqueo').value = '';
+      // Resetear color picker al verde AgroTec
+      var primerSwatch = document.querySelector('.swatches-grid .swatch');
+      if (primerSwatch) seleccionarSwatch('#1e40af', primerSwatch);
+    });
+}
+
+function eliminarCurso(id) {
+  if (!confirm('¿Eliminar este curso y todas sus clases?')) return;
+  db.collection('cursos').doc(id).delete().then(function(){ showToast('Curso eliminado'); });
+}
+
+function abrirDetalleCurso(id) {
+  cursoActivoId = id;
+  document.getElementById('clase-curso-id').value = id;
+  db.collection('cursos').doc(id).get().then(function(snap) {
+    var curso = Object.assign({ id: id }, snap.data());
+    document.getElementById('detalle-curso-titulo').textContent = (curso.emoji||'🎓') + ' ' + curso.titulo;
+    document.getElementById('detalle-curso-desc').textContent   = curso.descripcion || '';
+
+    // Precargar la fecha de desbloqueo en el input
+    var inputFecha = document.getElementById('editar-curso-fecha');
+    if (inputFecha) inputFecha.value = curso.fechaDesbloqueo || '';
+    actualizarUIFecha(curso.fechaDesbloqueo);
+
+    renderClasesAdmin((curso.clases && curso.clases.length) ? curso.clases : (curso.sesiones || []).map(function(s){ return { num:s.numero, titulo:s.titulo, provider:s.provider, videoId:s.videoId }; }));
+    renderMaterialesAdmin(curso.materiales || []);
+    showPage('detalle-curso-admin', null);
+  });
+}
+
+// Actualizar el badge + preview según la fecha actual
+function actualizarUIFecha(fecha) {
+  var badge = document.getElementById('estado-fecha-badge');
+  var preview = document.getElementById('fecha-preview');
+  if (!badge || !preview) return;
+  if (!fecha) {
+    badge.textContent = '✅ Disponible';
+    badge.style.background = '#d1fae5';
+    badge.style.color = '#065f46';
+    preview.innerHTML = '🔓 Sin fecha bloqueada. Los socios pueden ver este curso <strong>ahora mismo</strong>.';
+    return;
+  }
+  var hoy = new Date(); hoy.setHours(0,0,0,0);
+  var fd = new Date(fecha + 'T00:00:00');
+  var diasRestantes = Math.ceil((fd - hoy) / (1000*60*60*24));
+  var fechaLegible = fd.toLocaleDateString('es-MX', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+
+  if (diasRestantes <= 0) {
+    badge.textContent = '✅ Disponible';
+    badge.style.background = '#d1fae5';
+    badge.style.color = '#065f46';
+    preview.innerHTML = '✅ Este curso ya está <strong>desbloqueado</strong> desde el ' + fechaLegible + '.';
+  } else {
+    badge.textContent = '🔒 Bloqueado';
+    badge.style.background = '#fef3c7';
+    badge.style.color = '#92400e';
+    preview.innerHTML = '🔒 Se desbloqueará el <strong>' + fechaLegible + '</strong> (faltan <strong>' + diasRestantes + ' día' + (diasRestantes === 1 ? '' : 's') + '</strong>).';
+  }
+}
+
+function actualizarFechaDesbloqueo() {
+  if (!cursoActivoId) { showToast('⚠️ No hay curso seleccionado','error'); return; }
+  var nuevaFecha = document.getElementById('editar-curso-fecha').value || null;
+  db.collection('cursos').doc(cursoActivoId).update({ fechaDesbloqueo: nuevaFecha })
+    .then(function() {
+      showToast('✅ Fecha actualizada correctamente');
+      actualizarUIFecha(nuevaFecha);
+    })
+    .catch(function(err) {
+      console.error(err);
+      showToast('❌ Error al actualizar la fecha','error');
+    });
+}
+
+function quitarFechaDesbloqueo() {
+  if (!cursoActivoId) { showToast('⚠️ No hay curso seleccionado','error'); return; }
+  if (!confirm('¿Desbloquear este curso inmediatamente para todos los socios?')) return;
+  db.collection('cursos').doc(cursoActivoId).update({ fechaDesbloqueo: null })
+    .then(function() {
+      showToast('🔓 Curso desbloqueado — ya está disponible para todos');
+      document.getElementById('editar-curso-fecha').value = '';
+      actualizarUIFecha(null);
+    })
+    .catch(function(err) {
+      console.error(err);
+      showToast('❌ Error al desbloquear el curso','error');
+    });
+}
+
+function renderClasesAdmin(clases) {
+  var tbody = document.getElementById('tbody-clases-admin');
+  if (!tbody) return;
+  if (clases.length === 0) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px;">No hay clases aún</td></tr>'; return; }
+  var sorted = clases.slice().sort(function(a,b){ return a.num - b.num; });
+  tbody.innerHTML = sorted.map(function(cl){
+    var origen = cl.videoId ? '🐰 Bunny · ' + cl.videoId : (cl.driveId || '—');
+    return '<tr><td><strong>'+cl.num+'</strong></td><td>'+cl.titulo+'</td><td style="font-size:.75rem;color:var(--muted);">'+origen+'</td><td><button class="btn-accion btn-desactivar" onclick="eliminarClase('+cl.num+')">Eliminar</button></td></tr>';
+  }).join('');
+}
+
+function renderMaterialesAdmin(materiales) {
+  var tbody = document.getElementById('tbody-materiales-admin');
+  if (!tbody) return;
+  if (materiales.length === 0) { tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--muted);padding:20px;">No hay materiales aún</td></tr>'; return; }
+  tbody.innerHTML = materiales.map(function(m,i){
+    return '<tr><td>'+m.titulo+'</td><td>'+m.tipo+'</td><td><a href="'+m.url+'" target="_blank"><button class="btn-accion btn-ver-a">Ver</button></a> <button class="btn-accion btn-desactivar" onclick="eliminarMaterial('+i+')">Eliminar</button></td></tr>';
+  }).join('');
+}
+
+function agregarClase() {
+  var id       = document.getElementById('clase-curso-id').value;
+  var titulo   = document.getElementById('clase-titulo').value.trim();
+  var num      = parseInt(document.getElementById('clase-num').value);
+  var driveUrl = document.getElementById('clase-drive-url').value.trim();
+  if (!titulo || !driveUrl) { showToast('⚠️ Título y link son obligatorios','error'); return; }
+  var match   = driveUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  var driveId = match ? match[1] : driveUrl;
+  db.collection('cursos').doc(id).get().then(function(snap) {
+    var clases = snap.data().clases || [];
+    var sesiones = snap.data().sesiones || [];
+    clases.push({ num: num, titulo: titulo, driveId: driveId });
+    sesiones.push({ numero: num, titulo: titulo, url: driveUrl, provider: 'drive' });
+    db.collection('cursos').doc(id).update({ clases: clases, sesiones: sesiones }).then(function(){
+      showToast('✅ Clase agregada — ya aparece en el portal VIP');
+      // Notificar
+      var cursoNombre = (snap.data().emoji || '🎓') + ' ' + (snap.data().titulo || 'Curso');
+      crearNotificacionAuto('clase', {
+        titulo: 'Nueva clase: ' + titulo,
+        descripcion: 'En ' + cursoNombre,
+        emoji: '🎬',
+        link: null
+      });
+      document.getElementById('clase-titulo').value = '';
+      document.getElementById('clase-drive-url').value = '';
+      renderClasesAdmin(clases);
+    });
+  });
+}
+
+function eliminarClase(num) {
+  if (!confirm('¿Eliminar esta clase?')) return;
+  db.collection('cursos').doc(cursoActivoId).get().then(function(snap) {
+    var clases = (snap.data().clases || []).filter(function(c){ return c.num !== num; });
+    var sesiones = (snap.data().sesiones || []).filter(function(s){ return Number(s.numero) !== Number(num); });
+    db.collection('cursos').doc(cursoActivoId).update({ clases: clases, sesiones: sesiones }).then(function(){
+      showToast('Clase eliminada');
+      renderClasesAdmin(clases);
+    });
+  });
+}
+
+function agregarMaterial() {
+  var id     = document.getElementById('clase-curso-id').value;
+  var titulo = document.getElementById('mat-titulo') ? document.getElementById('mat-titulo').value.trim() : '';
+  var url    = document.getElementById('mat-url')    ? document.getElementById('mat-url').value.trim()    : '';
+  var tipo   = document.getElementById('mat-tipo')   ? document.getElementById('mat-tipo').value           : 'PDF';
+  if (!titulo || !url) { showToast('⚠️ Título y URL son obligatorios','error'); return; }
+  db.collection('cursos').doc(id).get().then(function(snap) {
+    var materiales = snap.data().materiales || [];
+    materiales.push({ titulo: titulo, url: url, tipo: tipo });
+    db.collection('cursos').doc(id).update({ materiales: materiales }).then(function(){
+      showToast('✅ Material agregado');
+      renderMaterialesAdmin(materiales);
+    });
+  });
+}
+
+function eliminarMaterial(idx) {
+  if (!confirm('¿Eliminar este material?')) return;
+  db.collection('cursos').doc(cursoActivoId).get().then(function(snap) {
+    var materiales = snap.data().materiales || [];
+    materiales.splice(idx, 1);
+    db.collection('cursos').doc(cursoActivoId).update({ materiales: materiales }).then(function(){
+      showToast('Material eliminado');
+      renderMaterialesAdmin(materiales);
+    });
+  });
+}
+</script>
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   MODIFICADO · Persistencia de página (deep-linking con hash)
+   Antes: al recargar (F5) siempre volvías al Dashboard.
+   Ahora: la página vive en la URL (#miembros, #pagos, …), el refresh
+   te deja donde estabas y los botones atrás/adelante funcionan.
+   ═══════════════════════════════════════════════════════════════════ */
+(function(){
+  // detalle-curso-admin se excluye: necesita el contexto del curso abierto
+  var PAGINAS_VALIDAS = ['dashboard','miembros','pendientes','pagos','cursos-admin','sesiones-admin','pdfs-admin','avisos-admin','config-admin','stats'];
+
+  function paginaDesdeHash(){
+    var h = (window.location.hash || '').replace(/^#\/?/, '').trim();
+    return PAGINAS_VALIDAS.indexOf(h) !== -1 ? h : null;
+  }
+  function elementoSidebar(id){
+    return document.querySelector('.sidebar-item[onclick*="\'' + id + '\'"]');
+  }
+
+  var showPageOriginal = window.showPage;
+  var restaurando = false;
+  var usuarioNavego = false;
+
+  window.showPage = function(id, el){
+    var r = showPageOriginal.apply(this, arguments);
+    if (PAGINAS_VALIDAS.indexOf(id) !== -1 && !restaurando) {
+      usuarioNavego = true;
+      var nuevoHash = '#' + id;
+      if (window.location.hash !== nuevoHash) {
+        try { history.pushState({page:id}, '', nuevoHash); }
+        catch(e){ window.location.hash = id; }
+      }
+      try { sessionStorage.setItem('bnvadmin_pagina', id); } catch(e){}
+    }
+    return r;
+  };
+
+  function irSilencioso(id){
+    restaurando = true;
+    try { window.showPage(id, elementoSidebar(id)); }
+    catch(e){ console.warn('[SENTIA admin] restaurar página:', e.message); }
+    restaurando = false;
+  }
+
+  function restaurar(){
+    if (usuarioNavego) return; // el admin ya navegó por su cuenta, no pisarlo
+    var destino = paginaDesdeHash();
+    if (!destino) {
+      try {
+        var guardada = sessionStorage.getItem('bnvadmin_pagina');
+        if (guardada && PAGINAS_VALIDAS.indexOf(guardada) !== -1) destino = guardada;
+      } catch(e){}
+    }
+    if (!destino || destino === 'dashboard') return;
+    irSilencioso(destino);
+    try { history.replaceState({page:destino}, '', '#' + destino); } catch(e){}
+  }
+
+  window.addEventListener('popstate', function(){
+    irSilencioso(paginaDesdeHash() || 'dashboard');
+  });
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', restaurar);
+  else restaurar();
+})();
+</script>
+</body>
+</html>
