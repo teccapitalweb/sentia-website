@@ -34,13 +34,10 @@ body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh;displ
 .foot a{color:var(--blue);font-weight:700;text-decoration:none}
 .spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
 </style>
-<link rel="stylesheet" href="mobile.css">
-<!-- ═══ Instalable como app (ver manifest.json / sw.js / pwa.js) ═══ -->
-<link rel="manifest" href="manifest.json">
+<!-- MODIFICADO: sin PWA; el club vive en club.sentiamx.com -->
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="SENTIA">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="assets/icon-sentia.png">
 </head>
 <body>
@@ -93,5 +90,4 @@ function fmt(d){try{const dt=d&&d.toDate?d.toDate():new Date(d);return dt.toLoca
 })();
 </script>
 
-<script src="pwa.js" defer></script>
 </body></html>
