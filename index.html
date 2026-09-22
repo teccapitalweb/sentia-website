@@ -94,8 +94,9 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdro
 
 /* Detalle "Incluye" */
 .inc{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-top:34px}
-.inc__list{display:flex;flex-direction:column;gap:10px;margin-top:16px;font-size:14.5px;color:var(--muted)}
-.inc__list div{display:flex;gap:10px}
+.inc__list{display:flex;flex-direction:column;gap:10px;margin-top:22px;font-size:14.5px;color:var(--muted)}
+.inc__list div{display:flex;gap:10px;align-items:flex-start}
+.inc__list .ck{width:18px;height:18px;color:var(--ok);flex-shrink:0;margin-top:1px}
 .dot{width:6px;height:6px;border-radius:50%;background:var(--ok);margin-top:8px;flex-shrink:0}
 .inc__card{border:1px solid var(--line);border-radius:16px;background:#fff;padding:20px}
 .inc__cover{height:160px;border-radius:12px;background:linear-gradient(135deg,#0d2a6b,#1b3fa8);background-size:cover;background-position:center}
@@ -154,13 +155,13 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
   .sesion__shot{order:-1}
   .mem{grid-template-columns:1fr;gap:28px}
   .inc,.info{grid-template-columns:1fr;gap:28px}
-  .nav{gap:10px}
+  .nav{gap:14px}
   .nav__links{display:none}
   .nav__burger{display:flex}
   .nav__links.is-open{display:flex;position:absolute;left:0;right:0;top:70px;background:#fff;border-bottom:1px solid var(--line);flex-direction:column;gap:0;padding:8px 24px 16px}
   .nav__links.is-open a{padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
   .brand small{display:none}
-  .nav .btn{height:40px;padding:0 14px;font-size:13px;flex-shrink:0;white-space:nowrap}
+  .nav .btn{height:40px;padding:0 14px;font-size:13px;flex-shrink:0;white-space:nowrap;margin-right:2px}
 }
 @media (max-width:600px){ .gal{grid-template-columns:1fr} }
 @media (max-width:400px){
@@ -401,14 +402,14 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
         <div class="eyebrow">Club SENTIA</div>
         <h2>Todos los cursos en un solo lugar</h2>
         <p class="sub">Una membresía con acceso a la biblioteca completa, clases en vivo, herramientas listas para tu práctica y certificados con folio verificable.</p>
-        <div class="inc__list">
-          <div><span class="dot"></span>Biblioteca completa de cursos, con clases nuevas cada mes</div>
-          <div><span class="dot"></span>Clases en vivo con especialistas y sus grabaciones</div>
-          <div><span class="dot"></span>Herramientas profesionales: notas de sesión, informes, tamizajes</div>
-          <div><span class="dot"></span>Certificados con folio y código QR verificable</div>
-        </div>
         <div class="hero__cta">
           <a class="btn btn--p" href="https://club.sentiamx.com/vip-auth.html">Quiero la membresía</a>
+        </div>
+        <div class="inc__list">
+          <div><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Acceso a Herramientas Pro: notas de sesión, informes y tamizajes listos para usar</div>
+          <div><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Clases en vivo con especialistas y sus grabaciones</div>
+          <div><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Materiales descargables listos para tu práctica</div>
+          <div><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Certificados con folio y código QR verificable</div>
         </div>
       </div>
       <figure class="shot">
