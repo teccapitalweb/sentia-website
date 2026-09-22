@@ -132,14 +132,8 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
 .area__ic svg{width:20px;height:20px}
 .area h3{font-size:16px;margin-bottom:8px}
 .area p{font-size:13.5px;color:var(--muted);line-height:1.55}
-.inc-det{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
-.inc-det summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--accent);list-style:none}
-.inc-det summary::-webkit-details-marker{display:none}
-.inc-det summary::after{content:' +';font-weight:700}
-.inc-det[open] summary::after{content:' −'}
-.inc-det ul{margin:12px 0 14px 18px;padding:0;color:var(--muted);font-size:13.5px;line-height:1.6}
-.inc-det li{margin-bottom:6px}
-.inc-det .btn{height:40px;font-size:13.5px}
+.course__foot--btn{padding:14px 18px 0}
+.course__foot--btn .btn{width:100%;height:40px;font-size:13.5px}
 .mem{display:grid;grid-template-columns:1fr 1.05fr;gap:48px;align-items:center}
 .redes{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
 .red{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-2);border-radius:999px;padding:9px 16px;font-size:13.5px;font-weight:600;background:#fff}
@@ -238,9 +232,9 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
 <div class="wrap">
   <div class="strip">
     <div><b>+20</b><small>Materiales descargables</small></div>
-    <div><b>LATAM</b><small>ALCANCE REGIONAL</small></div>
+    <div><b>LATAM</b><small>Alcance regional</small></div>
     <div><b>Especialistas</b><small>Con experiencia en campo</small></div>
-    <div><b>2026</b><small>PRIMER GENERACIÓN</small></div>
+    <div><b>2026</b><small>Primera generación</small></div>
   </div>
 </div>
 
@@ -310,8 +304,9 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
           <h3>Evaluación psicológica en guarda y custodia</h3>
           <p>Entrevista, integración de fuentes y redacción del informe pericial.</p>
           <div class="chips"><span class="chip">En vivo + grabación</span><span class="chip">Certificado con QR</span><span class="chip">Manual y checklist</span></div>
-            <a class="btn btn--g" href="#informacion">Solicitar información</a>
-          </details>
+        </div>
+        <div class="course__foot--btn">
+          <a class="btn btn--g" data-wa-curso="Evaluación psicológica en guarda y custodia" href="#" target="_blank" rel="noopener">Solicitar información</a>
         </div>
         <div class="course__foot"><span>3 clases · 6 h</span><b>$550</b></div>
       </article>
@@ -322,10 +317,9 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
           <h3>Primeros auxilios psicológicos</h3>
           <p>Contención emocional, detección de riesgo y canalización oportuna.</p>
           <div class="chips"><span class="chip">En vivo + grabación</span><span class="chip">Certificado con QR</span><span class="chip">Formatos de apoyo</span></div>
-          <details class="inc-det"><summary>Qué incluye</summary>
-            <ul><li>Contención emocional en los primeros minutos</li><li>Señales de alarma y evaluación del riesgo</li><li>Rutas de canalización y seguimiento</li><li>Autocuidado de quien atiende la crisis</li></ul>
-            <a class="btn btn--g" href="#informacion">Solicitar información</a>
-          </details>
+        </div>
+        <div class="course__foot--btn">
+          <a class="btn btn--g" data-wa-curso="Primeros auxilios psicológicos" href="#" target="_blank" rel="noopener">Solicitar información</a>
         </div>
         <div class="course__foot"><span>5 clases · 8 h</span><b>$550</b></div>
       </article>
@@ -336,10 +330,9 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
           <h3>Salud psicológica laboral</h3>
           <p>Riesgos psicosociales, liderazgo y rutas de apoyo en la organización.</p>
           <div class="chips"><span class="chip">En vivo + grabación</span><span class="chip">Certificado con QR</span><span class="chip">Matriz NOM-035</span></div>
-          <details class="inc-det"><summary>Qué incluye</summary>
-            <ul><li>Riesgos psicosociales y NOM-035</li><li>Diagnóstico y matriz de evaluación</li><li>Liderazgo que cuida el bienestar del equipo</li><li>Rutas de apoyo dentro de la organización</li></ul>
-            <a class="btn btn--g" href="#informacion">Solicitar información</a>
-          </details>
+        </div>
+        <div class="course__foot--btn">
+          <a class="btn btn--g" data-wa-curso="Salud psicológica laboral" href="#" target="_blank" rel="noopener">Solicitar información</a>
         </div>
         <div class="course__foot"><span>3 clases · 6 h</span><b>$550</b></div>
       </article>
@@ -442,6 +435,9 @@ const SENTIA_IG = 'https://www.instagram.com/sentia_human_institute/'; // Instag
 document.querySelectorAll('a[href="https://www.facebook.com/"]').forEach(a => a.href = SENTIA_FB);
 const waBase = 'https://wa.me/' + SENTIA_WA + '?text=';
 document.getElementById('wa-directo').href = waBase + encodeURIComponent('Hola SENTIA, quiero información de los cursos.');
+document.querySelectorAll('[data-wa-curso]').forEach(a => {
+  a.href = waBase + encodeURIComponent('Hola SENTIA, quiero información del curso: ' + a.dataset.waCurso + '.');
+});
 document.getElementById('wa-pie').href = waBase + encodeURIComponent('Hola SENTIA, quiero información de los cursos.');
 document.getElementById('red-fb-2').href = SENTIA_FB;
 
