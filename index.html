@@ -1,663 +1,434 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<link rel="icon" type="image/png" href="assets/icon-sentia.png">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="SENTIA Human Institute — Formación, actualización y especialización profesional en psicología, educación, neurociencias, salud mental y desarrollo humano.">
-<title>SENTIA Human Institute — Formación para comprender, educar y transformar</title>
-<link rel="icon" type="image/png" href="favicon.png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SENTIA Human Institute — Formación en psicología, educación y desarrollo humano</title>
+<meta name="description" content="Cursos de psicología, educación, salud mental y desarrollo humano. Clases en vivo, materiales descargables y certificado con folio verificable.">
+<meta property="og:title" content="SENTIA Human Institute">
+<meta property="og:description" content="Formación para comprender, educar y transformar.">
+<meta property="og:image" content="https://sentiamx.com/assets/og-sentia.jpg">
+<meta property="og:url" content="https://sentiamx.com/">
+<link rel="icon" href="assets/icon-sentia.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-@font-face{font-family:'Sora';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/sora-latin-700-normal.woff2) format('woff2')}
-@font-face{font-family:'Sora';font-style:normal;font-weight:800;font-display:swap;src:url(fonts/sora-latin-800-normal.woff2) format('woff2')}
-@font-face{font-family:'Instrument Sans';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/instrument-sans-latin-400-normal.woff2) format('woff2')}
-@font-face{font-family:'Instrument Sans';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/instrument-sans-latin-500-normal.woff2) format('woff2')}
-@font-face{font-family:'Instrument Sans';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/instrument-sans-latin-600-normal.woff2) format('woff2')}
+/* ═══ SENTIA · tema minimalista (mismos colores que el Club) ═══ */
 :root{
-  --bg:#ffffff;
-  --soft:#f3f7ff;
-  --ink:#0e1d40;
-  --muted:#5b6b8f;
-  --accent:#1b5df0;
-  --accent-dark:#0d3fb8;
-  --accent-soft:#e8effe;
-  --navy:#0a1f4d;
-  --green:#2fbf2e;
-  --stroke:#e3eaf8;
-  --shadow:0 22px 55px -25px rgba(16,50,130,.16);
-  --font-display:'Sora',sans-serif;
-  --font-body:'Instrument Sans',sans-serif;
+  --bg:#ffffff; --soft:#f5f7fb; --line:#e4e8f0; --line-2:#d7deea;
+  --text:#0e1d40; --muted:#5b6b8f; --faint:#8793ad;
+  --accent:#1b5df0; --accent-soft:#eef3ff; --ok:#1f9d24; --ok-soft:#e9f7ea;
+  --max:1160px; --r:14px;
 }
-*{margin:0;padding:0;box-sizing:border-box}
+*{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth}
-body{
-  font-family:var(--font-body);
-  background:var(--bg);
-  color:var(--ink);
-  line-height:1.65;
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-}
-::selection{background:var(--accent);color:#fff}
-h1,h2,h3{font-family:var(--font-display);letter-spacing:-0.015em;font-weight:700}
-img{max-width:100%}
-.wrap{max-width:1220px;margin:0 auto;padding:0 36px}
+body{background:var(--bg);color:var(--text);font-family:'Instrument Sans',system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+h1,h2,h3{font-family:'Sora',sans-serif;font-weight:600;letter-spacing:-.03em;line-height:1.15}
+h2{font-size:clamp(26px,3.2vw,34px);margin:12px 0}
+.sub{color:var(--muted);font-size:clamp(15px,1.4vw,16px);max-width:62ch;line-height:1.6}
+section{padding:clamp(54px,7vw,84px) 0}
+.soft{background:var(--soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 22px;border-radius:10px;font-size:14.5px;font-weight:600;border:1px solid transparent;cursor:pointer;transition:filter .15s,border-color .15s}
+.btn--p{background:var(--accent);color:#fff}
+.btn--p:hover{filter:brightness(.94)}
+.btn--g{border-color:var(--line-2);color:var(--text);background:#fff}
+.btn--g:hover{border-color:var(--accent);color:var(--accent)}
+.btn--wa{background:var(--ok);color:#fff}
+.btn .ic{width:16px;height:16px}
 
-/* barra de progreso */
-.progress{
-  position:fixed;top:0;left:0;height:3px;width:0;z-index:200;
-  background:linear-gradient(90deg,var(--accent),#6fa0ff);
-  border-radius:0 3px 3px 0;
-}
+/* Navegación */
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav{height:70px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand img{width:32px;height:32px}
+.brand b{font-family:'Sora',sans-serif;font-weight:600;font-size:16px;letter-spacing:.06em}
+.brand small{display:block;font-size:10px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}
+.nav__links{display:flex;gap:26px;font-size:14.5px;color:var(--muted)}
+.nav__links a:hover{color:var(--text)}
+.nav__burger{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:10px;background:#fff;align-items:center;justify-content:center}
 
-/* ---------- NAV (pill glass claro) ---------- */
-header{position:fixed;top:16px;left:0;right:0;z-index:100;padding:0 20px}
-.nav{
-  max-width:1140px;margin:0 auto;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:10px 12px 10px 20px;
-  border-radius:999px;
-  background:rgba(255,255,255,.72);
-  border:1px solid rgba(227,234,248,.9);
-  backdrop-filter:blur(18px) saturate(1.5);
-  -webkit-backdrop-filter:blur(18px) saturate(1.5);
-  box-shadow:0 14px 40px -18px rgba(16,50,130,.22);
-}
-.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-.brand img{width:38px;height:38px}
-.brand-name{display:flex;flex-direction:column;line-height:1}
-.brand-name b{font-family:var(--font-display);font-size:1.06rem;font-weight:700;color:var(--accent);letter-spacing:.03em}
-.brand-name span{font-size:.52rem;font-weight:600;color:var(--muted);letter-spacing:.32em;text-transform:uppercase;margin-top:3px}
-.nav-links{display:flex;align-items:center;gap:4px;list-style:none}
-.nav-links a{
-  text-decoration:none;color:var(--ink);font-size:.9rem;font-weight:500;
-  padding:.55rem 1rem;border-radius:999px;transition:background .2s ease,color .2s ease;
-}
-.nav-links a:not(.btn):hover{background:var(--accent-soft);color:var(--accent)}
+/* Portada */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:clamp(48px,6vw,76px) 0 clamp(40px,5vw,60px)}
+.kick{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ok);font-weight:700}
+.kick i{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.hero h1{font-size:clamp(34px,4.6vw,56px);margin:18px 0}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--muted);font-size:clamp(15.5px,1.5vw,17.5px);line-height:1.6;max-width:52ch}
+.hero__cta{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+.hero__tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:34px}
+.tag{font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
 
-.btn{
-  display:inline-flex;align-items:center;gap:10px;
-  background:linear-gradient(120deg,var(--accent),#3f7bff);
-  color:#fff;padding:.72rem 1.5rem;border-radius:999px;
-  font-weight:600;font-size:.9rem;text-decoration:none;
-  border:none;cursor:pointer;
-  box-shadow:0 12px 28px -12px rgba(27,93,240,.55);
-  transition:transform .18s ease,box-shadow .18s ease;
-}
-.btn:hover{transform:translateY(-2px);box-shadow:0 18px 38px -12px rgba(27,93,240,.65)}
-.btn:active{transform:translateY(0)}
-.btn.glass{
-  background:rgba(255,255,255,.16);color:#fff;
-  border:1px solid rgba(255,255,255,.45);box-shadow:none;
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-}
-.btn.glass:hover{background:rgba(255,255,255,.28);box-shadow:none}
-.btn.outline{
-  background:#fff;color:var(--accent);
-  border:1.5px solid #c7d8fb;box-shadow:none;
-}
-.btn.outline:hover{background:var(--accent-soft);box-shadow:none}
-.btn svg{width:15px;height:15px}
+/* Franja de datos */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.strip div{padding:22px 24px;border-right:1px solid var(--line)}
+.strip div:last-child{border-right:0}
+.strip b{font-family:'Sora',sans-serif;font-size:26px;font-weight:600;display:block}
+.strip small{font-size:11.5px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
 
-/* ---------- HERO con imagen ---------- */
-.hero{
-  position:relative;min-height:92svh;
-  display:flex;align-items:center;
-  padding:150px 0 110px;
-  overflow:hidden;color:#fff;
-}
-.hero-bg{
-  position:absolute;inset:0;z-index:0;
-  background:url(hero-bg.jpg) center right/cover no-repeat;
-}
-.hero-bg::after{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(95deg, rgba(5,20,60,.88) 0%, rgba(7,28,80,.62) 45%, rgba(10,31,77,.15) 75%, rgba(10,31,77,0) 100%);
-}
-.hero-inner{position:relative;z-index:2;max-width:640px}
-.kicker{
-  display:inline-flex;align-items:center;gap:10px;
-  font-size:.68rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;
-  color:#e8efff;
-  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:999px;
-  padding:.55rem 1.15rem;margin-bottom:26px;
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-}
-.kicker::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(47,191,46,.25)}
-.hero h1{
-  font-size:clamp(2.2rem,4.6vw,3.7rem);
-  line-height:1.12;font-weight:800;
-  margin-bottom:22px;
-}
-.hero h1 em{font-style:normal;color:#a9c9ff;text-shadow:0 2px 24px rgba(5,20,60,.55)}
-.hero h1{text-shadow:0 2px 20px rgba(5,20,60,.35)}
-.hero p.lead{font-size:1.12rem;color:#d5e0f8;max-width:520px;margin-bottom:36px}
-.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:44px}
-.hero-chips{display:flex;gap:10px;flex-wrap:wrap}
-.hero-chips span{
-  font-size:.8rem;font-weight:600;color:#fff;
-  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28);
-  border-radius:999px;padding:.45rem 1rem;
-  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-}
+/* Pasos */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:40px;text-align:center}
+.steps svg{width:76px;height:76px;margin:0 auto}
+.steps h3{font-size:17px;margin:14px 0 8px}
+.steps p{font-size:14px;color:var(--muted);line-height:1.55}
 
-@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
-.a{opacity:0;animation:rise .7s cubic-bezier(.2,.7,.3,1) forwards}
-.a1{animation-delay:.05s}.a2{animation-delay:.16s}.a3{animation-delay:.28s}
-.a4{animation-delay:.4s}.a5{animation-delay:.52s}
+/* Cursos */
+.courses{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}
+.course{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:border-color .15s}
+.course:hover{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.course__img{height:152px;background:linear-gradient(135deg,#0d2a6b,#1b3fa8);position:relative;background-size:cover;background-position:center}
+.course__img span{position:absolute;left:14px;top:14px;background:#fff;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:4px 10px}
+.course__img::after{content:'Ψ';position:absolute;right:12px;bottom:-30px;font:110px/1 Georgia,serif;color:#fff;opacity:.12}
+.course__body{padding:18px;flex:1}
+.course__body h3{font-size:17px;line-height:1.35;margin-bottom:8px}
+.course__body p{font-size:13.5px;color:var(--muted);line-height:1.55}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.chip{font-size:11.5px;color:var(--accent);background:var(--accent-soft);border:1px solid #dbe6ff;border-radius:999px;padding:4px 10px;font-weight:600}
+.course__foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:14px 18px;font-size:13.5px;color:var(--muted)}
+.course__foot b{font-family:'Sora',sans-serif;color:var(--text);font-size:17px;font-weight:600}
 
-/* ---------- SECCIONES ---------- */
-section{padding:110px 0;position:relative}
-.sec-tag{
-  font-size:.7rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;
-  color:var(--accent);display:inline-flex;align-items:center;gap:10px;margin-bottom:16px;
-}
-.sec-tag::before{content:"";width:24px;height:2px;border-radius:2px;background:var(--accent)}
-.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.3,1)}
-.reveal.in{opacity:1;transform:translateY(0)}
+/* Detalle "Incluye" */
+.inc{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-top:34px}
+.inc__list{display:flex;flex-direction:column;gap:10px;margin-top:16px;font-size:14.5px;color:var(--muted)}
+.inc__list div{display:flex;gap:10px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--ok);margin-top:8px;flex-shrink:0}
+.inc__card{border:1px solid var(--line);border-radius:16px;background:#fff;padding:20px}
+.inc__cover{height:160px;border-radius:12px;background:linear-gradient(135deg,#0d2a6b,#1b3fa8);background-size:cover;background-position:center}
+.inc__prof{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:16px;flex-wrap:wrap}
+.inc__prof b{font-family:'Sora',sans-serif;font-size:16.5px;font-weight:600;display:block}
+.inc__prof small{color:var(--muted);font-size:13.5px}
 
-/* ---------- STATS ---------- */
-.stats{padding:0;margin-top:-58px;position:relative;z-index:5}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.stat{
-  background:rgba(255,255,255,.86);
-  border:1px solid var(--stroke);border-radius:20px;
-  padding:1.9rem 1.7rem;
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  box-shadow:var(--shadow);
-  transition:transform .25s ease,box-shadow .25s ease;
-}
-.stat:hover{transform:translateY(-4px);box-shadow:0 30px 60px -25px rgba(16,50,130,.25)}
-.stat b{
-  font-family:var(--font-display);font-size:clamp(1.7rem,2.8vw,2.3rem);font-weight:800;color:var(--accent);
-  display:block;line-height:1;margin-bottom:8px;
-}
-.stat b span{font-size:inherit;color:inherit;font-family:inherit}
-.stat b i{font-style:normal;color:var(--green)}
-.stat > span{color:var(--muted);font-size:.9rem;font-weight:500}
+/* Cursos impartidos (capturas reales de las sesiones) */
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+.gal figure{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+.gal img{aspect-ratio:4/3;object-fit:cover;background:var(--soft)}
+.gal figcaption{padding:14px 16px;font-size:13.5px;color:var(--muted)}
+.gal figcaption b{display:block;color:var(--text);font-family:'Sora',sans-serif;font-size:14.5px;font-weight:600;margin-bottom:3px}
 
-/* ---------- NOSOTROS ---------- */
-.about-grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(2.5rem,5vw,5rem);align-items:start}
-.about-left h2{font-size:clamp(1.9rem,3.4vw,2.7rem);line-height:1.15;margin-bottom:18px}
-.about-left p{color:var(--muted);font-size:1.04rem}
-.about-copy p{color:#3d4c73;font-size:1.06rem;margin-bottom:1.3rem;max-width:60ch}
-.about-copy p strong{color:var(--ink);font-weight:700}
-.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:2.2rem}
-.card{
-  background:#fff;border:1px solid var(--stroke);border-radius:18px;
-  padding:1.5rem 1.5rem;
-  transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;
-}
-.card:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:#c9d9f7}
-.card .ic{
-  display:grid;place-items:center;
-  width:44px;height:44px;border-radius:12px;
-  background:var(--accent-soft);color:var(--accent);margin-bottom:1rem;
-}
-.card .ic svg{width:22px;height:22px}
-.card h4{font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:.35rem}
-.card p{font-size:.9rem;color:var(--muted)}
+/* Solicitar información */
+.info{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.form{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:12px}
+.field label{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;height:44px;border:1px solid var(--line-2);border-radius:10px;padding:0 13px;font:inherit;font-size:14.5px;color:var(--text);background:#fff}
+.field textarea{height:86px;padding:11px 13px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
+.form small{color:var(--faint);font-size:12px}
 
-/* ---------- PROGRAMAS (acordeón claro) ---------- */
-.progs{background:var(--soft);border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke)}
-.prog-head{display:grid;grid-template-columns:1.1fr .9fr;gap:2.5rem;align-items:end;margin-bottom:46px}
-.prog-head h2{font-size:clamp(1.9rem,3.4vw,2.7rem);line-height:1.15}
-.prog-head p{color:var(--muted);font-size:1.02rem}
-.acc{display:flex;flex-direction:column;gap:12px}
-.acc-item{
-  background:#fff;border:1px solid var(--stroke);border-radius:18px;
-  overflow:hidden;transition:box-shadow .3s ease,border-color .3s ease;
-}
-.acc-item.open{border-color:#bcd2fa;box-shadow:var(--shadow)}
-.acc-btn{
-  width:100%;display:grid;grid-template-columns:64px 1fr 42px;align-items:center;gap:1.4rem;
-  padding:1.5rem 1.6rem;background:none;border:none;cursor:pointer;text-align:left;
-  color:var(--ink);font-family:var(--font-body);
-}
-.acc-btn .num{font-family:var(--font-display);font-size:.92rem;font-weight:700;color:#a7b8dd;transition:color .3s ease}
-.acc-item.open .acc-btn .num,.acc-btn:hover .num{color:var(--accent)}
-.acc-btn h3{font-size:clamp(1.15rem,2vw,1.5rem);font-weight:700}
-.acc-btn .pm{
-  width:42px;height:42px;border-radius:50%;
-  border:1.5px solid #d4e0f7;background:#fff;
-  display:grid;place-items:center;color:var(--accent);flex-shrink:0;
-  transition:all .35s ease;
-}
-.acc-btn .pm svg{width:16px;height:16px;transition:transform .35s ease}
-.acc-item.open .pm{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 8px 20px -8px rgba(27,93,240,.6)}
-.acc-item.open .pm svg{transform:rotate(45deg)}
-.acc-body{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.2,.7,.3,1)}
-.acc-body-inner{padding:0 1.6rem 1.7rem;display:grid;grid-template-columns:64px 1fr;gap:1.4rem}
-.acc-body-inner p{grid-column:2;color:var(--muted);font-size:1rem;max-width:62ch}
-.acc-body-inner .mini{grid-column:2;display:flex;gap:8px;margin-top:1rem;flex-wrap:wrap}
-.acc-body-inner .mini span{
-  font-size:.76rem;font-weight:600;color:var(--accent);
-  background:var(--accent-soft);border-radius:999px;padding:.4rem .9rem;
-}
+/* Cierre y pie */
+.cta-band{text-align:center}
+.cta-band h2{max-width:20ch;margin:12px auto}
+.cta-band .sub{margin:0 auto 26px}
+footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
+.foot{display:flex;justify-content:space-between;gap:36px;border-bottom:1px solid var(--line);padding-bottom:28px;margin-bottom:20px;flex-wrap:wrap}
+.foot__col b{display:block;color:var(--text);font-weight:600;margin-bottom:8px}
+.foot__col a{display:block;padding:3px 0}
+.foot__col a:hover{color:var(--accent)}
 
-/* ---------- MISIÓN / VISIÓN ---------- */
-.mv{
-  background:
-    radial-gradient(60% 80% at 85% 10%, rgba(27,93,240,.08) 0%, transparent 60%),
-    radial-gradient(50% 70% at 8% 90%, rgba(27,93,240,.06) 0%, transparent 60%),
-    #fff;
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;gap:28px}
+  .hero__art{order:-1;max-width:420px}
+  .strip{grid-template-columns:repeat(2,1fr)}
+  .strip div:nth-child(2){border-right:0}
+  .strip div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .steps,.courses,.gal{grid-template-columns:1fr}
+  .inc,.info{grid-template-columns:1fr;gap:28px}
+  .nav__links{display:none}
+  .nav__burger{display:flex}
+  .nav__links.is-open{display:flex;position:absolute;left:0;right:0;top:70px;background:#fff;border-bottom:1px solid var(--line);flex-direction:column;gap:0;padding:8px 24px 16px}
+  .nav__links.is-open a{padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .nav .btn{display:none}
 }
-.mv-head{text-align:center;margin-bottom:48px}
-.mv-head h2{font-size:clamp(1.9rem,3.4vw,2.7rem)}
-.mv-head .sec-tag{justify-content:center}
-.mv-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.mv-card{
-  background:rgba(255,255,255,.75);
-  border:1px solid var(--stroke);border-radius:22px;
-  padding:clamp(1.9rem,3.4vw,2.8rem);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  box-shadow:var(--shadow);
-  transition:transform .25s ease;
-  position:relative;overflow:hidden;
-}
-.mv-card::before{
-  content:"";position:absolute;top:0;left:0;right:0;height:4px;
-  background:linear-gradient(90deg,var(--accent),#6fa0ff);
-}
-.mv-card.v::before{background:linear-gradient(90deg,var(--green),#7ade79)}
-.mv-card:hover{transform:translateY(-5px)}
-.mv-card .tag{
-  display:inline-flex;align-items:center;gap:8px;
-  font-family:var(--font-display);font-size:.72rem;font-weight:700;letter-spacing:.28em;text-transform:uppercase;
-  color:var(--accent);margin-bottom:1.2rem;
-}
-.mv-card.v .tag{color:#1e8f1d}
-.mv-card p{color:#3d4c73;font-size:1.02rem;line-height:1.75}
-
-/* ---------- CTA ---------- */
-.cta-section{padding-top:0}
-.cta{
-  position:relative;overflow:hidden;text-align:center;
-  border-radius:26px;
-  background:linear-gradient(120deg,var(--accent-dark) 0%,var(--accent) 55%,#3f7bff 100%);
-  padding:clamp(3rem,6vw,4.6rem) clamp(1.8rem,4vw,3.5rem);
-  color:#fff;
-  box-shadow:0 34px 70px -30px rgba(16,50,130,.45);
-}
-.cta::before{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);
-  background-size:48px 48px;
-  mask-image:radial-gradient(70% 100% at 50% 0%,#000,transparent);
-}
-.cta h2{font-size:clamp(1.8rem,3.4vw,2.6rem);margin-bottom:14px;position:relative}
-.cta p{color:rgba(255,255,255,.9);max-width:480px;margin:0 auto 30px;position:relative;font-size:1.05rem}
-.cta .btn{background:#fff;color:var(--accent);position:relative;box-shadow:0 14px 30px -12px rgba(0,0,0,.35)}
-.cta .btn:hover{box-shadow:0 20px 40px -12px rgba(0,0,0,.45)}
-
-/* ---------- FOOTER ---------- */
-footer{background:var(--navy);color:#9fb0d8;padding:70px 0 36px}
-.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding-bottom:46px;border-bottom:1px solid rgba(255,255,255,.1)}
-.foot-brand{display:flex;align-items:center;gap:12px;margin-bottom:18px}
-.foot-brand img{width:40px;height:40px}
-.foot-brand b{font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:#fff;display:block;line-height:1.05}
-.foot-brand span{font-size:.54rem;font-weight:600;color:#9fb0d8;letter-spacing:.32em;text-transform:uppercase}
-.foot-grid p{font-size:.93rem;max-width:300px}
-.foot-grid h4{color:#fff;font-family:var(--font-display);font-size:.72rem;font-weight:700;letter-spacing:.26em;text-transform:uppercase;margin-bottom:18px}
-.foot-grid ul{list-style:none}
-.foot-grid li{margin-bottom:11px}
-.foot-grid a{color:#9fb0d8;text-decoration:none;font-size:.94rem;transition:color .15s}
-.foot-grid a:hover{color:#fff}
-.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:28px;font-size:.84rem;flex-wrap:wrap;gap:10px}
-.foot-bottom b{color:#d3ddf5;font-weight:500}
-
-/* ---------- RESPONSIVE ---------- */
-@media (max-width:960px){
-  .about-grid,.prog-head,.mv-grid{grid-template-columns:1fr}
-  .stats-grid{grid-template-columns:1fr 1fr}
-  .feat-grid{grid-template-columns:1fr}
-  .foot-grid{grid-template-columns:1fr 1fr}
-  .hero-bg{background-position:70% center}
-}
-@media (max-width:640px){
-  .wrap{padding:0 20px}
-  .nav-links li:not(:last-child){display:none}
-  .hero{padding:130px 0 90px}
-  section{padding:80px 0}
-  .stats-grid{grid-template-columns:1fr}
-  .foot-grid{grid-template-columns:1fr}
-  .acc-btn{grid-template-columns:40px 1fr 40px;gap:.9rem}
-  .acc-body-inner{grid-template-columns:40px 1fr;gap:.9rem}
-}
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
-}
+@media (max-width:600px){ .gal{grid-template-columns:1fr} }
 </style>
 </head>
 <body>
-<div class="progress" id="progress"></div>
 
-<!-- NAV -->
 <header>
-  <nav class="nav">
-    <a class="brand" href="#">
-      <img src="logo-icon.png" alt="SENTIA">
-      <span class="brand-name"><b>SENTIA</b><span>Human Institute</span></span>
+  <div class="wrap nav">
+    <a class="brand" href="#inicio">
+      <img src="assets/icon-sentia.png" alt="SENTIA">
+      <span><b>SENTIA</b><small>Human Institute</small></span>
     </a>
-    <ul class="nav-links">
-      <li><a href="#nosotros">Nosotros</a></li>
-      <li><a href="#programas">Programas</a></li>
-      <li><a href="#mision">Misión y Visión</a></li>
-      <li><a href="https://club.sentiamx.com/vip-auth.html" style="color:#2fbf2e;font-weight:700">Club VIP</a></li>
-      <li><a class="btn" href="#contacto">Contacto
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a></li>
-    </ul>
-  </nav>
+    <nav class="nav__links" id="nav-links">
+      <a href="#nosotros">Nosotros</a>
+      <a href="#cursos">Cursos</a>
+      <a href="#impartidos">Sesiones</a>
+      <a href="#club">Club</a>
+      <a href="#informacion">Contacto</a>
+    </nav>
+    <a class="btn btn--p" href="https://club.sentiamx.com/vip-auth.html">Entrar al Club</a>
+    <button class="nav__burger" id="burger" aria-label="Menú">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg" aria-hidden="true"></div>
-  <div class="wrap">
-    <div class="hero-inner">
-      <span class="kicker a a1">Instituto académico interdisciplinario</span>
-      <h1 class="a a2">Formación para comprender, educar y <em>transformar</em></h1>
-      <p class="lead a a3">Psicología, educación, neurociencias, salud mental y desarrollo humano — formación profesional de alto nivel para quienes trabajan con personas.</p>
-      <div class="hero-cta a a4">
-        <a class="btn" href="#programas">Conocer programas
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </a>
-        <a class="btn glass" href="#nosotros">Más información</a>
+<!-- ═══ PORTADA ═══ -->
+<div class="wrap" id="inicio">
+  <div class="hero">
+    <div>
+      <div class="kick"><i></i>Instituto académico interdisciplinario</div>
+      <h1>Formación para comprender, educar y <span>transformar</span></h1>
+      <p>Psicología, educación, neurociencias y desarrollo humano. Clases en vivo con especialistas, materiales listos para usar y certificado con folio verificable.</p>
+      <div class="hero__cta">
+        <a class="btn btn--p" href="#cursos">Ver cursos</a>
+        <a class="btn btn--g" href="#club">Conocer el Club</a>
       </div>
-      <div class="hero-chips a a5">
-        <span>Psicología</span><span>Educación</span><span>Neurociencias</span><span>Salud mental</span><span>Desarrollo humano</span>
+      <div class="hero__tags">
+        <span class="tag">Psicología</span><span class="tag">Educación</span><span class="tag">Neurociencias</span><span class="tag">Salud mental</span><span class="tag">Desarrollo humano</span>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- STATS -->
-<div class="stats">
-  <div class="wrap stats-grid">
-    <div class="stat reveal"><b><span class="count" data-to="5">0</span><i>+</i></b><span>Áreas de especialización</span></div>
-    <div class="stat reveal"><b><span class="count" data-to="100">0</span><i>%</i></b><span>Enfoque interdisciplinario</span></div>
-    <div class="stat reveal"><b>LATAM</b><span>Alcance regional</span></div>
-    <div class="stat reveal"><b><span class="count" data-to="2026">1990</span></b><span>Primera generación</span></div>
+    <div class="hero__art">
+      <svg viewBox="0 0 520 420" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración: acompañamiento psicológico">
+        <defs>
+          <linearGradient id="b1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dbe6ff"/><stop offset="1" stop-color="#eef3ff"/></linearGradient>
+          <linearGradient id="b2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfeed6"/><stop offset="1" stop-color="#e9f7ec"/></linearGradient>
+        </defs>
+        <path d="M120 300c-60-20-90-90-60-150S180 60 260 70s150 40 180 110-10 150-90 165-170-25-230-45z" fill="url(#b1)" opacity=".75"/>
+        <path d="M330 330c40-10 70-45 60-85s-60-55-95-35-40 70-20 95 35 33 55 25z" fill="url(#b2)" opacity=".9"/>
+        <g stroke="#1b3a7a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M150 330c0-40 26-70 60-70s60 30 60 70"/>
+          <circle cx="210" cy="222" r="30"/>
+          <path d="M186 205c-6-26 12-46 34-44s34 20 30 44"/>
+          <path d="M258 250c22 6 36 20 40 40"/>
+          <path d="M170 262c-16 10-24 26-26 44"/>
+          <path d="M300 300c-8-46 18-84 58-92"/>
+          <path d="M358 208c-16-4-28-16-30-32 16-6 32 0 40 12"/>
+          <path d="M358 208c14-10 20-26 16-42-18 2-30 12-34 26"/>
+          <path d="M300 300h96"/>
+          <circle cx="392" cy="300" r="7" fill="#2fbf2e" stroke="none"/>
+        </g>
+        <g stroke="#1b5df0" stroke-width="2" stroke-linecap="round" opacity=".7">
+          <path d="M96 140c10-12 26-12 36 0"/><path d="M86 160c16-20 46-20 62 0"/>
+          <path d="M410 120l10 10M424 108l4 4"/>
+        </g>
+        <text x="440" y="392" font-family="Georgia, serif" font-size="120" fill="#1b5df0" opacity=".10" text-anchor="end">Ψ</text>
+      </svg>
+    </div>
   </div>
 </div>
 
-<!-- NOSOTROS -->
-<section id="nosotros">
-  <div class="wrap about-grid">
-    <div class="about-left reveal">
-      <span class="sec-tag">Quiénes somos</span>
-      <h2>¿A qué nos dedicamos?</h2>
-      <p>Formación, actualización y especialización profesional que conecta ciencia con práctica.</p>
-    </div>
-    <div class="reveal">
-      <div class="about-copy">
-        <p><strong>SENTIA Human Institute</strong> es una propuesta académica interdisciplinaria orientada a fortalecer el bienestar, el aprendizaje y el crecimiento integral de las personas.</p>
-        <p>Nuestros contenidos conectan fundamentos teóricos con herramientas aplicables en contextos <strong>clínicos, educativos, familiares, sociales y organizacionales</strong>.</p>
-      </div>
-      <div class="feat-grid">
-        <div class="card">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2a4.5 4.5 0 0 0-4.4 5.5A4.5 4.5 0 0 0 4 16a4.5 4.5 0 0 0 5.5 4.4"/><path d="M14.5 2a4.5 4.5 0 0 1 4.4 5.5A4.5 4.5 0 0 1 20 16a4.5 4.5 0 0 1-5.5 4.4"/><path d="M12 2v20"/></svg></span>
-          <h4>Base científica</h4>
-          <p>Contenidos fundamentados en evidencia y neurociencias.</p>
-        </div>
-        <div class="card">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4L4.2 7.7l5.4-.8z"/></svg></span>
-          <h4>Ética profesional</h4>
-          <p>Formación con sensibilidad humana y compromiso.</p>
-        </div>
-        <div class="card">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
-          <h4>Visión latinoamericana</h4>
-          <p>Perspectiva regional con estándares internacionales.</p>
-        </div>
-        <div class="card">
-          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
-          <h4>Enfoque aplicado</h4>
-          <p>Herramientas para quienes trabajan con personas.</p>
-        </div>
-      </div>
-    </div>
+<div class="wrap">
+  <div class="strip">
+    <div><b>5</b><small>Áreas de especialización</small></div>
+    <div><b>100%</b><small>Enfoque interdisciplinario</small></div>
+    <div><b>LATAM</b><small>Alcance regional</small></div>
+    <div><b>2026</b><small>Primera generación</small></div>
   </div>
-</section>
+</div>
 
-<!-- PROGRAMAS -->
-<section id="programas" class="progs">
+<!-- ═══ CÓMO FUNCIONA ═══ -->
+<div class="soft" id="nosotros">
   <div class="wrap">
-    <div class="prog-head">
-      <div class="reveal">
-        <span class="sec-tag">Oferta académica</span>
-        <h2>¿Qué ofreceremos?</h2>
-      </div>
-      <p class="reveal">Cursos iniciales enfocados en necesidades actuales de atención clínica, educación, trabajo, familia y bienestar emocional.</p>
-    </div>
-    <div class="acc reveal" id="acc">
-      <div class="acc-item open">
-        <button class="acc-btn" aria-expanded="true">
-          <span class="num">01</span>
-          <h3>Atención clínica</h3>
-          <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </button>
-        <div class="acc-body">
-          <div class="acc-body-inner">
-            <p>Evaluación, diagnóstico e intervención en contextos clínicos con enfoque integral, conectando la evidencia científica con la práctica terapéutica real.</p>
-            <div class="mini"><span>Evaluación</span><span>Diagnóstico</span><span>Intervención</span></div>
-          </div>
+    <section style="text-align:center">
+      <div class="eyebrow">Cómo funciona</div>
+      <h2 style="max-width:22ch;margin-left:auto;margin-right:auto">Aprende hoy, aplícalo mañana</h2>
+      <p class="sub" style="margin:0 auto">Formación breve y concreta para quienes trabajan con personas: contextos clínicos, educativos, familiares y organizacionales.</p>
+      <div class="steps">
+        <div>
+          <svg viewBox="0 0 56 56" fill="none"><circle cx="16" cy="18" r="13" fill="#cfe0ff" opacity=".85"/><circle cx="44" cy="16" r="7" fill="#cdeed3"/><g stroke="#1b3a7a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="26" cy="24" r="12"/><path d="m38 36 8 8"/></g></svg>
+          <h3>Elige tu curso</h3><p>Programas cortos por área de trabajo, con lo que sí vas a usar.</p>
+        </div>
+        <div>
+          <svg viewBox="0 0 56 56" fill="none"><circle cx="40" cy="16" r="13" fill="#cfe0ff" opacity=".85"/><circle cx="16" cy="40" r="7" fill="#cdeed3"/><g stroke="#1b3a7a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 44l12-6 12 6 12-6V16l-12 6-12-6-12 6z"/><path d="M24 38V16M36 44V22"/></g></svg>
+          <h3>Toma la clase</h3><p>En vivo con especialistas o cuando puedas, con la grabación.</p>
+        </div>
+        <div>
+          <svg viewBox="0 0 56 56" fill="none"><circle cx="18" cy="40" r="13" fill="#cfe0ff" opacity=".85"/><circle cx="42" cy="18" r="7" fill="#cdeed3"/><g stroke="#1b3a7a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="14" width="36" height="32" rx="4"/><path d="M10 24h36M20 8v10M36 8v10"/></g></svg>
+          <h3>Obtén tu certificado</h3><p>Con folio y código QR, verificable en línea por quien lo pida.</p>
         </div>
       </div>
-      <div class="acc-item">
-        <button class="acc-btn" aria-expanded="false">
-          <span class="num">02</span>
-          <h3>Educación</h3>
-          <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </button>
-        <div class="acc-body">
-          <div class="acc-body-inner">
-            <p>Herramientas para docentes y educadores que buscan transformar el aprendizaje dentro y fuera del aula.</p>
-            <div class="mini"><span>Docencia</span><span>Aprendizaje</span><span>Innovación educativa</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="acc-item">
-        <button class="acc-btn" aria-expanded="false">
-          <span class="num">03</span>
-          <h3>Contexto laboral</h3>
-          <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </button>
-        <div class="acc-body">
-          <div class="acc-body-inner">
-            <p>Competencias emocionales y psicológicas para construir organizaciones más saludables y humanas.</p>
-            <div class="mini"><span>Bienestar laboral</span><span>Liderazgo</span><span>Clima organizacional</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="acc-item">
-        <button class="acc-btn" aria-expanded="false">
-          <span class="num">04</span>
-          <h3>Dinámicas familiares</h3>
-          <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </button>
-        <div class="acc-body">
-          <div class="acc-body-inner">
-            <p>Comprensión profunda de la psicología familiar y herramientas para el fortalecimiento relacional.</p>
-            <div class="mini"><span>Familia</span><span>Vínculos</span><span>Crianza</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="acc-item">
-        <button class="acc-btn" aria-expanded="false">
-          <span class="num">05</span>
-          <h3>Bienestar emocional</h3>
-          <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </button>
-        <div class="acc-body">
-          <div class="acc-body-inner">
-            <p>Autocuidado, resiliencia y crecimiento personal con base científica para la vida diaria.</p>
-            <div class="mini"><span>Autocuidado</span><span>Resiliencia</span><span>Regulación emocional</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="acc-item">
-        <button class="acc-btn" aria-expanded="false">
-          <span class="num">06</span>
-          <h3>Desarrollo humano</h3>
-          <span class="pm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
-        </button>
-        <div class="acc-body">
-          <div class="acc-body-inner">
-            <p>Etapas vitales, crisis y transformaciones a lo largo del ciclo de vida de las personas.</p>
-            <div class="mini"><span>Ciclo de vida</span><span>Crisis vitales</span><span>Crecimiento</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </section>
   </div>
-</section>
+</div>
 
-<!-- MISIÓN / VISIÓN -->
-<section class="mv" id="mision">
-  <div class="wrap">
-    <div class="mv-head reveal">
-      <span class="sec-tag">Identidad</span>
-      <h2>Misión y visión</h2>
-    </div>
-    <div class="mv-grid">
-      <article class="mv-card reveal">
-        <span class="tag">Misión</span>
-        <p>Brindar formación, actualización y especialización profesional de alta calidad en psicología, educación, neurociencias, salud mental y desarrollo humano, integrando conocimiento científico, ética, innovación y sensibilidad humana para fortalecer las competencias de quienes trabajan con personas, familias, comunidades e instituciones, generando un impacto positivo en el bienestar y el aprendizaje.</p>
+<!-- ═══ CURSOS ═══ -->
+<div class="wrap" id="cursos">
+  <section>
+    <div class="eyebrow">Oferta académica</div>
+    <h2>Cursos que estamos impartiendo</h2>
+    <p class="sub">Cada curso incluye clases en vivo, grabación, materiales descargables, comunidad y certificado con folio verificable.</p>
+    <div class="courses">
+
+      <article class="course">
+        <div class="course__img" style="background-image:url('assets/cursos/guarda-custodia.jpg')"><span>Psicología forense</span></div>
+        <div class="course__body">
+          <h3>Evaluación psicológica en guarda y custodia</h3>
+          <p>Entrevista, integración de fuentes y redacción del informe pericial.</p>
+          <div class="chips"><span class="chip">En vivo + grabación</span><span class="chip">Certificado con QR</span><span class="chip">Manual y checklist</span></div>
+        </div>
+        <div class="course__foot"><span>3 clases · 6 h</span><b>$550</b></div>
       </article>
-      <article class="mv-card v reveal">
-        <span class="tag">Visión</span>
-        <p>Ser un instituto de referencia en Latinoamérica por la excelencia de su formación académica interdisciplinaria, reconocido por impulsar profesionales comprometidos con el bienestar integral, la inclusión, la innovación y la transformación social, contribuyendo al desarrollo de comunidades más saludables, conscientes y humanas.</p>
-      </article>
-    </div>
-  </div>
-</section>
 
-<!-- CTA -->
-<!-- CLUB SENTIA -->
-<section id="club" style="background:linear-gradient(120deg,var(--navy),var(--accent-dark));padding:84px 0;color:#fff">
-  <div class="wrap" style="max-width:1120px;margin:0 auto;padding:0 20px;display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center">
-    <div>
-      <span style="display:inline-block;background:rgba(47,191,46,.18);color:var(--green);font-weight:700;font-size:.8rem;letter-spacing:.06em;padding:6px 14px;border-radius:99px;margin-bottom:14px">MEMBRESÍA</span>
-      <h2 style="font-family:var(--font-display);font-size:clamp(1.6rem,3.4vw,2.3rem);line-height:1.2;margin-bottom:14px">Club SENTIA: todos nuestros cursos en un solo lugar</h2>
-      <p style="opacity:.85;line-height:1.65;margin-bottom:10px">Accede a los cursos grabados de SENTIA Human Institute con sus manuales, formatos y herramientas descargables, avanza a tu ritmo y obtén tu certificado digital con QR y folio válido al concluir cada curso.</p>
-      <ul style="list-style:none;margin:18px 0 26px;display:grid;gap:10px;font-size:.95rem">
-        <li>✓ Cursos completos en video, disponibles 24/7</li>
-        <li>✓ Manuales, formatos y herramientas descargables</li>
-        <li>✓ Certificado digital con QR y folio verificable</li>
-        <li>✓ Comunidad VIP de WhatsApp</li>
-      </ul>
-      <div style="display:flex;gap:12px;flex-wrap:wrap">
-        <a href="https://club.sentiamx.com/vip-auth.html" style="background:var(--green);color:#fff;font-weight:700;padding:14px 26px;border-radius:12px;text-decoration:none">Regístrate gratis →</a>
-        <a href="https://club.sentiamx.com/vip-auth.html" style="background:rgba(255,255,255,.12);color:#fff;font-weight:600;padding:14px 26px;border-radius:12px;text-decoration:none;border:1px solid rgba(255,255,255,.25)">Ya tengo cuenta</a>
-      </div>
-    </div>
-    <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:26px">
-      <p style="font-weight:700;font-family:var(--font-display);margin-bottom:14px">Cursos incluidos</p>
-      <ul style="list-style:none;display:grid;gap:10px;font-size:.9rem;opacity:.92">
-        <li>• Manejo de Conductas Difíciles en Niños con TEA</li>
-        <li>• Evaluación Psicológica en Guarda y Custodia</li>
-        <li>• TDAH y Dificultades de Aprendizaje en el Aula</li>
-        <li>• Primeros Auxilios Psicológicos</li>
-        <li>• Valoración del Riesgo Suicida</li>
-        <li>• Prevención del Bullying y Desarrollo Socioemocional</li>
-        <li>• Salud Mental Laboral: Burnout y Riesgos Psicosociales</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section class="cta-section" id="contacto">
-  <div class="wrap">
-    <div class="cta reveal">
-      <h2>Sé parte de la primera generación</h2>
-      <p>Déjanos tus datos y recibe antes que nadie la información de nuestros cursos iniciales.</p>
-      <a class="btn" href="mailto:contacto@sentiahumaninstitute.com">Escríbenos
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="wrap">
-    <div class="foot-grid">
-      <div>
-        <div class="foot-brand">
-          <img src="logo-icon.png" alt="SENTIA Human Institute">
-          <div><b>SENTIA</b><span>Human Institute</span></div>
+      <article class="course">
+        <div class="course__img" style="background-image:url('assets/cursos/primeros-auxilios.jpg')"><span>Intervención psicológica</span></div>
+        <div class="course__body">
+          <h3>Primeros auxilios psicológicos</h3>
+          <p>Contención emocional, detección de riesgo y canalización oportuna.</p>
+          <div class="chips"><span class="chip">En vivo + grabación</span><span class="chip">Certificado con QR</span><span class="chip">Formatos de apoyo</span></div>
         </div>
-        <p>Formación para comprender, educar y transformar. Psicología · Educación · Salud mental · Desarrollo humano.</p>
+        <div class="course__foot"><span>5 clases · 8 h</span><b>$550</b></div>
+      </article>
+
+      <article class="course">
+        <div class="course__img" style="background-image:url('assets/cursos/salud-laboral.jpg')"><span>Psicología laboral</span></div>
+        <div class="course__body">
+          <h3>Salud psicológica laboral</h3>
+          <p>Riesgos psicosociales, liderazgo y rutas de apoyo en la organización.</p>
+          <div class="chips"><span class="chip">En vivo + grabación</span><span class="chip">Certificado con QR</span><span class="chip">Matriz NOM-035</span></div>
+        </div>
+        <div class="course__foot"><span>3 clases · 6 h</span><b>$550</b></div>
+      </article>
+
+    </div>
+  </section>
+</div>
+
+<!-- ═══ QUÉ INCLUYE UN CURSO ═══ -->
+<div class="soft">
+  <div class="wrap">
+    <section>
+      <div class="inc">
+        <div>
+          <div class="eyebrow">Qué incluye</div>
+          <h2>Evaluación psicológica en guarda y custodia</h2>
+          <p class="sub">Los puntos más relevantes del programa, con enfoque claro y de aplicación inmediata.</p>
+          <div class="inc__list">
+            <div><span class="dot"></span>Fundamentos y marco de la evaluación en materia familiar</div>
+            <div><span class="dot"></span>Entrevista con los adultos y con el menor sin contaminar el testimonio</div>
+            <div><span class="dot"></span>Integración de fuentes: entrevistas, observación y pruebas</div>
+            <div><span class="dot"></span>Redacción del informe pericial que resiste el contradictorio</div>
+          </div>
+          <div class="chips" style="margin-top:22px">
+            <span class="chip">En vivo + grabación</span><span class="chip">Clases pregrabadas</span><span class="chip">Certificado con folio y QR</span><span class="chip">Grupo de WhatsApp</span><span class="chip">Materiales descargables</span>
+          </div>
+        </div>
+        <div class="inc__card">
+          <div class="inc__cover" style="background-image:url('assets/cursos/guarda-custodia.jpg')"></div>
+          <div class="inc__prof">
+            <div>
+              <b>Mtra. Carla Yanin Martínez Abrego</b>
+              <small>Instructora · Psicología forense</small>
+            </div>
+            <a class="btn btn--p" href="#informacion">Solicitar información</a>
+          </div>
+        </div>
       </div>
-      <div>
-        <h4>Instituto</h4>
-        <ul>
-          <li><a href="#nosotros">Quiénes somos</a></li>
-          <li><a href="#programas">Programas</a></li>
-          <li><a href="#mision">Misión y visión</a></li>
-        </ul>
+    </section>
+  </div>
+</div>
+
+<!-- ═══ SESIONES IMPARTIDAS ═══ -->
+<div class="wrap" id="impartidos">
+  <section>
+    <div class="eyebrow">Sesiones impartidas</div>
+    <h2>Así trabajamos en cada curso</h2>
+    <p class="sub">Grupos reducidos, clases en vivo y preguntas sobre casos reales. Estas son algunas de las sesiones que hemos cerrado.</p>
+    <div class="gal">
+      <figure>
+        <img src="assets/sesiones/people-analytics.jpg" alt="Sesión del curso People Analytics" loading="lazy">
+        <figcaption><b>People Analytics</b>Indicadores, rotación y decisiones de talento · septiembre 2026</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/sesiones/salud-mental-laboral.jpg" alt="Sesión del curso Salud Mental Laboral" loading="lazy">
+        <figcaption><b>Salud mental laboral</b>Burnout y riesgos psicosociales · septiembre 2026</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/sesiones/guarda-custodia.jpg" alt="Sesión del curso de guarda y custodia" loading="lazy">
+        <figcaption><b>Guarda y custodia</b>Entrevista, integración e informe · septiembre 2026</figcaption>
+      </figure>
+    </div>
+  </section>
+</div>
+
+<!-- ═══ SOLICITAR INFORMACIÓN ═══ -->
+<div class="soft" id="informacion">
+  <div class="wrap">
+    <section>
+      <div class="info">
+        <div>
+          <div class="eyebrow">Contacto</div>
+          <h2>Pide informes del curso que te interesa</h2>
+          <p class="sub">Te compartimos fecha, horario, temario y forma de pago. También puedes escribirnos directo por WhatsApp.</p>
+          <div class="hero__cta">
+            <a class="btn btn--wa" id="wa-directo" href="#" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+            <a class="btn btn--g" href="https://www.facebook.com/" target="_blank" rel="noopener">Ver nuestra página</a>
+          </div>
+        </div>
+        <form class="form" id="form-info">
+          <div class="field"><label for="f-nombre">Nombre completo</label><input id="f-nombre" name="nombre" required placeholder="Tu nombre"></div>
+          <div class="field"><label for="f-tel">WhatsApp</label><input id="f-tel" name="tel" required inputmode="tel" placeholder="10 dígitos"></div>
+          <div class="field"><label for="f-curso">Curso de interés</label>
+            <select id="f-curso" name="curso">
+              <option>Evaluación psicológica en guarda y custodia</option>
+              <option>Primeros auxilios psicológicos</option>
+              <option>Salud psicológica laboral</option>
+              <option>Membresía del Club SENTIA</option>
+              <option>Otro / no estoy seguro</option>
+            </select>
+          </div>
+          <div class="field"><label for="f-msg">Mensaje (opcional)</label><textarea id="f-msg" name="mensaje" placeholder="Cuéntanos en qué trabajas o qué te interesa"></textarea></div>
+          <button class="btn btn--p" type="submit">Enviar solicitud</button>
+          <small>Al enviar se abre WhatsApp con tus datos para que un asesor te atienda.</small>
+        </form>
       </div>
-      <div>
-        <h4>Contacto</h4>
-        <ul>
-          <li><a href="mailto:contacto@sentiahumaninstitute.com">contacto@sentiahumaninstitute.com</a></li>
-          <li><a href="#">Instagram</a></li>
-          <li><a href="#">Facebook</a></li>
-        </ul>
+    </section>
+  </div>
+</div>
+
+<!-- ═══ CLUB ═══ -->
+<div class="wrap" id="club">
+  <section class="cta-band">
+    <div class="eyebrow">Club SENTIA</div>
+    <h2>Todos los cursos en una sola membresía</h2>
+    <p class="sub">Biblioteca completa de cursos, clases en vivo, herramientas profesionales listas para usar y certificados con folio verificable.</p>
+    <a class="btn btn--p" href="https://club.sentiamx.com/vip-auth.html">Quiero la membresía</a>
+  </section>
+</div>
+
+<footer class="soft">
+  <div class="wrap">
+    <div class="foot">
+      <a class="brand" href="#inicio"><img src="assets/icon-sentia.png" alt="SENTIA"><span><b>SENTIA</b><small>Human Institute</small></span></a>
+      <div style="display:flex;gap:48px;flex-wrap:wrap">
+        <div class="foot__col"><b>Instituto</b><a href="#nosotros">Nosotros</a><a href="#cursos">Cursos</a><a href="#club">Club SENTIA</a></div>
+        <div class="foot__col"><b>Contacto</b><a href="#informacion">Pedir informes</a><a href="https://www.facebook.com/" target="_blank" rel="noopener">Facebook</a><a id="wa-pie" href="#" target="_blank" rel="noopener">WhatsApp</a></div>
+        <div class="foot__col"><b>Certificados</b><a href="verificar.html">Verificar folio</a><a href="https://club.sentiamx.com/vip-auth.html">Entrar al Club</a></div>
       </div>
     </div>
-    <div class="foot-bottom">
-      <span>© 2026 <b>SENTIA Human Institute</b>. Todos los derechos reservados.</span>
-      <span>Tehuacán, Puebla · México</span>
-    </div>
+    <div>© 2026 SENTIA Human Institute · Certificados verificables en sentiamx.com/verificar</div>
   </div>
 </footer>
 
 <script>
-const io = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
-},{threshold:.12});
-document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+/* ═══ Configuración: cambia aquí el WhatsApp y el link de Facebook ═══ */
+const SENTIA_WA = '52XXXXXXXXXX';   // 52 + 10 dígitos, sin espacios
+const SENTIA_FB = 'https://www.facebook.com/';
 
-const bar = document.getElementById('progress');
-addEventListener('scroll',()=>{
-  const h = document.documentElement;
-  bar.style.width = (h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
-},{passive:true});
+document.querySelectorAll('a[href="https://www.facebook.com/"]').forEach(a => a.href = SENTIA_FB);
+const waBase = 'https://wa.me/' + SENTIA_WA + '?text=';
+document.getElementById('wa-directo').href = waBase + encodeURIComponent('Hola SENTIA, quiero información de los cursos.');
+document.getElementById('wa-pie').href = waBase + encodeURIComponent('Hola SENTIA, quiero información de los cursos.');
 
-const cio = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(!e.isIntersecting) return;
-    cio.unobserve(e.target);
-    const el = e.target, to = +el.dataset.to, from = +el.textContent, t0 = performance.now(), dur = 1400;
-    const tick = (t)=>{
-      const p = Math.min((t-t0)/dur,1), ease = 1-Math.pow(1-p,3);
-      el.textContent = Math.round(from+(to-from)*ease);
-      if(p<1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  });
-},{threshold:.6});
-document.querySelectorAll('.count').forEach(el=>cio.observe(el));
+/* Menú en celular */
+const burger = document.getElementById('burger');
+burger.addEventListener('click', () => document.getElementById('nav-links').classList.toggle('is-open'));
+document.querySelectorAll('#nav-links a').forEach(a => a.addEventListener('click', () => document.getElementById('nav-links').classList.remove('is-open')));
 
-document.querySelectorAll('.acc-item').forEach(item=>{
-  const btn = item.querySelector('.acc-btn'), body = item.querySelector('.acc-body');
-  if(item.classList.contains('open')) body.style.maxHeight = body.scrollHeight+'px';
-  btn.addEventListener('click',()=>{
-    const open = item.classList.contains('open');
-    document.querySelectorAll('.acc-item.open').forEach(o=>{
-      o.classList.remove('open');
-      o.querySelector('.acc-body').style.maxHeight = null;
-      o.querySelector('.acc-btn').setAttribute('aria-expanded','false');
-    });
-    if(!open){
-      item.classList.add('open');
-      body.style.maxHeight = body.scrollHeight+'px';
-      btn.setAttribute('aria-expanded','true');
-    }
-  });
+/* El formulario abre WhatsApp con los datos */
+document.getElementById('form-info').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target;
+  const texto = 'Hola SENTIA, quiero información.\n' +
+    'Nombre: ' + f.nombre.value.trim() + '\n' +
+    'WhatsApp: ' + f.tel.value.trim() + '\n' +
+    'Curso: ' + f.curso.value +
+    (f.mensaje.value.trim() ? '\nMensaje: ' + f.mensaje.value.trim() : '');
+  window.open(waBase + encodeURIComponent(texto), '_blank', 'noopener');
 });
 </script>
 </body>
