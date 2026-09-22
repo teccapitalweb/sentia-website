@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SENTIA Human Institute — Formación en psicología, educación y desarrollo humano</title>
+<meta name="description" content="Cursos de psicología, educación, salud mental y desarrollo humano. Clases en vivo, materiales descargables y certificado con folio verificable.">
+<meta property="og:title" content="SENTIA Human Institute">
+<meta property="og:description" content="Formación para comprender, educar y transformar.">
+<meta property="og:image" content="https://sentiamx.com/assets/og-sentia.jpg">
+<meta property="og:url" content="https://sentiamx.com/">
+<link rel="icon" href="assets/icon-sentia.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═══ SENTIA · tema minimalista (mismos colores que el Club) ═══ */
+:root{
+  --bg:#ffffff; --soft:#f5f7fb; --line:#e4e8f0; --line-2:#d7deea;
+  --text:#0e1d40; --muted:#5b6b8f; --faint:#8793ad;
+  --accent:#1b5df0; --accent-soft:#eef3ff; --ok:#1f9d24; --ok-soft:#e9f7ea;
+  --max:1160px; --r:14px;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+#nosotros,#areas,#cursos,#impartidos,#membresia,#informacion{scroll-margin-top:86px}
+body{background:var(--bg);color:var(--text);font-family:'Instrument Sans',system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+h1,h2,h3{font-family:'Sora',sans-serif;font-weight:600;letter-spacing:-.03em;line-height:1.15}
+h2{font-size:clamp(26px,3.2vw,34px);margin:12px 0}
+.sub{color:var(--muted);font-size:clamp(15px,1.4vw,16px);max-width:62ch;line-height:1.6}
+section{padding:clamp(54px,7vw,84px) 0}
+.soft{background:var(--soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:46px;padding:0 22px;border-radius:10px;font-size:14.5px;font-weight:600;border:1px solid transparent;cursor:pointer;transition:filter .15s,border-color .15s}
+.btn--p{background:var(--accent);color:#fff}
+.btn--p:hover{filter:brightness(.94)}
+.btn--g{border-color:var(--line-2);color:var(--text);background:#fff}
+.btn--g:hover{border-color:var(--accent);color:var(--accent)}
+.btn--wa{background:var(--ok);color:#fff}
+.btn .ic{width:16px;height:16px}
+
+/* Navegación */
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav{height:70px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand img{width:32px;height:32px}
+.brand b{font-family:'Sora',sans-serif;font-weight:600;font-size:16px;letter-spacing:.06em}
+.brand small{display:block;font-size:10px;color:var(--muted);letter-spacing:.16em;text-transform:uppercase}
+.nav__links{display:flex;gap:26px;font-size:14.5px;color:var(--muted)}
+.nav__links a:hover{color:var(--text)}
+.nav__burger{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:10px;background:#fff;align-items:center;justify-content:center}
+
+/* Portada */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;padding:clamp(48px,6vw,76px) 0 clamp(40px,5vw,60px)}
+.kick{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ok);font-weight:700}
+.kick i{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+.hero h1{font-size:clamp(34px,4.6vw,56px);margin:18px 0}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--muted);font-size:clamp(15.5px,1.5vw,17.5px);line-height:1.6;max-width:52ch}
+.hero__cta{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+.hero__tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:34px}
+.tag{font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:6px 14px}
+
+/* Franja de datos */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.strip div{padding:22px 24px;border-right:1px solid var(--line)}
+.strip div:last-child{border-right:0}
+.strip b{font-family:'Sora',sans-serif;font-size:26px;font-weight:600;display:block}
+.strip small{font-size:11.5px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+
+/* Pasos */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:40px;text-align:center}
+.steps svg{width:76px;height:76px;margin:0 auto}
+.steps h3{font-size:17px;margin:14px 0 8px}
+.steps p{font-size:14px;color:var(--muted);line-height:1.55}
+
+/* Cursos */
+.courses{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px;align-items:start}
+.course{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:border-color .15s}
+.course:hover{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.course__img{height:152px;background:linear-gradient(135deg,#0d2a6b,#1b3fa8);position:relative;background-size:cover;background-position:center}
+.course__img span{position:absolute;left:14px;top:14px;background:#fff;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:4px 10px}
+.course__img::after{content:'Ψ';position:absolute;right:12px;bottom:-30px;font:110px/1 Georgia,serif;color:#fff;opacity:.12}
+.course__body{padding:18px}
+.course__body h3{font-size:17px;line-height:1.35;margin-bottom:8px}
+.course__body p{font-size:13.5px;color:var(--muted);line-height:1.55}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.chip{font-size:11.5px;color:var(--accent);background:var(--accent-soft);border:1px solid #dbe6ff;border-radius:999px;padding:4px 10px;font-weight:600}
+.course__foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:14px 18px;font-size:13.5px;color:var(--muted)}
+.course__foot b{font-family:'Sora',sans-serif;color:var(--text);font-size:17px;font-weight:600}
+
+/* Detalle "Incluye" */
+.inc{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-top:34px}
+.inc__list{display:flex;flex-direction:column;gap:10px;margin-top:16px;font-size:14.5px;color:var(--muted)}
+.inc__list div{display:flex;gap:10px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--ok);margin-top:8px;flex-shrink:0}
+.inc__card{border:1px solid var(--line);border-radius:16px;background:#fff;padding:20px}
+.inc__cover{height:160px;border-radius:12px;background:linear-gradient(135deg,#0d2a6b,#1b3fa8);background-size:cover;background-position:center}
+.inc__prof{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-top:16px;flex-wrap:wrap}
+.inc__prof b{font-family:'Sora',sans-serif;font-size:16.5px;font-weight:600;display:block}
+.inc__prof small{color:var(--muted);font-size:13.5px}
+
+/* Cursos impartidos (capturas reales de las sesiones) */
+.sesion{display:grid;grid-template-columns:1.1fr 1fr;gap:44px;align-items:center}
+.sesion__shot{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--soft)}
+.sesion__shot img{width:100%;display:block;aspect-ratio:4/3;object-fit:cover}
+
+/* Solicitar información */
+.info{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.form{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:12px}
+.field label{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;height:44px;border:1px solid var(--line-2);border-radius:10px;padding:0 13px;font:inherit;font-size:14.5px;color:var(--text);background:#fff}
+.field textarea{height:86px;padding:11px 13px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
+.form small{color:var(--faint);font-size:12px}
+
+/* Cierre y pie */
+.cta-band{text-align:center}
+.cta-band h2{max-width:20ch;margin:12px auto}
+.cta-band .sub{margin:0 auto 26px}
+footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
+.foot{display:flex;justify-content:space-between;gap:36px;border-bottom:1px solid var(--line);padding-bottom:28px;margin-bottom:20px;flex-wrap:wrap}
+.foot__col b{display:block;color:var(--text);font-weight:600;margin-bottom:8px}
+.foot__col a{display:block;padding:3px 0}
+.foot__col a:hover{color:var(--accent)}
+
+.areas{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:38px}
+.area{border:1px solid var(--line);border-radius:var(--r);padding:22px;background:#fff}
+.area__ic{width:40px;height:40px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin-bottom:14px}
+.area__ic svg{width:20px;height:20px}
+.area h3{font-size:16px;margin-bottom:8px}
+.area p{font-size:13.5px;color:var(--muted);line-height:1.55}
+.course__foot--btn{padding:6px 18px 0}
+.course__foot--btn .btn{width:100%;height:40px;font-size:13.5px}
+.mem{display:grid;grid-template-columns:1fr 1.05fr;gap:48px;align-items:center}
+.redes{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.red{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-2);border-radius:999px;padding:9px 16px;font-size:13.5px;font-weight:600;background:#fff}
+.red svg{width:18px;height:18px}
+.red:hover{border-color:var(--accent);color:var(--accent)}
+.shot{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}
+.shot img{width:100%;display:block;background:var(--soft)}
+.shot figcaption{padding:12px 16px;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;gap:28px}
+  .hero__art{order:-1;max-width:420px}
+  .strip{grid-template-columns:repeat(2,1fr)}
+  .strip div:nth-child(2){border-right:0}
+  .strip div:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .steps,.courses,.areas{grid-template-columns:1fr}
+  .sesion{grid-template-columns:1fr;gap:24px}
+  .sesion__shot{order:-1}
+  .mem{grid-template-columns:1fr;gap:28px}
+  .inc,.info{grid-template-columns:1fr;gap:28px}
+  .nav__links{display:none}
+  .nav__burger{display:flex}
+  .nav__links.is-open{display:flex;position:absolute;left:0;right:0;top:70px;background:#fff;border-bottom:1px solid var(--line);flex-direction:column;gap:0;padding:8px 24px 16px}
+  .nav__links.is-open a{padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .nav .btn{display:none}
+}
+@media (max-width:600px){ .gal{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#inicio">
+      <img src="assets/icon-sentia.png" alt="SENTIA">
+      <span><b>SENTIA</b><small>Human Institute</small></span>
+    </a>
+    <nav class="nav__links" id="nav-links">
+      <a href="#areas">Nosotros</a>
+      <a href="#cursos">Cursos</a>
+      <a href="#impartidos">Sesiones</a>
+      <a href="#membresia">Membresía</a>
+      <a href="#informacion">Contacto</a>
+    </nav>
+    <a class="btn btn--p" href="https://club.sentiamx.com/vip-auth.html">Acceso VIP</a>
+    <button class="nav__burger" id="burger" aria-label="Menú">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ═══ PORTADA ═══ -->
+<div class="wrap" id="inicio">
+  <div class="hero">
+    <div>
+      <div class="kick"><i></i>Instituto académico interdisciplinario</div>
+      <h1>Formación para comprender, educar y <span>transformar</span></h1>
+      <p>Psicología, educación, neurociencias y desarrollo humano. Clases en vivo con especialistas, materiales listos para usar y certificado con folio verificable.</p>
+      <div class="hero__cta">
+        <a class="btn btn--p" href="#cursos">Ver cursos</a>
+        <a class="btn btn--g" href="#membresia">Conocer la membresía</a>
+      </div>
+      <div class="hero__tags">
+        <span class="tag">Psicología</span><span class="tag">Educación</span><span class="tag">Neurociencias</span><span class="tag">Salud mental</span><span class="tag">Desarrollo humano</span>
+      </div>
+    </div>
+    <div class="hero__art">
+      <svg viewBox="0 0 520 420" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración: acompañamiento psicológico">
+        <defs>
+          <linearGradient id="b1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#dbe6ff"/><stop offset="1" stop-color="#eef3ff"/></linearGradient>
+          <linearGradient id="b2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfeed6"/><stop offset="1" stop-color="#e9f7ec"/></linearGradient>
+        </defs>
+        <path d="M120 300c-60-20-90-90-60-150S180 60 260 70s150 40 180 110-10 150-90 165-170-25-230-45z" fill="url(#b1)" opacity=".75"/>
+        <path d="M330 330c40-10 70-45 60-85s-60-55-95-35-40 70-20 95 35 33 55 25z" fill="url(#b2)" opacity=".9"/>
+        <g stroke="#1b3a7a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M150 330c0-40 26-70 60-70s60 30 60 70"/>
+          <circle cx="210" cy="222" r="30"/>
+          <path d="M186 205c-6-26 12-46 34-44s34 20 30 44"/>
+          <path d="M258 250c22 6 36 20 40 40"/>
+          <path d="M170 262c-16 10-24 26-26 44"/>
+          <path d="M300 300c-8-46 18-84 58-92"/>
+          <path d="M358 208c-16-4-28-16-30-32 16-6 32 0 40 12"/>
+          <path d="M358 208c14-10 20-26 16-42-18 2-30 12-34 26"/>
+          <path d="M300 300h96"/>
+          <circle cx="392" cy="300" r="7" fill="#2fbf2e" stroke="none"/>
+        </g>
+        <g stroke="#1b5df0" stroke-width="2" stroke-linecap="round" opacity=".7">
+          <path d="M96 140c10-12 26-12 36 0"/><path d="M86 160c16-20 46-20 62 0"/>
+          <path d="M410 120l10 10M424 108l4 4"/>
+        </g>
+        <text x="440" y="392" font-family="Georgia, serif" font-size="120" fill="#1b5df0" opacity=".10" text-anchor="end">Ψ</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="strip">
+    <div><b>+20</b><small>Materiales descargables</small></div>
+    <div><b>LATAM</b><small>Alcance regional</small></div>
+    <div><b>Especialistas</b><small>Con experiencia en campo</small></div>
+    <div><b>2026</b><small>Primera generación</small></div>
+  </div>
+</div>
+
+<!-- ═══ CÓMO FUNCIONA ═══ -->
+<div class="soft" id="nosotros">
+  <div class="wrap">
+    <section style="text-align:center">
+      <div class="eyebrow">Cómo funciona</div>
+      <h2 style="max-width:22ch;margin-left:auto;margin-right:auto">Aprende hoy, aplícalo mañana</h2>
+      <p class="sub" style="margin:0 auto">Formación breve y concreta para quienes trabajan con personas: contextos clínicos, educativos, familiares y organizacionales.</p>
+      <div class="steps">
+        <div>
+          <svg viewBox="0 0 56 56" fill="none"><circle cx="16" cy="18" r="13" fill="#cfe0ff" opacity=".85"/><circle cx="44" cy="16" r="7" fill="#cdeed3"/><g stroke="#1b3a7a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="26" cy="24" r="12"/><path d="m38 36 8 8"/></g></svg>
+          <h3>Elige tu curso</h3><p>Programas cortos por área de trabajo, con lo que sí vas a usar.</p>
+        </div>
+        <div>
+          <svg viewBox="0 0 56 56" fill="none"><circle cx="40" cy="16" r="13" fill="#cfe0ff" opacity=".85"/><circle cx="16" cy="40" r="7" fill="#cdeed3"/><g stroke="#1b3a7a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 44l12-6 12 6 12-6V16l-12 6-12-6-12 6z"/><path d="M24 38V16M36 44V22"/></g></svg>
+          <h3>Toma la clase</h3><p>En vivo con especialistas o cuando puedas, con la grabación.</p>
+        </div>
+        <div>
+          <svg viewBox="0 0 56 56" fill="none"><circle cx="18" cy="40" r="13" fill="#cfe0ff" opacity=".85"/><circle cx="42" cy="18" r="7" fill="#cdeed3"/><g stroke="#1b3a7a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="14" width="36" height="32" rx="4"/><path d="M10 24h36M20 8v10M36 8v10"/></g></svg>
+          <h3>Obtén tu certificado</h3><p>Con folio y código QR, verificable en línea por quien lo pida.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ═══ ÁREAS ═══ -->
+<div class="wrap" id="areas">
+  <section>
+    <div class="eyebrow">Quiénes somos</div>
+    <h2>Ciencia aplicada al trabajo con personas</h2>
+    <p class="sub">Conectamos fundamentos teóricos con herramientas que se usan en contextos clínicos, educativos, familiares y organizacionales.</p>
+    <div class="areas">
+      <div class="area">
+        <div class="area__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3h3V4z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-3 3h-3"/></svg></div>
+        <h3>Psicología clínica</h3><p>Evaluación, diagnóstico e intervención con base en evidencia.</p>
+      </div>
+      <div class="area">
+        <div class="area__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9 12 4l9 5-9 5z"/><path d="M7 12v5c0 1 2 2 5 2s5-1 5-2v-5"/></svg></div>
+        <h3>Educación</h3><p>Herramientas para docentes dentro y fuera del aula.</p>
+      </div>
+      <div class="area">
+        <div class="area__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg></div>
+        <h3>Contexto laboral</h3><p>Competencias emocionales para organizaciones más sanas.</p>
+      </div>
+      <div class="area">
+        <div class="area__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.6-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.4-7 9-7 9z"/></svg></div>
+        <h3>Desarrollo humano</h3><p>Bienestar, vínculos y crecimiento a lo largo de la vida.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══ CURSOS ═══ -->
+<div class="wrap" id="cursos">
+  <section>
+    <div class="eyebrow">Oferta académica</div>
+    <h2>Cursos</h2>
+    <p class="sub">Cada curso incluye clases en vivo, grabación, materiales descargables, comunidad y certificado con folio verificable.</p>
+    <div class="courses">
+
+      <article class="course">
+        <div class="course__img" style="background-image:url('assets/cursos/guarda-custodia.jpg')"><span>Psicología forense</span></div>
+        <div class="course__body">
+          <h3>Evaluación psicológica en guarda y custodia</h3>
+          <p>Entrevista, integración de fuentes y redacción del informe pericial.</p>
+          <div class="chips"><span class="chip">En vivo + grabación</span><span class="chip">Certificado con QR</span><span class="chip">Manual y checklist</span></div>
+        </div>
+        <div class="course__foot--btn">
+          <a class="btn btn--g" data-wa-curso="Evaluación psicológica en guarda y custodia" href="#" target="_blank" rel="noopener">Solicitar información</a>
+        </div>
+        <div class="course__foot"><span>3 clases · 6 h</span><b>$550</b></div>
+      </article>
+
+      <article class="course">
+        <div class="course__img" style="background-image:url('assets/cursos/primeros-auxilios.jpg')"><span>Intervención psicológica</span></div>
+        <div class="course__body">
+          <h3>Primeros auxilios psicológicos</h3>
+          <p>Contención emocional, detección de riesgo y canalización oportuna.</p>
+          <div class="chips"><span class="chip">En vivo + grabación</span><span class="chip">Certificado con QR</span><span class="chip">Formatos de apoyo</span></div>
+        </div>
+        <div class="course__foot--btn">
+          <a class="btn btn--g" data-wa-curso="Primeros auxilios psicológicos" href="#" target="_blank" rel="noopener">Solicitar información</a>
+        </div>
+        <div class="course__foot"><span>5 clases · 8 h</span><b>$550</b></div>
+      </article>
+
+      <article class="course">
+        <div class="course__img" style="background-image:url('assets/cursos/salud-laboral.jpg')"><span>Psicología laboral</span></div>
+        <div class="course__body">
+          <h3>Salud psicológica laboral</h3>
+          <p>Riesgos psicosociales, liderazgo y rutas de apoyo en la organización.</p>
+          <div class="chips"><span class="chip">En vivo + grabación</span><span class="chip">Certificado con QR</span><span class="chip">Matriz NOM-035</span></div>
+        </div>
+        <div class="course__foot--btn">
+          <a class="btn btn--g" data-wa-curso="Salud psicológica laboral" href="#" target="_blank" rel="noopener">Solicitar información</a>
+        </div>
+        <div class="course__foot"><span>3 clases · 6 h</span><b>$550</b></div>
+      </article>
+
+    </div>
+  </section>
+</div>
+
+<!-- ═══ SESIONES IMPARTIDAS ═══ -->
+<div class="wrap" id="impartidos">
+  <section>
+    <div class="sesion">
+      <figure class="sesion__shot">
+        <img src="assets/sesiones/people-analytics.jpg" alt="Sesión en vivo del curso People Analytics de SENTIA" loading="lazy">
+      </figure>
+      <div>
+        <div class="eyebrow">Sesiones impartidas</div>
+        <h2>Así trabajamos en cada curso</h2>
+        <p class="sub">Grupos reducidos, clases en vivo y espacio para preguntar sobre casos reales. Esta es una de las sesiones que hemos cerrado, del curso People Analytics: indicadores, rotación y decisiones de talento.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══ SOLICITAR INFORMACIÓN ═══ -->
+<div class="soft" id="informacion">
+  <div class="wrap">
+    <section>
+      <div class="info">
+        <div>
+          <div class="eyebrow">Contacto</div>
+          <h2>Pide informes del curso que te interesa</h2>
+          <p class="sub">Te compartimos fecha, horario, temario y forma de pago. También puedes escribirnos directo por WhatsApp.</p>
+          <div class="hero__cta">
+            <a class="btn btn--wa" id="wa-directo" href="#" target="_blank" rel="noopener">Escribir por WhatsApp</a>
+          </div>
+          <div class="redes" style="margin-top:22px">
+            <a class="red" id="red-fb-2" href="#" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.7-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>Facebook</a>
+            <a class="red" id="red-ig-2" href="https://www.instagram.com/sentia_human_institute/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" stroke="none"/></svg>Instagram</a>
+          </div>
+        </div>
+        <form class="form" id="form-info">
+          <div class="field"><label for="f-nombre">Nombre completo</label><input id="f-nombre" name="nombre" required placeholder="Tu nombre"></div>
+          <div class="field"><label for="f-tel">WhatsApp</label><input id="f-tel" name="tel" required inputmode="tel" placeholder="10 dígitos"></div>
+          <div class="field"><label for="f-msg">¿En qué te ayudamos? (opcional)</label><textarea id="f-msg" name="mensaje" placeholder="Cuéntanos qué curso te interesa o qué duda tienes"></textarea></div>
+          <button class="btn btn--p" type="submit">Enviar solicitud</button>
+          <small>Al enviar se abre WhatsApp con tus datos para que un asesor te atienda.</small>
+        </form>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ═══ MEMBRESÍA ═══ -->
+<div class="wrap" id="membresia">
+  <section>
+    <div class="mem">
+      <div>
+        <div class="eyebrow">Club SENTIA</div>
+        <h2>Todos los cursos en un solo lugar</h2>
+        <p class="sub">Una membresía con acceso a la biblioteca completa, clases en vivo, herramientas listas para tu práctica y certificados con folio verificable.</p>
+        <div class="inc__list">
+          <div><span class="dot"></span>Biblioteca completa de cursos, con clases nuevas cada mes</div>
+          <div><span class="dot"></span>Clases en vivo con especialistas y sus grabaciones</div>
+          <div><span class="dot"></span>Herramientas profesionales: notas de sesión, informes, tamizajes</div>
+          <div><span class="dot"></span>Certificados con folio y código QR verificable</div>
+        </div>
+        <div class="hero__cta">
+          <a class="btn btn--p" href="https://club.sentiamx.com/vip-auth.html">Quiero la membresía</a>
+        </div>
+      </div>
+      <figure class="shot">
+        <img src="assets/panel-sentia.jpg" alt="Panel del miembro VIP de SENTIA" loading="lazy">
+        <figcaption>Así se ve por dentro el panel del miembro.</figcaption>
+      </figure>
+    </div>
+  </section>
+</div>
+
+<footer class="soft">
+  <div class="wrap">
+    <div class="foot">
+      <a class="brand" href="#inicio"><img src="assets/icon-sentia.png" alt="SENTIA"><span><b>SENTIA</b><small>Human Institute</small></span></a>
+      <div style="display:flex;gap:48px;flex-wrap:wrap">
+        <div class="foot__col"><b>Instituto</b><a href="#areas">Nosotros</a><a href="#cursos">Cursos</a><a href="#membresia">Membresía</a></div>
+        <div class="foot__col"><b>Contacto</b><a href="#informacion">Pedir informes</a><a href="https://www.facebook.com/" target="_blank" rel="noopener">Facebook</a><a href="https://www.instagram.com/sentia_human_institute/" target="_blank" rel="noopener">Instagram</a><a id="wa-pie" href="#" target="_blank" rel="noopener">WhatsApp</a></div>
+        <div class="foot__col"><b>Certificados</b><a href="verificar.html">Verificar folio</a><a href="https://club.sentiamx.com/vip-auth.html">Entrar al Club</a></div>
+      </div>
+    </div>
+    <div>© 2026 SENTIA Human Institute · Certificados verificables en sentiamx.com/verificar</div>
+  </div>
+</footer>
+
+<script>
+/* ═══ Configuración: cambia aquí el WhatsApp y el link de Facebook ═══ */
+const SENTIA_WA = '522381863904';                                     // 52 + 10 dígitos, sin espacios
+const SENTIA_FB = 'https://www.facebook.com/share/19HFaYx1aq/';        // página de Facebook
+const SENTIA_IG = 'https://www.instagram.com/sentia_human_institute/'; // Instagram
+
+document.querySelectorAll('a[href="https://www.facebook.com/"]').forEach(a => a.href = SENTIA_FB);
+const waBase = 'https://wa.me/' + SENTIA_WA + '?text=';
+document.getElementById('wa-directo').href = waBase + encodeURIComponent('Hola SENTIA, quiero información de los cursos.');
+document.querySelectorAll('[data-wa-curso]').forEach(a => {
+  a.href = waBase + encodeURIComponent('Hola SENTIA, quiero información del curso: ' + a.dataset.waCurso + '.');
+});
+document.getElementById('wa-pie').href = waBase + encodeURIComponent('Hola SENTIA, quiero información de los cursos.');
+document.getElementById('red-fb-2').href = SENTIA_FB;
+
+/* Menú en celular */
+const burger = document.getElementById('burger');
+burger.addEventListener('click', () => document.getElementById('nav-links').classList.toggle('is-open'));
+document.querySelectorAll('#nav-links a').forEach(a => a.addEventListener('click', () => document.getElementById('nav-links').classList.remove('is-open')));
+
+/* El formulario abre WhatsApp con los datos */
+document.getElementById('form-info').addEventListener('submit', e => {
+  e.preventDefault();
+  const f = e.target;
+  const texto = 'Hola SENTIA, quiero información.\n' +
+    'Nombre: ' + f.nombre.value.trim() + '\n' +
+    'WhatsApp: ' + f.tel.value.trim() +
+    (f.mensaje.value.trim() ? '\n' + f.mensaje.value.trim() : '');
+  window.open(waBase + encodeURIComponent(texto), '_blank', 'noopener');
+});
+</script>
+</body>
+</html>
