@@ -103,11 +103,9 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdro
 .inc__prof small{color:var(--muted);font-size:13.5px}
 
 /* Cursos impartidos (capturas reales de las sesiones) */
-.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
-.gal figure{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
-.gal img{aspect-ratio:4/3;object-fit:cover;background:var(--soft)}
-.gal figcaption{padding:14px 16px;font-size:13.5px;color:var(--muted)}
-.gal figcaption b{display:block;color:var(--text);font-family:'Sora',sans-serif;font-size:14.5px;font-weight:600;margin-bottom:3px}
+.sesion{display:grid;grid-template-columns:1.1fr 1fr;gap:44px;align-items:center}
+.sesion__shot{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--soft)}
+.sesion__shot img{width:100%;display:block;aspect-ratio:4/3;object-fit:cover}
 
 /* Solicitar información */
 .info{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
@@ -156,7 +154,9 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
   .strip{grid-template-columns:repeat(2,1fr)}
   .strip div:nth-child(2){border-right:0}
   .strip div:nth-child(-n+2){border-bottom:1px solid var(--line)}
-  .steps,.courses,.gal,.areas{grid-template-columns:1fr}
+  .steps,.courses,.areas{grid-template-columns:1fr}
+  .sesion{grid-template-columns:1fr;gap:24px}
+  .sesion__shot{order:-1}
   .mem{grid-template-columns:1fr;gap:28px}
   .inc,.info{grid-template-columns:1fr;gap:28px}
   .nav__links{display:none}
@@ -353,22 +353,15 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
 <!-- ═══ SESIONES IMPARTIDAS ═══ -->
 <div class="wrap" id="impartidos">
   <section>
-    <div class="eyebrow">Sesiones impartidas</div>
-    <h2>Así trabajamos en cada curso</h2>
-    <p class="sub">Grupos reducidos, clases en vivo y preguntas sobre casos reales. Estas son algunas de las sesiones que hemos cerrado.</p>
-    <div class="gal">
-      <figure>
-        <img src="assets/sesiones/people-analytics.jpg" alt="Sesión del curso People Analytics" loading="lazy">
-        <figcaption><b>People Analytics</b>Indicadores, rotación y decisiones de talento · septiembre 2026</figcaption>
+    <div class="sesion">
+      <figure class="sesion__shot">
+        <img src="assets/sesiones/people-analytics.jpg" alt="Sesión en vivo del curso People Analytics de SENTIA" loading="lazy">
       </figure>
-      <figure>
-        <img src="assets/sesiones/salud-mental-laboral.jpg" alt="Sesión del curso Salud Mental Laboral" loading="lazy">
-        <figcaption><b>Salud mental laboral</b>Burnout y riesgos psicosociales · septiembre 2026</figcaption>
-      </figure>
-      <figure>
-        <img src="assets/sesiones/guarda-custodia.jpg" alt="Sesión del curso de guarda y custodia" loading="lazy">
-        <figcaption><b>Guarda y custodia</b>Entrevista, integración e informe · septiembre 2026</figcaption>
-      </figure>
+      <div>
+        <div class="eyebrow">Sesiones impartidas</div>
+        <h2>Así trabajamos en cada curso</h2>
+        <p class="sub">Grupos reducidos, clases en vivo y espacio para preguntar sobre casos reales. Esta es una de las sesiones que hemos cerrado, del curso People Analytics: indicadores, rotación y decisiones de talento.</p>
+      </div>
     </div>
   </section>
 </div>
