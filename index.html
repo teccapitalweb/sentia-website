@@ -23,6 +23,7 @@
 }
 *{box-sizing:border-box;margin:0}
 html{scroll-behavior:smooth}
+#nosotros,#areas,#cursos,#impartidos,#membresia,#informacion{scroll-margin-top:86px}
 body{background:var(--bg);color:var(--text);font-family:'Instrument Sans',system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
@@ -77,13 +78,13 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdro
 .steps p{font-size:14px;color:var(--muted);line-height:1.55}
 
 /* Cursos */
-.courses{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}
+.courses{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px;align-items:start}
 .course{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:border-color .15s}
 .course:hover{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
 .course__img{height:152px;background:linear-gradient(135deg,#0d2a6b,#1b3fa8);position:relative;background-size:cover;background-position:center}
 .course__img span{position:absolute;left:14px;top:14px;background:#fff;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:4px 10px}
 .course__img::after{content:'Ψ';position:absolute;right:12px;bottom:-30px;font:110px/1 Georgia,serif;color:#fff;opacity:.12}
-.course__body{padding:18px;flex:1}
+.course__body{padding:18px}
 .course__body h3{font-size:17px;line-height:1.35;margin-bottom:8px}
 .course__body p{font-size:13.5px;color:var(--muted);line-height:1.55}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
@@ -132,7 +133,7 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
 .area__ic svg{width:20px;height:20px}
 .area h3{font-size:16px;margin-bottom:8px}
 .area p{font-size:13.5px;color:var(--muted);line-height:1.55}
-.course__foot--btn{padding:14px 18px 0}
+.course__foot--btn{padding:6px 18px 0}
 .course__foot--btn .btn{width:100%;height:40px;font-size:13.5px}
 .mem{display:grid;grid-template-columns:1fr 1.05fr;gap:48px;align-items:center}
 .redes{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
@@ -171,7 +172,7 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
       <span><b>SENTIA</b><small>Human Institute</small></span>
     </a>
     <nav class="nav__links" id="nav-links">
-      <a href="#nosotros">Nosotros</a>
+      <a href="#areas">Nosotros</a>
       <a href="#cursos">Cursos</a>
       <a href="#impartidos">Sesiones</a>
       <a href="#membresia">Membresía</a>
