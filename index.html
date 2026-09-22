@@ -78,15 +78,15 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdro
 .steps p{font-size:14px;color:var(--muted);line-height:1.55}
 
 /* Cursos */
-.courses{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px;align-items:start}
+.courses{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}
 .course{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:border-color .15s}
 .course:hover{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
 .course__img{height:152px;background:linear-gradient(135deg,#0d2a6b,#1b3fa8);position:relative;background-size:cover;background-position:center}
 .course__img span{position:absolute;left:14px;top:14px;background:#fff;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:4px 10px}
 .course__img::after{content:'Ψ';position:absolute;right:12px;bottom:-30px;font:110px/1 Georgia,serif;color:#fff;opacity:.12}
 .course__body{padding:18px}
-.course__body h3{font-size:17px;line-height:1.35;margin-bottom:8px}
-.course__body p{font-size:13.5px;color:var(--muted);line-height:1.55}
+.course__body h3{font-size:17px;line-height:1.35;margin-bottom:8px;min-height:2.7em}
+.course__body p{font-size:13.5px;color:var(--muted);line-height:1.55;min-height:2.8em}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
 .chip{font-size:11.5px;color:var(--accent);background:var(--accent-soft);border:1px solid #dbe6ff;border-radius:999px;padding:4px 10px;font-weight:600}
 .course__foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line);padding:14px 18px;font-size:13.5px;color:var(--muted)}
@@ -133,7 +133,7 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
 .area__ic svg{width:20px;height:20px}
 .area h3{font-size:16px;margin-bottom:8px}
 .area p{font-size:13.5px;color:var(--muted);line-height:1.55}
-.course__foot--btn{padding:6px 18px 0}
+.course__foot--btn{padding:16px 18px 0}
 .course__foot--btn .btn{width:100%;height:40px;font-size:13.5px}
 .mem{display:grid;grid-template-columns:1fr 1.05fr;gap:48px;align-items:center}
 .redes{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
@@ -172,7 +172,7 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
       <span><b>SENTIA</b><small>Human Institute</small></span>
     </a>
     <nav class="nav__links" id="nav-links">
-      <a href="#areas">Nosotros</a>
+      <a href="#inicio">Nosotros</a>
       <a href="#cursos">Cursos</a>
       <a href="#impartidos">Sesiones</a>
       <a href="#membresia">Membresía</a>
@@ -418,7 +418,7 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
     <div class="foot">
       <a class="brand" href="#inicio"><img src="assets/icon-sentia.png" alt="SENTIA"><span><b>SENTIA</b><small>Human Institute</small></span></a>
       <div style="display:flex;gap:48px;flex-wrap:wrap">
-        <div class="foot__col"><b>Instituto</b><a href="#areas">Nosotros</a><a href="#cursos">Cursos</a><a href="#membresia">Membresía</a></div>
+        <div class="foot__col"><b>Instituto</b><a href="#inicio">Nosotros</a><a href="#cursos">Cursos</a><a href="#membresia">Membresía</a></div>
         <div class="foot__col"><b>Contacto</b><a href="#informacion">Pedir informes</a><a href="https://www.facebook.com/" target="_blank" rel="noopener">Facebook</a><a href="https://www.instagram.com/sentia_human_institute/" target="_blank" rel="noopener">Instagram</a><a id="wa-pie" href="#" target="_blank" rel="noopener">WhatsApp</a></div>
         <div class="foot__col"><b>Certificados</b><a href="verificar.html">Verificar folio</a><a href="https://club.sentiamx.com/vip-auth.html">Entrar al Club</a></div>
       </div>
