@@ -154,13 +154,19 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
   .sesion__shot{order:-1}
   .mem{grid-template-columns:1fr;gap:28px}
   .inc,.info{grid-template-columns:1fr;gap:28px}
+  .nav{gap:10px}
   .nav__links{display:none}
   .nav__burger{display:flex}
   .nav__links.is-open{display:flex;position:absolute;left:0;right:0;top:70px;background:#fff;border-bottom:1px solid var(--line);flex-direction:column;gap:0;padding:8px 24px 16px}
   .nav__links.is-open a{padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
-  .nav .btn{display:none}
+  .brand small{display:none}
+  .nav .btn{height:40px;padding:0 14px;font-size:13px;flex-shrink:0;white-space:nowrap}
 }
 @media (max-width:600px){ .gal{grid-template-columns:1fr} }
+@media (max-width:400px){
+  .brand b{font-size:14px}
+  .nav .btn{padding:0 10px;font-size:12.5px}
+}
 </style>
 </head>
 <body>
