@@ -128,13 +128,36 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
 .foot__col a{display:block;padding:3px 0}
 .foot__col a:hover{color:var(--accent)}
 
+.areas{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:38px}
+.area{border:1px solid var(--line);border-radius:var(--r);padding:22px;background:#fff}
+.area__ic{width:40px;height:40px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin-bottom:14px}
+.area__ic svg{width:20px;height:20px}
+.area h3{font-size:16px;margin-bottom:8px}
+.area p{font-size:13.5px;color:var(--muted);line-height:1.55}
+.inc-det{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+.inc-det summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--accent);list-style:none}
+.inc-det summary::-webkit-details-marker{display:none}
+.inc-det summary::after{content:' +';font-weight:700}
+.inc-det[open] summary::after{content:' −'}
+.inc-det ul{margin:12px 0 14px 18px;padding:0;color:var(--muted);font-size:13.5px;line-height:1.6}
+.inc-det li{margin-bottom:6px}
+.inc-det .btn{height:40px;font-size:13.5px}
+.mem{display:grid;grid-template-columns:1fr 1.05fr;gap:48px;align-items:center}
+.redes{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.red{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line-2);border-radius:999px;padding:9px 16px;font-size:13.5px;font-weight:600;background:#fff}
+.red svg{width:18px;height:18px}
+.red:hover{border-color:var(--accent);color:var(--accent)}
+.shot{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff}
+.shot img{width:100%;display:block;background:var(--soft)}
+.shot figcaption{padding:12px 16px;font-size:13px;color:var(--muted);border-top:1px solid var(--line)}
 @media (max-width:900px){
   .hero{grid-template-columns:1fr;gap:28px}
   .hero__art{order:-1;max-width:420px}
   .strip{grid-template-columns:repeat(2,1fr)}
   .strip div:nth-child(2){border-right:0}
   .strip div:nth-child(-n+2){border-bottom:1px solid var(--line)}
-  .steps,.courses,.gal{grid-template-columns:1fr}
+  .steps,.courses,.gal,.areas{grid-template-columns:1fr}
+  .mem{grid-template-columns:1fr;gap:28px}
   .inc,.info{grid-template-columns:1fr;gap:28px}
   .nav__links{display:none}
   .nav__burger{display:flex}
@@ -157,10 +180,10 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
       <a href="#nosotros">Nosotros</a>
       <a href="#cursos">Cursos</a>
       <a href="#impartidos">Sesiones</a>
-      <a href="#club">Club</a>
+      <a href="#membresia">Membresía</a>
       <a href="#informacion">Contacto</a>
     </nav>
-    <a class="btn btn--p" href="https://club.sentiamx.com/vip-auth.html">Entrar al Club</a>
+    <a class="btn btn--p" href="https://club.sentiamx.com/vip-auth.html">Acceso VIP</a>
     <button class="nav__burger" id="burger" aria-label="Menú">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
@@ -176,7 +199,7 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
       <p>Psicología, educación, neurociencias y desarrollo humano. Clases en vivo con especialistas, materiales listos para usar y certificado con folio verificable.</p>
       <div class="hero__cta">
         <a class="btn btn--p" href="#cursos">Ver cursos</a>
-        <a class="btn btn--g" href="#club">Conocer el Club</a>
+        <a class="btn btn--g" href="#membresia">Conocer la membresía</a>
       </div>
       <div class="hero__tags">
         <span class="tag">Psicología</span><span class="tag">Educación</span><span class="tag">Neurociencias</span><span class="tag">Salud mental</span><span class="tag">Desarrollo humano</span>
@@ -214,10 +237,10 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
 
 <div class="wrap">
   <div class="strip">
-    <div><b>5</b><small>Áreas de especialización</small></div>
-    <div><b>100%</b><small>Enfoque interdisciplinario</small></div>
-    <div><b>LATAM</b><small>Alcance regional</small></div>
-    <div><b>2026</b><small>Primera generación</small></div>
+    <div><b>4</b><small>Clases en vivo al mes</small></div>
+    <div><b>+20</b><small>Materiales descargables</small></div>
+    <div><b>Especialistas</b><small>Con experiencia en campo</small></div>
+    <div><b>Folio y QR</b><small>Certificado verificable</small></div>
   </div>
 </div>
 
@@ -246,11 +269,38 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
   </div>
 </div>
 
+<!-- ═══ ÁREAS ═══ -->
+<div class="wrap" id="areas">
+  <section>
+    <div class="eyebrow">Quiénes somos</div>
+    <h2>Ciencia aplicada al trabajo con personas</h2>
+    <p class="sub">Conectamos fundamentos teóricos con herramientas que se usan en contextos clínicos, educativos, familiares y organizacionales.</p>
+    <div class="areas">
+      <div class="area">
+        <div class="area__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3h3V4z"/><path d="M15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-3 3h-3"/></svg></div>
+        <h3>Psicología clínica</h3><p>Evaluación, diagnóstico e intervención con base en evidencia.</p>
+      </div>
+      <div class="area">
+        <div class="area__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9 12 4l9 5-9 5z"/><path d="M7 12v5c0 1 2 2 5 2s5-1 5-2v-5"/></svg></div>
+        <h3>Educación</h3><p>Herramientas para docentes dentro y fuera del aula.</p>
+      </div>
+      <div class="area">
+        <div class="area__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg></div>
+        <h3>Contexto laboral</h3><p>Competencias emocionales para organizaciones más sanas.</p>
+      </div>
+      <div class="area">
+        <div class="area__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.6-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.4-7 9-7 9z"/></svg></div>
+        <h3>Desarrollo humano</h3><p>Bienestar, vínculos y crecimiento a lo largo de la vida.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
 <!-- ═══ CURSOS ═══ -->
 <div class="wrap" id="cursos">
   <section>
     <div class="eyebrow">Oferta académica</div>
-    <h2>Cursos que estamos impartiendo</h2>
+    <h2>Cursos</h2>
     <p class="sub">Cada curso incluye clases en vivo, grabación, materiales descargables, comunidad y certificado con folio verificable.</p>
     <div class="courses">
 
@@ -260,6 +310,10 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
           <h3>Evaluación psicológica en guarda y custodia</h3>
           <p>Entrevista, integración de fuentes y redacción del informe pericial.</p>
           <div class="chips"><span class="chip">En vivo + grabación</span><span class="chip">Certificado con QR</span><span class="chip">Manual y checklist</span></div>
+          <details class="inc-det"><summary>Qué incluye</summary>
+            <ul><li>Fundamentos y marco de la evaluación en materia familiar</li><li>Entrevista con los adultos y con el menor sin contaminar el testimonio</li><li>Integración de fuentes: entrevistas, observación y pruebas</li><li>Redacción del informe pericial que resiste el contradictorio</li></ul>
+            <a class="btn btn--g" href="#informacion">Solicitar información</a>
+          </details>
         </div>
         <div class="course__foot"><span>3 clases · 6 h</span><b>$550</b></div>
       </article>
@@ -270,6 +324,10 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
           <h3>Primeros auxilios psicológicos</h3>
           <p>Contención emocional, detección de riesgo y canalización oportuna.</p>
           <div class="chips"><span class="chip">En vivo + grabación</span><span class="chip">Certificado con QR</span><span class="chip">Formatos de apoyo</span></div>
+          <details class="inc-det"><summary>Qué incluye</summary>
+            <ul><li>Contención emocional en los primeros minutos</li><li>Señales de alarma y evaluación del riesgo</li><li>Rutas de canalización y seguimiento</li><li>Autocuidado de quien atiende la crisis</li></ul>
+            <a class="btn btn--g" href="#informacion">Solicitar información</a>
+          </details>
         </div>
         <div class="course__foot"><span>5 clases · 8 h</span><b>$550</b></div>
       </article>
@@ -280,46 +338,16 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
           <h3>Salud psicológica laboral</h3>
           <p>Riesgos psicosociales, liderazgo y rutas de apoyo en la organización.</p>
           <div class="chips"><span class="chip">En vivo + grabación</span><span class="chip">Certificado con QR</span><span class="chip">Matriz NOM-035</span></div>
+          <details class="inc-det"><summary>Qué incluye</summary>
+            <ul><li>Riesgos psicosociales y NOM-035</li><li>Diagnóstico y matriz de evaluación</li><li>Liderazgo que cuida el bienestar del equipo</li><li>Rutas de apoyo dentro de la organización</li></ul>
+            <a class="btn btn--g" href="#informacion">Solicitar información</a>
+          </details>
         </div>
         <div class="course__foot"><span>3 clases · 6 h</span><b>$550</b></div>
       </article>
 
     </div>
   </section>
-</div>
-
-<!-- ═══ QUÉ INCLUYE UN CURSO ═══ -->
-<div class="soft">
-  <div class="wrap">
-    <section>
-      <div class="inc">
-        <div>
-          <div class="eyebrow">Qué incluye</div>
-          <h2>Evaluación psicológica en guarda y custodia</h2>
-          <p class="sub">Los puntos más relevantes del programa, con enfoque claro y de aplicación inmediata.</p>
-          <div class="inc__list">
-            <div><span class="dot"></span>Fundamentos y marco de la evaluación en materia familiar</div>
-            <div><span class="dot"></span>Entrevista con los adultos y con el menor sin contaminar el testimonio</div>
-            <div><span class="dot"></span>Integración de fuentes: entrevistas, observación y pruebas</div>
-            <div><span class="dot"></span>Redacción del informe pericial que resiste el contradictorio</div>
-          </div>
-          <div class="chips" style="margin-top:22px">
-            <span class="chip">En vivo + grabación</span><span class="chip">Clases pregrabadas</span><span class="chip">Certificado con folio y QR</span><span class="chip">Grupo de WhatsApp</span><span class="chip">Materiales descargables</span>
-          </div>
-        </div>
-        <div class="inc__card">
-          <div class="inc__cover" style="background-image:url('assets/cursos/guarda-custodia.jpg')"></div>
-          <div class="inc__prof">
-            <div>
-              <b>Mtra. Carla Yanin Martínez Abrego</b>
-              <small>Instructora · Psicología forense</small>
-            </div>
-            <a class="btn btn--p" href="#informacion">Solicitar información</a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
 </div>
 
 <!-- ═══ SESIONES IMPARTIDAS ═══ -->
@@ -380,13 +408,34 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
   </div>
 </div>
 
-<!-- ═══ CLUB ═══ -->
-<div class="wrap" id="club">
-  <section class="cta-band">
-    <div class="eyebrow">Club SENTIA</div>
-    <h2>Todos los cursos en una sola membresía</h2>
-    <p class="sub">Biblioteca completa de cursos, clases en vivo, herramientas profesionales listas para usar y certificados con folio verificable.</p>
-    <a class="btn btn--p" href="https://club.sentiamx.com/vip-auth.html">Quiero la membresía</a>
+<!-- ═══ MEMBRESÍA ═══ -->
+<div class="wrap" id="membresia">
+  <section>
+    <div class="mem">
+      <div>
+        <div class="eyebrow">Club SENTIA</div>
+        <h2>Todos los cursos en un solo lugar</h2>
+        <p class="sub">Una membresía con acceso a la biblioteca completa, clases en vivo, herramientas listas para tu práctica y certificados con folio verificable.</p>
+        <div class="inc__list">
+          <div><span class="dot"></span>Biblioteca completa de cursos, con clases nuevas cada mes</div>
+          <div><span class="dot"></span>Clases en vivo con especialistas y sus grabaciones</div>
+          <div><span class="dot"></span>Herramientas profesionales: notas de sesión, informes, tamizajes</div>
+          <div><span class="dot"></span>Certificados con folio y código QR verificable</div>
+        </div>
+        <div class="hero__cta">
+          <a class="btn btn--p" href="https://club.sentiamx.com/vip-auth.html">Quiero la membresía</a>
+        </div>
+        <div class="redes">
+          <a class="red" id="red-fb" href="#" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.7-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>Facebook</a>
+          <a class="red" id="red-ig" href="https://www.instagram.com/sentia_human_institute/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" stroke="none"/></svg>Instagram</a>
+          <a class="red" id="red-wa" href="#" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.6 14.1c-.2.7-1.3 1.3-1.9 1.4-.5.1-1.1.1-1.8-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.5-1.2-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.5-.3.3c-.1.1-.2.3 0 .5.1.2.6 1 1.3 1.6.9.8 1.6 1 1.9 1.2.2.1.4.1.5-.1l.7-.8c.2-.2.3-.2.5-.1l2 .9c.2.1.4.2.4.3.1.2.1.7-.1 1.4z"/></svg>WhatsApp</a>
+        </div>
+      </div>
+      <figure class="shot">
+        <img src="assets/panel-sentia.jpg" alt="Panel del miembro VIP de SENTIA" loading="lazy">
+        <figcaption>Así se ve por dentro el panel del miembro.</figcaption>
+      </figure>
+    </div>
   </section>
 </div>
 
@@ -395,8 +444,8 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
     <div class="foot">
       <a class="brand" href="#inicio"><img src="assets/icon-sentia.png" alt="SENTIA"><span><b>SENTIA</b><small>Human Institute</small></span></a>
       <div style="display:flex;gap:48px;flex-wrap:wrap">
-        <div class="foot__col"><b>Instituto</b><a href="#nosotros">Nosotros</a><a href="#cursos">Cursos</a><a href="#club">Club SENTIA</a></div>
-        <div class="foot__col"><b>Contacto</b><a href="#informacion">Pedir informes</a><a href="https://www.facebook.com/" target="_blank" rel="noopener">Facebook</a><a id="wa-pie" href="#" target="_blank" rel="noopener">WhatsApp</a></div>
+        <div class="foot__col"><b>Instituto</b><a href="#areas">Nosotros</a><a href="#cursos">Cursos</a><a href="#membresia">Membresía</a></div>
+        <div class="foot__col"><b>Contacto</b><a href="#informacion">Pedir informes</a><a href="https://www.facebook.com/" target="_blank" rel="noopener">Facebook</a><a href="https://www.instagram.com/sentia_human_institute/" target="_blank" rel="noopener">Instagram</a><a id="wa-pie" href="#" target="_blank" rel="noopener">WhatsApp</a></div>
         <div class="foot__col"><b>Certificados</b><a href="verificar.html">Verificar folio</a><a href="https://club.sentiamx.com/vip-auth.html">Entrar al Club</a></div>
       </div>
     </div>
@@ -406,13 +455,16 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
 
 <script>
 /* ═══ Configuración: cambia aquí el WhatsApp y el link de Facebook ═══ */
-const SENTIA_WA = '522381863904';   // 52 + 10 dígitos, sin espacios
-const SENTIA_FB = 'https://www.facebook.com/profile.php?id=61588792693248&rdid=tITIWzRRbCFZg97g&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F19HFaYx1aq%2F#';
+const SENTIA_WA = '522381863904';                                     // 52 + 10 dígitos, sin espacios
+const SENTIA_FB = 'https://www.facebook.com/share/19HFaYx1aq/';        // página de Facebook
+const SENTIA_IG = 'https://www.instagram.com/sentia_human_institute/'; // Instagram
 
 document.querySelectorAll('a[href="https://www.facebook.com/"]').forEach(a => a.href = SENTIA_FB);
 const waBase = 'https://wa.me/' + SENTIA_WA + '?text=';
 document.getElementById('wa-directo').href = waBase + encodeURIComponent('Hola SENTIA, quiero información de los cursos.');
 document.getElementById('wa-pie').href = waBase + encodeURIComponent('Hola SENTIA, quiero información de los cursos.');
+document.getElementById('red-wa').href = waBase + encodeURIComponent('Hola SENTIA, quiero información de la membresía.');
+document.getElementById('red-fb').href = SENTIA_FB;
 
 /* Menú en celular */
 const burger = document.getElementById('burger');

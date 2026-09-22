@@ -32,6 +32,13 @@ body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh;displ
 .row .v.mono{font-family:'JetBrains Mono',monospace;letter-spacing:.5px}
 .foot{margin-top:22px;text-align:center;font-size:11px;color:var(--ink-soft);line-height:1.6}
 .foot a{color:var(--blue);font-weight:700;text-decoration:none}
+.buscar{padding:4px 2px 2px}
+.buscar label{display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:9px}
+.buscar__row{display:flex;gap:8px}
+.buscar input{flex:1;height:46px;border:1px solid #d7deea;border-radius:10px;padding:0 13px;font:inherit;font-size:15px;color:var(--navy-2);text-transform:uppercase}
+.buscar input:focus{outline:none;border-color:var(--blue)}
+.buscar button{height:46px;padding:0 20px;border:0;border-radius:10px;background:var(--blue);color:#fff;font:inherit;font-weight:700;font-size:14.5px;cursor:pointer}
+.buscar small{display:block;margin-top:9px;font-size:11.5px;color:var(--ink-soft)}
 .spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 <!-- MODIFICADO: sin PWA; el club vive en club.sentiamx.com -->
@@ -48,6 +55,15 @@ body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh;displ
       <div class="state__ic"><svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg></div>
       <div><div class="state__t" id="st-title">Verificando…</div><div class="state__d" id="st-desc">Consultando el folio en la base de datos oficial.</div></div>
     </div>
+    <!-- MODIFICADO: buscador de folio cuando se entra sin folio -->
+    <form class="buscar" id="buscar" style="display:none">
+      <label for="f-folio">Escribe el folio que aparece en el certificado</label>
+      <div class="buscar__row">
+        <input id="f-folio" placeholder="SENTIA-2026-000000" autocomplete="off" spellcheck="false">
+        <button type="submit">Verificar</button>
+      </div>
+      <small>También puedes escanear el código QR del certificado.</small>
+    </form>
     <div class="rows" id="rows">
       <div class="row"><span class="k">Nombre</span><span class="v" id="r-nombre">—</span></div>
       <div class="row"><span class="k">Curso</span><span class="v" id="r-curso">—</span></div>
@@ -59,6 +75,22 @@ body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh;displ
     <div class="foot">Certificado emitido digitalmente por <strong>SENTIA · IPCI Latinoamericano</strong><br><a href="https://www.sentiamx.com">www.sentiamx.com</a></div>
   </div>
 </div>
+<script>
+/* MODIFICADO: si no viene folio, se muestra el buscador (no depende de Firebase) */
+(function(){
+  var f=(new URLSearchParams(location.search).get('folio')||new URLSearchParams(location.search).get('f')||'').trim();
+  if(f) return;
+  var st=document.getElementById('state');
+  st.className='state load';
+  st.querySelector('.state__ic').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m20 20-4.5-4.5"/></svg>';
+  document.getElementById('st-title').textContent='Verifica un certificado';
+  document.getElementById('st-desc').textContent='Escribe el folio del certificado para comprobar que es auténtico.';
+  document.getElementById('rows').style.display='none';
+  var b=document.getElementById('buscar'); b.style.display='block';
+  b.addEventListener('submit',function(ev){ev.preventDefault();var v=document.getElementById('f-folio').value.trim().toUpperCase();if(v)location.search='?folio='+encodeURIComponent(v);});
+  document.getElementById('f-folio').focus();
+})();
+</script>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -72,7 +104,7 @@ const OK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-widt
 const BAD='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
 function fmt(d){try{const dt=d&&d.toDate?d.toDate():new Date(d);return dt.toLocaleDateString('es-MX',{year:'numeric',month:'long',day:'numeric'});}catch(e){return d||'—';}}
 (async()=>{
-  if(!folio){setState('bad',BAD,'Folio no indicado','Abre el enlace con un folio válido, ej. ?folio=SENTIA-2026-XXXXXX');return;}
+  if(!folio) return;   // MODIFICADO: lo atiende el buscador de abajo
   try{
     let data=null;
     try{const ds=await getDoc(doc(db,'certificados',folio));if(ds.exists())data=ds.data();}catch(e){}
