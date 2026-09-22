@@ -1,7 +1,6 @@
-Aqui van las capturas de las sesiones terminadas (las que suben a Facebook).
+Capturas de las sesiones terminadas (las que suben a Facebook).
 Nombres exactos que usa index.html:
   people-analytics.jpg
   salud-mental-laboral.jpg
   guarda-custodia.jpg
-Recomendado: recortarlas a 4:3 (ej. 1200x900) y menos de 300 KB.
-Para agregar mas sesiones, copia un bloque <figure> en la seccion "Sesiones impartidas".
+Recorta a 4:3 (ej. 1200x900) y menos de 300 KB.
