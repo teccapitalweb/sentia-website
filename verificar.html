@@ -92,12 +92,13 @@ body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;min-height:100vh;displ
 })();
 </script>
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-const app = initializeApp({apiKey:"AIzaSyDEOW7bZVFvN_2rLZTBSmTjshpgZg_-x70",authDomain:"sentia-academy.firebaseapp.com",projectId:"sentia-academy",storageBucket:"sentia-academy.firebasestorage.app",messagingSenderId:"137510320281",appId:"1:137510320281:web:d0d26e7f5aa4eee5a56008"});
-const db = getFirestore(app);
 const params = new URLSearchParams(location.search);
-const folio = (params.get('folio') || params.get('f') || '').trim();
+const folio = (params.get('folio') || params.get('f') || '').trim().toUpperCase();
+// En vista local consulta solo un webhook local. La página publicada usará
+// Railway y nunca leerá Firestore directamente.
+const WEBHOOK = location.hostname === 'localhost'
+  ? 'http://localhost:8081'
+  : 'https://sentia-academy-webhook-production.up.railway.app';
 const $=id=>document.getElementById(id);
 function setState(cls,svg,title,desc){const s=$('state');s.className='state '+cls;s.querySelector('.state__ic').innerHTML=svg;$('st-title').textContent=title;$('st-desc').textContent=desc;}
 const OK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="20 6 9 17 4 12"/></svg>';
@@ -106,16 +107,21 @@ function fmt(d){try{const dt=d&&d.toDate?d.toDate():new Date(d);return dt.toLoca
 (async()=>{
   if(!folio) return;   // MODIFICADO: lo atiende el buscador de abajo
   try{
-    let data=null;
-    try{const ds=await getDoc(doc(db,'certificados',folio));if(ds.exists())data=ds.data();}catch(e){}
-    if(!data){const qs=await getDocs(query(collection(db,'certificados'),where('folio','==',folio)));if(!qs.empty)data=qs.docs[0].data();}
-    if(!data){setState('bad',BAD,'Certificado no encontrado','El folio '+folio+' no existe en nuestros registros.');return;}
+    const r=await fetch(WEBHOOK+'/api/certificados/verificar?folio='+encodeURIComponent(folio),{headers:{'Accept':'application/json'}});
+    const respuesta=await r.json().catch(()=>({}));
+    if(r.status===404 || respuesta.estado==='no_encontrado'){setState('bad',BAD,'Certificado no encontrado','El folio '+folio+' no existe en nuestros registros.');return;}
+    if(!r.ok) throw new Error(respuesta.error||'Error HTTP '+r.status);
+    const data=respuesta.certificado;
+    if(!respuesta.valid || data?.estado!=='vigente'){
+      setState('bad',BAD,'Certificado no vigente','Este folio existe, pero su certificado fue '+(data?.estado||'invalidado')+'.');
+      return;
+    }
     setState('ok',OK,'Certificado auténtico','Este folio está registrado oficialmente por SENTIA.');
-    $('r-nombre').textContent=data.nombre||data.nombreMiembro||'—';
-    $('r-curso').textContent=data.curso||data.tituloCurso||'—';
+    $('r-nombre').textContent=data.alumno||'—';
+    $('r-curso').textContent=data.curso||'—';
     $('r-area').textContent=data.area||'—';
     $('r-horas').textContent=(data.sesiones?data.sesiones+' sesiones · ':'')+(data.horas?data.horas+' horas':'—');
-    $('r-fecha').textContent=fmt(data.emitido||data.fechaEmision||data.createdAt);
+    $('r-fecha').textContent=fmt(data.emitidoEn);
     $('r-folio').textContent=data.folio||folio;
     $('rows').style.display='block';
   }catch(e){console.error(e);setState('bad',BAD,'Error de verificación','No se pudo consultar el folio. Intenta de nuevo más tarde.');}
