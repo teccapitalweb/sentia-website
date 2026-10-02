@@ -41,6 +41,9 @@ section{padding:clamp(54px,7vw,84px) 0}
 .btn--g:hover{border-color:var(--accent);color:var(--accent)}
 .btn--wa{background:var(--ok);color:#fff}
 .btn .ic{width:16px;height:16px}
+.perfil-banner{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;background:linear-gradient(120deg,var(--accent-soft),var(--ok-soft));border:1px solid var(--line-2);border-radius:var(--r);padding:30px 34px}
+.perfil-banner__txt{flex:1;min-width:240px}
+@media(max-width:600px){.perfil-banner{flex-direction:column;align-items:stretch;text-align:center;padding:26px 22px}}
 
 /* Navegación */
 header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
@@ -244,6 +247,21 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
     <div><b>LATAM</b><small>Alcance regional</small></div>
     <div><b>Especialistas</b><small>Con experiencia en campo</small></div>
     <div><b>2026</b><small>Primera generación</small></div>
+  </div>
+</div>
+
+<!-- ═══ ENCUENTRA TU PERFIL SENTIA ═══ -->
+<div class="wrap" style="padding:0 24px 10px">
+  <div class="perfil-banner">
+    <div class="perfil-banner__txt">
+      <div class="eyebrow">Test gratuito · 2 minutos</div>
+      <h2 style="margin:8px 0 10px">Encuentra tu perfil Sentia</h2>
+      <p class="sub" style="margin:0">Descubre cómo aprendes, qué te interesa y qué ruta de formación conecta más contigo.</p>
+    </div>
+    <a class="btn btn--p" href="https://club.sentiamx.com/perfil-sentia.html">
+      Descubrir mi perfil
+      <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </a>
   </div>
 </div>
 
