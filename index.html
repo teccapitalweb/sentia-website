@@ -492,7 +492,7 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
       <div class="assistant-head__copy"><em>SENTIA · guía virtual</em><b>Tu guía de formación</b><span>Encuentra una ruta que conecte contigo.</span></div>
       <button class="assistant-close" id="assistant-close" type="button" aria-label="Cerrar asistente">×</button>
     </div>
-    <div class="assistant-status">Respuestas guiadas con el catálogo de SENTIA. Si necesitas atención personal, puedes contactar al equipo.</div>
+    <div class="assistant-status">Respuestas guiadas con el catálogo de SENTIA; no brinda terapia, diagnósticos ni atención de emergencia. <button class="assistant-restart" id="assistant-reset" type="button" style="margin:0;display:inline;color:inherit">Empezar de nuevo</button></div>
     <div class="assistant-body" id="assistant-body"></div>
     <form class="assistant-compose" id="assistant-compose">
       <div class="assistant-compose__row"><input id="assistant-input" autocomplete="off" placeholder="¿Qué te gustaría aprender?" aria-label="Escribe qué te gustaría aprender"><button type="submit" aria-label="Enviar consulta">↑</button></div>
@@ -662,7 +662,11 @@ const assistantCopy = {
   live: {message: 'La formación incluye sesiones en vivo con especialistas; también se contempla la grabación para consultar el contenido.', results: [['Así son las sesiones', 'Conoce la dinámica de las clases de SENTIA.', '#impartidos']]},
   access: {message: 'El panel VIP se habilita para miembros con una membresía activa. Desde ahí se accede a la biblioteca y herramientas.', results: [['Ver beneficios VIP', 'Conoce el acceso antes de iniciar sesión.', '#membresia']]},
   contact: {message: 'Si tu duda necesita atención personal, puedes enviarnos un mensaje directo.', results: [['Pedir informes', 'Escríbenos el curso o tema que buscas.', '#informacion']]},
-  unsure: {message: 'No pasa nada. ¿Para qué te gustaría capacitarte?', options: [['psychology', 'Para mi práctica profesional'], ['education', 'Para mejorar como docente'], ['human', 'Para bienestar o desarrollo humano'], ['profile', 'Quiero descubrir mi ruta']]} 
+  unsure: {message: 'No pasa nada. ¿Para qué te gustaría capacitarte?', options: [['psychology', 'Para mi práctica profesional'], ['education', 'Para mejorar como docente'], ['human', 'Para bienestar o desarrollo humano'], ['profile', 'Quiero descubrir mi ruta']]},
+  fuera_de_alcance: {
+    message: 'Esa pregunta es más conceptual y no tengo una respuesta preparada para contestarla bien — prefiero no improvisarte algo a medias. Sí puedo ayudarte con esto:',
+    options: [['courses', 'Buscar un curso'], ['vip', 'Ver beneficios VIP'], ['contact', 'Hablar con el equipo']]
+  }
 };
 
 function goAssistantTarget(target){
@@ -695,57 +699,101 @@ const assistantIcons = {
   contact:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-10.8 6.7L4 20l1.8-5A7.5 7.5 0 1 1 20 11.5z"/></svg>'
 };
 const assistantArrow = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>';
-function assistantOption(id, label){return `<button class="assistant-option" type="button" data-assistant-route="${id}"><span class="assistant-option__icon">${assistantIcons[id] || assistantIcons.question}</span><span>${label}</span><span class="assistant-option__arrow">${assistantArrow}</span></button>`}
+function assistantOption(id, label){return `<button class="assistant-option" type="button" data-assistant-route="${id}" data-assistant-label="${label}"><span class="assistant-option__icon">${assistantIcons[id] || assistantIcons.question}</span><span>${label}</span><span class="assistant-option__arrow">${assistantArrow}</span></button>`}
 function assistantCourseCard(id){
   const course = assistantCatalog[id];
   return `<button class="assistant-course" type="button" data-assistant-course="${id}" aria-label="Conocer ${course.title}"><img class="assistant-course__img" src="${course.image}" alt=""><span class="assistant-course__info"><strong class="assistant-course__title">${course.title}</strong><span class="assistant-course__meta">${course.area}</span><span class="assistant-course__meta">${course.meta}</span><span class="assistant-course__footer"><span>${course.price}</span>${assistantArrow}</span></span></button>`;
 }
-function renderAssistant(route = 'home'){
+
+/* Memoria de la conversación: en vez de reemplazar la pantalla en cada
+   paso, se va apilando un historial (como una conversación real) que se
+   guarda en sessionStorage. Al reabrir el chat o recargar la página
+   dentro de la misma pestaña, Nora sigue donde se quedó. */
+const ASSISTANT_LOG_KEY = 'sentia-assistant-log';
+let assistantLog = [];
+function guardarLog(){ try { sessionStorage.setItem(ASSISTANT_LOG_KEY, JSON.stringify(assistantLog.slice(-40))); } catch(e){} }
+function restaurarLog(){
+  try {
+    const guardado = JSON.parse(sessionStorage.getItem(ASSISTANT_LOG_KEY) || 'null');
+    if (Array.isArray(guardado) && guardado.every(x => typeof x === 'string')) assistantLog = guardado;
+  } catch(e){}
+}
+function pintarLog(){
+  assistantBody.innerHTML = assistantLog.join('');
+  assistantBody.scrollTop = assistantBody.scrollHeight;
+}
+function agregarTurno(html, postura){
+  assistantLog.push(html);
+  if (assistantLog.length > 40) assistantLog = assistantLog.slice(-40);
+  guardarLog();
+  pintarLog();
+  if (postura) jugarPostura(postura);
+}
+const escHTML = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function burbujaUsuario(texto){ return texto ? `<div class="assistant-user">${escHTML(texto)}</div>` : ''; }
+
+function renderAssistant(route = 'home', labelUsuario){
   const step = assistantCopy[route] || assistantCopy.home;
-  let html = `<div class="assistant-message">${step.message}</div>`;
+  let html = burbujaUsuario(labelUsuario);
+  html += `<div class="assistant-message">${step.message}</div>`;
   if(step.options) html += `<div class="assistant-options">${step.options.map(([id,label]) => assistantOption(id,label)).join('')}</div>`;
   if(step.courses) html += step.courses.map(assistantCourseCard).join('');
   if(step.results) html += step.results.map(([title,desc,target]) => `<div class="assistant-result"><b>${title}</b><span>${desc}</span><button type="button" data-assistant-target="${target}">Ver opción ${assistantArrow}</button></div>`).join('');
   if(route !== 'home') html += '<button class="assistant-restart" type="button" data-assistant-route="home">← Volver al inicio</button>';
-  html += '<div class="assistant-message assistant-message--note">Nora orienta sobre los contenidos de SENTIA; no brinda terapia, diagnósticos ni atención de emergencia.</div>';
-  assistantBody.innerHTML = html;
-  jugarPostura(route === 'home' ? 'saludo' : step.results ? 'celebrar' : 'orientar');
+  agregarTurno(html, route === 'home' ? 'saludo' : step.results ? 'celebrar' : 'orientar');
 }
-function renderCourseDetail(id){
+function renderCourseDetail(id, labelUsuario){
   const course = assistantCatalog[id];
   if(!course) return;
-  assistantBody.innerHTML = `<div class="assistant-user">Me interesa ${course.title}</div><div class="assistant-message"><strong>${course.title}</strong><br>${course.description}</div><div class="assistant-course-actions"><button type="button" data-assistant-target="${course.anchor}">Ver ficha del curso ${assistantArrow}</button><button type="button" data-assistant-info="${id}">Solicitar informes ${assistantIcons.contact}</button></div><button class="assistant-restart" type="button" data-assistant-route="courses">← Explorar otros cursos</button><div class="assistant-message assistant-message--note">La disponibilidad, fechas y forma de pago se confirman directamente con el equipo de SENTIA.</div>`;
-  jugarPostura('celebrar');
+  const html = burbujaUsuario(labelUsuario || `Me interesa ${course.title}`) +
+    `<div class="assistant-message"><strong>${course.title}</strong><br>${course.description}</div><div class="assistant-course-actions"><button type="button" data-assistant-target="${course.anchor}">Ver ficha del curso ${assistantArrow}</button><button type="button" data-assistant-info="${id}">Solicitar informes ${assistantIcons.contact}</button></div><button class="assistant-restart" type="button" data-assistant-route="courses">← Explorar otros cursos</button>`;
+  agregarTurno(html, 'celebrar');
 }
-function openAssistant(){assistant.classList.add('is-open');assistantLauncher.setAttribute('aria-expanded','true');jugarPostura('saludo');}
+function openAssistant(){
+  assistant.classList.add('is-open');assistantLauncher.setAttribute('aria-expanded','true');
+  if (!assistantLog.length) renderAssistant();
+  else { pintarLog(); jugarPostura('saludo'); }
+}
 function closeAssistant(){assistant.classList.remove('is-open');assistantLauncher.setAttribute('aria-expanded','false');}
 assistantLauncher.addEventListener('click', () => assistant.classList.contains('is-open') ? closeAssistant() : openAssistant());
 assistantClose.addEventListener('click', closeAssistant);
 assistantBody.addEventListener('click', event => {
-  const route = event.target.closest('[data-assistant-route]')?.dataset.assistantRoute;
+  const routeBtn = event.target.closest('[data-assistant-route]');
+  const route = routeBtn?.dataset.assistantRoute;
   const target = event.target.closest('[data-assistant-target]')?.dataset.assistantTarget;
-  const course = event.target.closest('[data-assistant-course]')?.dataset.assistantCourse;
+  const courseBtn = event.target.closest('[data-assistant-course]');
+  const course = courseBtn?.dataset.assistantCourse;
   const info = event.target.closest('[data-assistant-info]')?.dataset.assistantInfo;
-  if(route) renderAssistant(route);
-  if(course) renderCourseDetail(course);
+  if(route) renderAssistant(route, routeBtn.dataset.assistantLabel);
+  if(course) renderCourseDetail(course, courseBtn.getAttribute('aria-label')?.replace('Conocer ', 'Me interesa '));
   if(target) goAssistantTarget(target);
   if(info) requestCourseInfo(info);
 });
+document.getElementById('assistant-reset')?.addEventListener('click', () => {
+  assistantLog = []; guardarLog(); renderAssistant();
+});
 assistantCompose.addEventListener('submit', event => {
   event.preventDefault();
-  const question = assistantInput.value.trim().toLowerCase();
+  const pregunta = assistantInput.value.trim();
+  const question = pregunta.toLowerCase();
   if(!question) return;
+  // Preguntas conceptuales ("qué es/significa...") no tienen una respuesta
+  // preparada: es mejor decirlo con claridad que adivinar con una palabra
+  // clave suelta y mandar a un lugar que no responde lo que se preguntó.
+  const esConceptual = /^(qu[eé]\s+(es|son|significa)|definici[oó]n|significado)\b/.test(question);
   let route = 'unsure';
-  if(/vip|membres[ií]a|acceso|precio|pago/.test(question)) route = 'vip';
-  else if(/curso|psicolog|terapia|cl[ií]nic|ansiedad|evaluaci[oó]n|pericial/.test(question)) route = 'psychology';
-  else if(/docente|educa|aula|alumno|niñ|adolescen|aprendizaje/.test(question)) route = 'education';
-  else if(/trabajo|laboral|organizaci[oó]n|empresa|liderazgo/.test(question)) route = 'work';
-  else if(/certificado|folio|qr/.test(question)) route = 'certificates';
+  if(/vip|membres[ií]a|acceso vip|precio|pago|plan mensual|plan anual/.test(question)) route = 'vip';
+  else if(/certificado|folio|c[oó]digo qr/.test(question)) route = 'certificates';
   else if(/vivo|grabaci[oó]n|sesi[oó]n/.test(question)) route = 'live';
-  renderAssistant(route);
+  else if(/docente|aula|alumno|ni[ñn]|adolescen/.test(question)) route = 'education';
+  else if(/laboral|organizaci[oó]n|empresa|liderazgo/.test(question)) route = 'work';
+  else if(esConceptual) route = 'fuera_de_alcance';
+  else if(/curso|psicolog|terapia|cl[ií]nic|ansiedad|evaluaci[oó]n|pericial|formaci[oó]n/.test(question)) route = 'psychology';
+  renderAssistant(route, pregunta);
   assistantInput.value = '';
 });
-renderAssistant();
+restaurarLog();
+if (assistantLog.length) pintarLog(); else renderAssistant();
 </script>
 <script src="cookies.js" defer></script>
 </body>
