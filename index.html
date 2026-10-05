@@ -84,6 +84,8 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdro
 .courses{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}
 .course{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;display:flex;flex-direction:column;transition:border-color .15s}
 .course:hover{border-color:color-mix(in srgb,var(--accent) 40%,var(--line))}
+.course--selected{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);animation:course-focus 1.7s ease-out}
+@keyframes course-focus{0%{box-shadow:0 0 0 0 rgba(27,93,240,.32)}100%{box-shadow:0 0 0 4px var(--accent-soft)}}
 .course__img{height:152px;background:linear-gradient(135deg,#0d2a6b,#1b3fa8);position:relative;background-size:cover;background-position:center}
 .course__img span{position:absolute;left:14px;top:14px;background:#fff;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:4px 10px}
 .course__img::after{content:'Ψ';position:absolute;right:12px;bottom:-30px;font:110px/1 Georgia,serif;color:#fff;opacity:.12}
@@ -172,6 +174,45 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
   .brand b{font-size:14px}
   .nav .btn{padding:0 10px;font-size:12.5px}
 }
+
+/* Asistente de orientación SENTIA */
+.sentia-assistant{position:fixed;right:24px;bottom:24px;z-index:70;font-family:'Instrument Sans',system-ui,sans-serif}
+.sentia-assistant__launcher{position:relative;width:318px;min-height:96px;padding:14px 18px 14px 104px;border:1px solid rgba(255,255,255,.55);border-radius:22px;cursor:pointer;text-align:left;color:#fff;background:linear-gradient(125deg,#092a62,#1b5df0);box-shadow:0 16px 34px rgba(14,29,64,.25);transition:transform .18s,box-shadow .18s}
+.sentia-assistant__launcher:hover{transform:translateY(-3px);box-shadow:0 20px 38px rgba(14,29,64,.32)}
+.sentia-assistant__launcher img{position:absolute;left:0;bottom:-2px;width:118px;height:142px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 7px 7px rgba(0,0,0,.16));animation:nora-float 3.8s ease-in-out infinite}
+@keyframes nora-float{0%,100%{translate:0 0}50%{translate:0 -5px}}
+@keyframes mascot-saludo{0%,100%{rotate:0deg}20%{rotate:-11deg}45%{rotate:9deg}70%{rotate:-5deg}}
+@keyframes mascot-celebrar{0%,100%{scale:1}30%{scale:1.08}55%{scale:.97}}
+@keyframes mascot-orientar{0%,100%{rotate:0deg}50%{rotate:4deg}}
+.sentia-assistant__launcher img.is-saludo,.assistant-head__avatar.is-saludo{animation:nora-float 3.8s ease-in-out infinite,mascot-saludo .7s ease-out 1}
+.sentia-assistant__launcher img.is-celebrar,.assistant-head__avatar.is-celebrar{animation:nora-float 3.8s ease-in-out infinite,mascot-celebrar .6s ease-out 1}
+.sentia-assistant__launcher img.is-orientar,.assistant-head__avatar.is-orientar{animation:nora-float 3.8s ease-in-out infinite,mascot-orientar .8s ease-in-out 1}
+.sentia-assistant__dot{position:absolute;right:18px;top:17px;width:9px;height:9px;background:#46d86b;border:2px solid rgba(255,255,255,.9);border-radius:50%}
+/* Modo compacto: se activa solo mientras el chat está cerrado, cuando el globo
+   taparía un título o un botón de la página al hacer scroll. */
+.sentia-assistant__launcher.is-compact{width:64px;min-height:64px;padding:0;border-radius:50%;overflow:hidden}
+.sentia-assistant__launcher.is-compact img{left:0;bottom:0;width:100%;height:100%;object-fit:cover;object-position:50% 14%;transform:scale(2.3)}
+.sentia-assistant__launcher.is-compact .sentia-assistant__label{display:none}
+.sentia-assistant__launcher.is-compact .sentia-assistant__dot{right:4px;top:4px}
+.sentia-assistant__label{display:block;font-family:'Sora',sans-serif;font-size:18px;line-height:1.2;font-weight:600}.sentia-assistant__label small{display:block;margin-top:5px;font-family:'Instrument Sans',system-ui,sans-serif;font-size:12.5px;font-weight:500;opacity:.83}
+.sentia-assistant__panel{position:absolute;right:0;bottom:0;width:min(416px,calc(100vw - 32px));overflow:hidden;border:1px solid var(--line-2);border-radius:24px;background:#fff;box-shadow:0 22px 60px rgba(14,29,64,.23);display:none}
+.sentia-assistant.is-open .sentia-assistant__panel{display:flex;flex-direction:column;animation:assistant-enter .2s ease-out}.sentia-assistant.is-open .sentia-assistant__launcher{display:none}
+@keyframes assistant-enter{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.assistant-head{position:relative;min-height:164px;padding:28px 50px 20px 164px;display:flex;align-items:center;gap:12px;color:var(--text);background:linear-gradient(135deg,#e5f0ff,#edf8ef);border-bottom:1px solid var(--line)}
+.assistant-head__avatar{position:absolute;left:5px;bottom:-6px;height:178px;width:145px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 8px 8px rgba(14,29,64,.14));animation:nora-float 3.8s ease-in-out infinite}
+.assistant-head__copy{flex:1}.assistant-head__copy em{display:block;font-size:10px;font-style:normal;letter-spacing:.11em;text-transform:uppercase;color:#388a55;font-weight:700}.assistant-head__copy b{display:block;font-family:'Sora',sans-serif;font-size:20px;margin-top:6px}.assistant-head__copy span{display:block;margin-top:4px;font-size:12.5px;color:var(--muted)}
+.assistant-close{position:absolute;right:15px;top:15px;width:32px;height:32px;border:1px solid var(--line);border-radius:50%;background:rgba(255,255,255,.85);color:var(--text);font-size:21px;line-height:1;cursor:pointer}
+.assistant-status{padding:10px 16px;border-bottom:1px solid var(--line);color:#547061;background:#f7fbf8;font-size:11.5px;line-height:1.45}
+.assistant-body{padding:16px;max-height:min(385px,calc(100vh - 380px));min-height:205px;overflow:auto;background:#f3f7fb}
+.assistant-message{background:#fff;border:1px solid var(--line);border-radius:15px 15px 15px 4px;padding:12px 13px;color:var(--text);font-size:14px;line-height:1.5;box-shadow:0 2px 8px rgba(14,29,64,.04)}
+.assistant-message + .assistant-message{margin-top:10px}.assistant-message--note{font-size:12px;color:var(--muted);box-shadow:none;background:transparent;border:0;padding:4px 2px}
+.assistant-options{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.assistant-option{min-height:46px;display:flex;align-items:center;gap:8px;border:1px solid #c7d9e2;background:#fff;color:#234a5f;border-radius:11px;padding:8px 10px;cursor:pointer;font:600 13px/1.2 'Instrument Sans',sans-serif;text-align:left;transition:.15s}.assistant-option:hover{border-color:#2a7f61;background:#edf9f2;color:#175e45}.assistant-option__icon{width:27px;height:27px;flex:0 0 27px;display:grid;place-items:center;border-radius:8px;color:#2162c5;background:#eaf1ff}.assistant-option__icon svg{width:16px;height:16px;stroke:currentColor}.assistant-option:nth-child(2n) .assistant-option__icon{color:#23785b;background:#e7f6ed}.assistant-option:nth-child(3n) .assistant-option__icon{color:#86611a;background:#fff4d8}.assistant-option__arrow{width:14px;height:14px;margin-left:auto;opacity:.65}.assistant-option__arrow svg{display:block;width:14px;height:14px;stroke:currentColor}
+.assistant-option--wide{width:100%;justify-content:flex-start}.assistant-result{margin-top:12px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px}.assistant-result b{display:block;font-family:'Sora',sans-serif;font-size:14px}.assistant-result span{display:block;color:var(--muted);font-size:12.5px;margin-top:3px}.assistant-result button{display:inline-flex;align-items:center;gap:5px;margin-top:9px;border:0;background:none;color:var(--accent);font:600 12.5px 'Instrument Sans',sans-serif;padding:0;cursor:pointer}.assistant-result button svg{width:15px;height:15px;stroke:currentColor}
+.assistant-course{display:grid;grid-template-columns:58px 1fr;gap:10px;margin-top:12px;padding:8px;border:1px solid var(--line);border-radius:13px;background:#fff;cursor:pointer;transition:.15s}.assistant-course:hover{border-color:#2a7f61;transform:translateY(-1px)}.assistant-course__img{width:58px;height:58px;border-radius:9px;object-fit:cover;background:#e7edf8}.assistant-course__info{min-width:0}.assistant-course__title{display:block;font-family:'Sora',sans-serif;font-size:12.7px;line-height:1.28;color:var(--text)}.assistant-course__meta{display:block;margin-top:3px;color:var(--muted);font-size:11.5px}.assistant-course__footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;color:#23785b;font-size:11.5px;font-weight:600}.assistant-course__footer svg{width:15px;height:15px;stroke:currentColor}
+.assistant-user{margin:0 0 13px auto;max-width:82%;padding:10px 12px;border-radius:14px 14px 4px 14px;background:#145d43;color:#fff;font-size:13px;line-height:1.4}.assistant-course-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}.assistant-course-actions button{display:inline-flex;align-items:center;gap:6px;border:1px solid #c7d9e2;background:#fff;color:#234a5f;border-radius:10px;padding:9px 10px;cursor:pointer;font:600 12.5px 'Instrument Sans',sans-serif}.assistant-course-actions button:first-child{border-color:#145d43;background:#145d43;color:#fff}.assistant-course-actions svg{width:15px;height:15px;stroke:currentColor}
+.assistant-restart{margin-top:16px;border:0;background:transparent;color:var(--muted);font:600 12px 'Instrument Sans',sans-serif;text-decoration:underline;cursor:pointer;padding:0}
+.assistant-compose{padding:12px 14px 14px;border-top:1px solid var(--line);background:#fff}.assistant-compose__row{display:flex;gap:8px;align-items:center;border:1px solid var(--line-2);border-radius:14px;padding:5px 6px 5px 12px}.assistant-compose input{min-width:0;flex:1;border:0;outline:0;background:transparent;font:13.5px 'Instrument Sans',system-ui,sans-serif;color:var(--text)}.assistant-compose button{width:36px;height:36px;border:0;border-radius:50%;background:#145d43;color:#fff;font-size:18px;cursor:pointer}.assistant-compose small{display:block;margin:8px 2px 0;font-size:11px;color:var(--muted)}
+@media(max-width:600px){.sentia-assistant{right:16px;bottom:16px}.sentia-assistant__launcher{width:min(318px,calc(100vw - 32px));min-height:88px;padding-left:104px}.sentia-assistant__launcher img{width:104px;height:124px}.sentia-assistant__panel{width:calc(100vw - 24px);right:-4px;bottom:-4px;border-radius:22px}.assistant-head{min-height:150px;padding:24px 44px 16px 145px}.assistant-head__avatar{left:0;height:160px;width:132px}.assistant-body{max-height:min(350px,calc(100vh - 375px))}}
 </style>
 </head>
 <body>
@@ -325,7 +366,7 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
     <p class="sub">Cada curso incluye clases en vivo, grabación, materiales descargables, comunidad y certificado con folio verificable.</p>
     <div class="courses">
 
-      <article class="course">
+      <article class="course" id="curso-custodia">
         <div class="course__img" style="background-image:url('assets/cursos/guarda-custodia.jpg')"><span>Psicología forense</span></div>
         <div class="course__body">
           <h3>Evaluación psicológica en guarda y custodia</h3>
@@ -338,7 +379,7 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
         <div class="course__foot"><span>3 clases · 6 h</span><b>$550</b></div>
       </article>
 
-      <article class="course">
+      <article class="course" id="curso-auxilios">
         <div class="course__img" style="background-image:url('assets/cursos/primeros-auxilios.jpg')"><span>Intervención psicológica</span></div>
         <div class="course__body">
           <h3>Primeros auxilios psicológicos</h3>
@@ -351,7 +392,7 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
         <div class="course__foot"><span>5 clases · 8 h</span><b>$550</b></div>
       </article>
 
-      <article class="course">
+      <article class="course" id="curso-laboral">
         <div class="course__img" style="background-image:url('assets/cursos/salud-laboral.jpg')"><span>Psicología laboral</span></div>
         <div class="course__body">
           <h3>Salud psicológica laboral</h3>
@@ -439,6 +480,28 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
   </section>
 </div>
 
+<!-- ═══ ASISTENTE DE ORIENTACIÓN ═══ -->
+<aside class="sentia-assistant" id="sentia-assistant" aria-label="Asistente de orientación SENTIA">
+  <div class="sentia-assistant__panel" id="assistant-panel" aria-live="polite">
+    <div class="assistant-head">
+      <img class="assistant-head__avatar" src="assets/asistente/nora-sentia.png" alt="Nora, asistente de SENTIA">
+      <div class="assistant-head__copy"><em>SENTIA · guía virtual</em><b>Tu guía de formación</b><span>Encuentra una ruta que conecte contigo.</span></div>
+      <button class="assistant-close" id="assistant-close" type="button" aria-label="Cerrar asistente">×</button>
+    </div>
+    <div class="assistant-status">Respuestas guiadas con el catálogo de SENTIA. Si necesitas atención personal, puedes contactar al equipo.</div>
+    <div class="assistant-body" id="assistant-body"></div>
+    <form class="assistant-compose" id="assistant-compose">
+      <div class="assistant-compose__row"><input id="assistant-input" autocomplete="off" placeholder="¿Qué te gustaría aprender?" aria-label="Escribe qué te gustaría aprender"><button type="submit" aria-label="Enviar consulta">↑</button></div>
+      <small>También puedes elegir una de las opciones.</small>
+    </form>
+  </div>
+  <button class="sentia-assistant__launcher" id="assistant-launcher" type="button" aria-expanded="false" aria-controls="assistant-panel" aria-label="Abrir asistente de orientación SENTIA">
+    <img src="assets/asistente/nora-sentia.png" alt="">
+    <span class="sentia-assistant__dot" aria-hidden="true"></span>
+    <span class="sentia-assistant__label" aria-hidden="true">Te ayudo a elegir<small>Tu guía virtual de formación</small></span>
+  </button>
+</aside>
+
 <footer class="soft">
   <div class="wrap">
     <div class="foot">
@@ -484,6 +547,201 @@ document.getElementById('form-info').addEventListener('submit', e => {
     (f.mensaje.value.trim() ? '\n' + f.mensaje.value.trim() : '');
   window.open(waBase + encodeURIComponent(texto), '_blank', 'noopener');
 });
+
+/* Asistente de orientación: rutas guiadas, sin respuestas ni recomendaciones inventadas */
+const assistant = document.getElementById('sentia-assistant');
+const assistantPanel = document.getElementById('assistant-panel');
+const assistantBody = document.getElementById('assistant-body');
+const assistantLauncher = document.getElementById('assistant-launcher');
+const assistantClose = document.getElementById('assistant-close');
+const assistantCompose = document.getElementById('assistant-compose');
+const assistantInput = document.getElementById('assistant-input');
+
+/* Postura del personaje: una animación corta sobre la misma imagen de Nora
+   (saludo = agita la mano, celebrar = rebote al mostrar un resultado útil,
+   orientar = pequeño gesto al presentar opciones). Sin arte nuevo. */
+function jugarPostura(tipo){
+  document.querySelectorAll('.sentia-assistant__launcher img, .assistant-head__avatar').forEach(img => {
+    img.classList.remove('is-saludo', 'is-celebrar', 'is-orientar');
+    void img.offsetWidth;
+    img.classList.add('is-' + tipo);
+  });
+}
+
+/* El globo flotante no debe tapar títulos ni botones de la página al hacer
+   scroll: si se cruza con alguno, se encoge a una burbuja circular (sin
+   texto) hasta que vuelva a haber espacio libre. Solo aplica con el chat
+   cerrado; con el chat abierto el contenido de fondo no importa. */
+function asistenteSeTraslapa(){
+  if (assistant.classList.contains('is-open')) return false;
+  const r = assistantLauncher.getBoundingClientRect();
+  const candidatos = document.querySelectorAll('button, a[href], h1, h2, h3');
+  for (const el of candidatos) {
+    if (assistant.contains(el)) continue;
+    const b = el.getBoundingClientRect();
+    if (b.width === 0 || b.height === 0) continue;
+    if (b.left < r.right && b.right > r.left && b.top < r.bottom && b.bottom > r.top) return true;
+  }
+  return false;
+}
+let asistenteFrame = 0;
+function actualizarModoCompacto(){
+  asistenteFrame = 0;
+  assistantLauncher.classList.toggle('is-compact', asistenteSeTraslapa());
+}
+function agendarModoCompacto(){ if (!asistenteFrame) asistenteFrame = requestAnimationFrame(actualizarModoCompacto); }
+addEventListener('scroll', agendarModoCompacto, { passive: true });
+addEventListener('resize', agendarModoCompacto, { passive: true });
+new ResizeObserver(agendarModoCompacto).observe(document.body);
+agendarModoCompacto();
+
+/* Catálogo público actual: las fichas del asistente se corresponden con las tarjetas de esta página. */
+const assistantCatalog = {
+  custodia: {
+    title:'Evaluación psicológica en guarda y custodia', area:'Psicología forense', meta:'3 clases · 6 h · En vivo + grabación', price:'$550', image:'assets/cursos/guarda-custodia.jpg', anchor:'#curso-custodia',
+    description:'Aprende entrevista, integración de fuentes y redacción del informe pericial. Incluye manual y checklist, además de certificado con QR.'
+  },
+  auxilios: {
+    title:'Primeros auxilios psicológicos', area:'Intervención psicológica', meta:'5 clases · 8 h · En vivo + grabación', price:'$550', image:'assets/cursos/primeros-auxilios.jpg', anchor:'#curso-auxilios',
+    description:'Formación en contención emocional, detección de riesgo y canalización oportuna. Incluye formatos de apoyo y certificado con QR.'
+  },
+  laboral: {
+    title:'Salud psicológica laboral', area:'Psicología laboral', meta:'3 clases · 6 h · En vivo + grabación', price:'$550', image:'assets/cursos/salud-laboral.jpg', anchor:'#curso-laboral',
+    description:'Aborda riesgos psicosociales, liderazgo y rutas de apoyo en organizaciones. Incluye matriz NOM-035 y certificado con QR.'
+  }
+};
+
+const assistantCopy = {
+  home: {
+    message: 'Hola, soy <strong>Nora</strong>, la asistente de SENTIA. Puedo orientarte para encontrar una formación o entender qué incluye el acceso VIP.',
+    options: [
+      ['courses', 'Encontrar un curso'],
+      ['vip', 'Ver beneficios VIP'],
+      ['profile', 'Explorar por mi perfil'],
+      ['question', 'Tengo una pregunta'],
+      ['unsure', 'No sé qué necesito']
+    ]
+  },
+  courses: {
+    message: '¿Qué área te interesa explorar?',
+    options: [['psychology', 'Psicología'], ['education', 'Educación'], ['work', 'Contexto laboral'], ['human', 'Desarrollo humano']]
+  },
+  psychology: {
+    message: 'Para psicología, estas son rutas de formación que ya puedes consultar:',
+    courses: ['custodia', 'auxilios']
+  },
+  education: {
+    message: 'En educación te recomendamos empezar por el perfil para que la ruta se adapte a tus intereses.',
+    results: [['Encuentra tu perfil SENTIA', 'Un test breve para explorar tus intereses y tu forma de aprender.', 'https://club.sentiamx.com/perfil-sentia.html']]
+  },
+  work: {
+    message: 'Para el trabajo con equipos y organizaciones, esta ruta está disponible:',
+    courses: ['laboral']
+  },
+  human: {
+    message: 'El área de desarrollo humano reúne bienestar, vínculos y crecimiento. Puedes conocer el enfoque de SENTIA aquí:',
+    results: [['Conoce las áreas de SENTIA', 'Fundamentos aplicados a contextos clínicos, educativos, familiares y organizacionales.', '#areas']]
+  },
+  vip: {
+    message: 'El acceso VIP se habilita con una membresía activa. Incluye cursos, clases en vivo, materiales, herramientas y certificados verificables.',
+    results: [['Ver beneficios del acceso VIP', 'Conoce qué se desbloquea y cómo funciona la membresía.', '#membresia']]
+  },
+  profile: {
+    message: 'Podemos empezar por tu perfil profesional. Te ayuda a identificar qué ruta de formación conecta mejor contigo.',
+    results: [['Descubrir mi perfil SENTIA', 'Test gratuito de aproximadamente 2 minutos.', 'https://club.sentiamx.com/perfil-sentia.html']]
+  },
+  question: {
+    message: 'Elige una duda frecuente y te llevo a la información correspondiente:',
+    options: [['certificates', 'Certificados'], ['live', 'Clases en vivo'], ['access', 'Acceso VIP'], ['contact', 'Hablar con SENTIA']]
+  },
+  certificates: {message: 'Los cursos incluyen certificado con folio y código QR verificable en línea.', results: [['Conoce los cursos disponibles', 'Cada ficha señala lo que incluye.', '#cursos']]},
+  live: {message: 'La formación incluye sesiones en vivo con especialistas; también se contempla la grabación para consultar el contenido.', results: [['Así son las sesiones', 'Conoce la dinámica de las clases de SENTIA.', '#impartidos']]},
+  access: {message: 'El panel VIP se habilita para miembros con una membresía activa. Desde ahí se accede a la biblioteca y herramientas.', results: [['Ver beneficios VIP', 'Conoce el acceso antes de iniciar sesión.', '#membresia']]},
+  contact: {message: 'Si tu duda necesita atención personal, puedes enviarnos un mensaje directo.', results: [['Pedir informes', 'Escríbenos el curso o tema que buscas.', '#informacion']]},
+  unsure: {message: 'No pasa nada. ¿Para qué te gustaría capacitarte?', options: [['psychology', 'Para mi práctica profesional'], ['education', 'Para mejorar como docente'], ['human', 'Para bienestar o desarrollo humano'], ['profile', 'Quiero descubrir mi ruta']]} 
+};
+
+function goAssistantTarget(target){
+  if(target.startsWith('#')) {
+    document.querySelectorAll('.course--selected').forEach(card => card.classList.remove('course--selected'));
+    const element = document.querySelector(target);
+    element?.classList.add('course--selected');
+    element?.scrollIntoView({behavior:'smooth', block:'center'});
+  } else window.location.href = target;
+  closeAssistant();
+}
+function requestCourseInfo(id){
+  const course = assistantCatalog[id];
+  if(!course) return;
+  window.open(waBase + encodeURIComponent(`Hola SENTIA, quiero información del curso: ${course.title}.`), '_blank', 'noopener');
+}
+const assistantIcons = {
+  courses:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 5.5v16M8 7h8M8 11h6"/></svg>',
+  vip:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 9 3 9h10l3-9-4 3-4-6-4 6z"/><path d="M7 21h10"/></svg>',
+  profile:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M5 21c.8-4 3.1-6 7-6s6.2 2 7 6"/></svg>',
+  question:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-10.8 6.7L4 20l1.8-5A7.5 7.5 0 1 1 20 11.5z"/><path d="M9.6 9.2a2.5 2.5 0 1 1 4.2 1.8c-.9.7-1.8 1.2-1.8 2.5M12 17h.01"/></svg>',
+  unsure:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="m15 9-1.7 3.3L10 14l1.7-3.3z"/></svg>',
+  psychology:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4a3 3 0 0 0-3 3 3 3 0 0 0-2 5 3 3 0 0 0 2 5 3 3 0 0 0 3 3h3V4zM15 4a3 3 0 0 1 3 3 3 3 0 0 1 2 5 3 3 0 0 1-2 5 3 3 0 0 1-3 3h-3"/></svg>',
+  education:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-5 9 5-9 5zM7 12v5c0 1 2 2 5 2s5-1 5-2v-5"/></svg>',
+  work:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18"/></svg>',
+  human:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.6-7-9a4 4 0 0 1 7-2.6A4 4 0 0 1 19 11c0 4.4-7 9-7 9z"/></svg>',
+  certificates:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h10v18l-5-3-5 3z"/><path d="M10 8h4"/></svg>',
+  live:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3z"/></svg>',
+  access:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>',
+  contact:'<svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-10.8 6.7L4 20l1.8-5A7.5 7.5 0 1 1 20 11.5z"/></svg>'
+};
+const assistantArrow = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>';
+function assistantOption(id, label){return `<button class="assistant-option" type="button" data-assistant-route="${id}"><span class="assistant-option__icon">${assistantIcons[id] || assistantIcons.question}</span><span>${label}</span><span class="assistant-option__arrow">${assistantArrow}</span></button>`}
+function assistantCourseCard(id){
+  const course = assistantCatalog[id];
+  return `<button class="assistant-course" type="button" data-assistant-course="${id}" aria-label="Conocer ${course.title}"><img class="assistant-course__img" src="${course.image}" alt=""><span class="assistant-course__info"><strong class="assistant-course__title">${course.title}</strong><span class="assistant-course__meta">${course.area}</span><span class="assistant-course__meta">${course.meta}</span><span class="assistant-course__footer"><span>${course.price}</span>${assistantArrow}</span></span></button>`;
+}
+function renderAssistant(route = 'home'){
+  const step = assistantCopy[route] || assistantCopy.home;
+  let html = `<div class="assistant-message">${step.message}</div>`;
+  if(step.options) html += `<div class="assistant-options">${step.options.map(([id,label]) => assistantOption(id,label)).join('')}</div>`;
+  if(step.courses) html += step.courses.map(assistantCourseCard).join('');
+  if(step.results) html += step.results.map(([title,desc,target]) => `<div class="assistant-result"><b>${title}</b><span>${desc}</span><button type="button" data-assistant-target="${target}">Ver opción ${assistantArrow}</button></div>`).join('');
+  if(route !== 'home') html += '<button class="assistant-restart" type="button" data-assistant-route="home">← Volver al inicio</button>';
+  html += '<div class="assistant-message assistant-message--note">Nora orienta sobre los contenidos de SENTIA; no brinda terapia, diagnósticos ni atención de emergencia.</div>';
+  assistantBody.innerHTML = html;
+  jugarPostura(route === 'home' ? 'saludo' : step.results ? 'celebrar' : 'orientar');
+}
+function renderCourseDetail(id){
+  const course = assistantCatalog[id];
+  if(!course) return;
+  assistantBody.innerHTML = `<div class="assistant-user">Me interesa ${course.title}</div><div class="assistant-message"><strong>${course.title}</strong><br>${course.description}</div><div class="assistant-course-actions"><button type="button" data-assistant-target="${course.anchor}">Ver ficha del curso ${assistantArrow}</button><button type="button" data-assistant-info="${id}">Solicitar informes ${assistantIcons.contact}</button></div><button class="assistant-restart" type="button" data-assistant-route="courses">← Explorar otros cursos</button><div class="assistant-message assistant-message--note">La disponibilidad, fechas y forma de pago se confirman directamente con el equipo de SENTIA.</div>`;
+  jugarPostura('celebrar');
+}
+function openAssistant(){assistant.classList.add('is-open');assistantLauncher.setAttribute('aria-expanded','true');jugarPostura('saludo');}
+function closeAssistant(){assistant.classList.remove('is-open');assistantLauncher.setAttribute('aria-expanded','false');}
+assistantLauncher.addEventListener('click', () => assistant.classList.contains('is-open') ? closeAssistant() : openAssistant());
+assistantClose.addEventListener('click', closeAssistant);
+assistantBody.addEventListener('click', event => {
+  const route = event.target.closest('[data-assistant-route]')?.dataset.assistantRoute;
+  const target = event.target.closest('[data-assistant-target]')?.dataset.assistantTarget;
+  const course = event.target.closest('[data-assistant-course]')?.dataset.assistantCourse;
+  const info = event.target.closest('[data-assistant-info]')?.dataset.assistantInfo;
+  if(route) renderAssistant(route);
+  if(course) renderCourseDetail(course);
+  if(target) goAssistantTarget(target);
+  if(info) requestCourseInfo(info);
+});
+assistantCompose.addEventListener('submit', event => {
+  event.preventDefault();
+  const question = assistantInput.value.trim().toLowerCase();
+  if(!question) return;
+  let route = 'unsure';
+  if(/vip|membres[ií]a|acceso|precio|pago/.test(question)) route = 'vip';
+  else if(/curso|psicolog|terapia|cl[ií]nic|ansiedad|evaluaci[oó]n|pericial/.test(question)) route = 'psychology';
+  else if(/docente|educa|aula|alumno|niñ|adolescen|aprendizaje/.test(question)) route = 'education';
+  else if(/trabajo|laboral|organizaci[oó]n|empresa|liderazgo/.test(question)) route = 'work';
+  else if(/certificado|folio|qr/.test(question)) route = 'certificates';
+  else if(/vivo|grabaci[oó]n|sesi[oó]n/.test(question)) route = 'live';
+  renderAssistant(route);
+  assistantInput.value = '';
+});
+renderAssistant();
 </script>
 <script src="cookies.js" defer></script>
 </body>
