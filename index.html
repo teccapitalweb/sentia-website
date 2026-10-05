@@ -732,8 +732,29 @@ function agregarTurno(html, postura){
 const escHTML = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 function burbujaUsuario(texto){ return texto ? `<div class="assistant-user">${escHTML(texto)}</div>` : ''; }
 
+/* Memoria de contexto: recuerda el área que ya le interesó a la persona
+   (psicología/educación/laboral/desarrollo humano) y la usa para no
+   volver a preguntar lo mismo cuando regresa al inicio o dice "no sé
+   qué necesito". Sigue sin ser IA: solo recuerda qué botones tocó. */
+const AREA_LABELS = { psychology: 'Psicología', education: 'Educación', work: 'Contexto laboral', human: 'Desarrollo humano' };
+const ASSISTANT_CTX_KEY = 'sentia-assistant-context';
+let contexto = { area: null };
+function guardarContexto(){ try { sessionStorage.setItem(ASSISTANT_CTX_KEY, JSON.stringify(contexto)); } catch(e){} }
+function restaurarContexto(){
+  try {
+    const g = JSON.parse(sessionStorage.getItem(ASSISTANT_CTX_KEY) || 'null');
+    if (g && AREA_LABELS[g.area]) contexto.area = g.area;
+  } catch(e){}
+}
+
 function renderAssistant(route = 'home', labelUsuario){
-  const step = assistantCopy[route] || assistantCopy.home;
+  let step = assistantCopy[route] || assistantCopy.home;
+  if (AREA_LABELS[route]) { contexto.area = route; guardarContexto(); }
+  else if (route === 'home' && contexto.area) {
+    step = { message: `Seguimos por aquí. ¿Retomamos ${AREA_LABELS[contexto.area]} o prefieres ver otra cosa?`, options: [[contexto.area, `Seguir en ${AREA_LABELS[contexto.area]}`], ...step.options] };
+  } else if (route === 'unsure' && contexto.area) {
+    step = { message: `Antes te interesó ${AREA_LABELS[contexto.area]}. ¿Seguimos por ahí o prefieres explorar otra área?`, options: [[contexto.area, `Seguir en ${AREA_LABELS[contexto.area]}`], ['courses', 'Ver otras áreas'], ['profile', 'Quiero descubrir mi ruta']] };
+  }
   let html = burbujaUsuario(labelUsuario);
   html += `<div class="assistant-message">${step.message}</div>`;
   if(step.options) html += `<div class="assistant-options">${step.options.map(([id,label]) => assistantOption(id,label)).join('')}</div>`;
@@ -770,7 +791,9 @@ assistantBody.addEventListener('click', event => {
   if(info) requestCourseInfo(info);
 });
 document.getElementById('assistant-reset')?.addEventListener('click', () => {
-  assistantLog = []; guardarLog(); renderAssistant();
+  assistantLog = []; guardarLog();
+  contexto = { area: null }; guardarContexto();
+  renderAssistant();
 });
 assistantCompose.addEventListener('submit', event => {
   event.preventDefault();
@@ -793,6 +816,7 @@ assistantCompose.addEventListener('submit', event => {
   assistantInput.value = '';
 });
 restaurarLog();
+restaurarContexto();
 if (assistantLog.length) pintarLog(); else renderAssistant();
 </script>
 <script src="cookies.js" defer></script>
