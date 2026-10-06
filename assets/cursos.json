@@ -24,7 +24,7 @@
       "chips": ["En vivo + grabación", "Certificado con QR", "Formatos de apoyo"],
       "imagen": "assets/cursos/primeros-auxilios.jpg",
       "anchor": "curso-auxilios",
-      "gratis": false
+      "gratis": true
     },
     {
       "id": "laboral",
@@ -37,7 +37,7 @@
       "chips": ["En vivo + grabación", "Certificado con QR", "Matriz NOM-035"],
       "imagen": "assets/cursos/salud-laboral.jpg",
       "anchor": "curso-laboral",
-      "gratis": false
+      "gratis": true
     }
   ]
 }
