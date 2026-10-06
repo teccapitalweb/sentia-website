@@ -614,7 +614,7 @@ window.SENTIA_CATALOGO.then(cursos => {
 
 const assistantCopy = {
   home: {
-    message: 'Hola, soy <strong>Nora</strong>, la asistente de SENTIA. Puedo orientarte para encontrar una formación o contarte qué incluye la membresía.',
+    message: '¡Hola! Soy <strong>Nora</strong>, tu guía en SENTIA. Con gusto te ayudo a encontrar la formación que buscas o te cuento qué incluye la membresía.',
     options: [
       ['courses', 'Encontrar un curso'],
       ['vip', 'Conocer la membresía'],
@@ -624,52 +624,52 @@ const assistantCopy = {
     ]
   },
   courses: {
-    message: '¿Qué área te interesa explorar?',
+    message: '¡Perfecto! ¿Qué área te interesa explorar?',
     options: [['psychology', 'Psicología'], ['education', 'Educación'], ['work', 'Contexto laboral'], ['human', 'Desarrollo humano']]
   },
   psychology: {
-    message: 'Para psicología, estas son rutas de formación que ya puedes consultar:',
+    message: 'Muy bien. Estas son las rutas de psicología que ya puedes consultar:',
     courses: ['custodia', 'auxilios']
   },
   education: {
-    message: 'En educación te recomendamos empezar por el perfil para que la ruta se adapte a tus intereses.',
+    message: 'Para educación te recomendamos empezar por tu perfil — así la ruta se adapta mejor a lo que buscas.',
     results: [['Encuentra tu perfil SENTIA', 'Un test breve para explorar tus intereses y tu forma de aprender.', 'https://club.sentiamx.com/perfil-sentia.html']]
   },
   work: {
-    message: 'Para el trabajo con equipos y organizaciones, esta ruta está disponible:',
+    message: 'Para el trabajo con equipos y organizaciones, tenemos esta ruta disponible:',
     courses: ['laboral']
   },
   // Antes mandaba a "#areas" en el landing (cerraba el chat y se sentía muy
   // desconectado de la conversación). Ahora el contenido real de esa
   // sección se cuenta directo aquí, sin salir del chat.
   human: {
-    message: 'El área de desarrollo humano reúne bienestar, vínculos y crecimiento a lo largo de la vida. SENTIA trabaja 4 áreas conectadas entre sí:<ul><li><strong>Psicología clínica</strong> — evaluación, diagnóstico e intervención con base en evidencia.</li><li><strong>Educación</strong> — herramientas para docentes dentro y fuera del aula.</li><li><strong>Contexto laboral</strong> — competencias emocionales para organizaciones más sanas.</li><li><strong>Desarrollo humano</strong> — bienestar, vínculos y crecimiento a lo largo de la vida.</li></ul>',
+    message: 'El área de desarrollo humano reúne bienestar, vínculos y crecimiento a lo largo de la vida. En SENTIA trabajamos 4 áreas conectadas entre sí:<ul><li><strong>Psicología clínica</strong> — evaluación, diagnóstico e intervención con base en evidencia.</li><li><strong>Educación</strong> — herramientas para docentes dentro y fuera del aula.</li><li><strong>Contexto laboral</strong> — competencias emocionales para organizaciones más sanas.</li><li><strong>Desarrollo humano</strong> — bienestar, vínculos y crecimiento a lo largo de la vida.</li></ul>',
     options: [['courses', 'Buscar un curso'], ['profile', 'Descubrir mi perfil']]
   },
   // "Ver beneficios VIP → #membresia" se reemplaza: el contenido real de la
   // sección se cuenta aquí mismo, y el único link que queda es la acción de
   // verdad (crear la cuenta), no un salto a leer la misma info en la página.
   vip: {
-    message: 'La <strong>membresía del Club SENTIA</strong> te da acceso a toda la biblioteca de cursos en un solo lugar:<ul><li>Herramientas Pro: notas de sesión, informes y tamizajes listos para usar</li><li>Clases en vivo con especialistas y sus grabaciones</li><li>Materiales descargables listos para tu práctica</li><li>Certificados con folio y código QR verificable</li></ul>',
+    message: '¡Con gusto te cuento! La <strong>membresía del Club SENTIA</strong> te da acceso a toda la biblioteca de cursos en un solo lugar:<ul><li>Herramientas Pro: notas de sesión, informes y tamizajes listos para usar</li><li>Clases en vivo con especialistas y sus grabaciones</li><li>Materiales descargables listos para tu práctica</li><li>Certificados con folio y código QR verificable</li></ul>',
     results: [['Quiero la membresía', 'Crea tu cuenta y entra al Club SENTIA.', 'https://club.sentiamx.com/vip-auth.html']]
   },
   profile: {
-    message: 'Podemos empezar por tu perfil profesional. Te ayuda a identificar qué ruta de formación conecta mejor contigo.',
+    message: '¡Buena idea! Podemos empezar por tu perfil profesional — te ayuda a identificar qué ruta de formación conecta mejor contigo.',
     results: [['Descubrir mi perfil SENTIA', 'Test gratuito de aproximadamente 2 minutos.', 'https://club.sentiamx.com/perfil-sentia.html']]
   },
   question: {
-    message: 'Elige una duda frecuente y te cuento aquí mismo:',
+    message: 'Claro, elige una duda frecuente y te cuento aquí mismo:',
     options: [['certificates', 'Certificados'], ['live', 'Clases en vivo'], ['access', 'Membresía'], ['conceptos', 'Conceptos básicos'], ['contact', 'Hablar con SENTIA']]
   },
   // "Conoce los cursos disponibles → #cursos" se reemplaza por la misma
   // ruta de cursos que ya existe dentro del chat (tarjetas reales, no un
   // salto a la página).
   certificates: {
-    message: 'Los cursos incluyen certificado con folio y código QR verificable en línea — se puede comprobar la autenticidad sin depender de SENTIA.',
+    message: '¡Sí! Los cursos incluyen certificado con folio y código QR verificable en línea — se puede comprobar la autenticidad sin depender de SENTIA.',
     options: [['courses', 'Ver los cursos'], ['question', 'Tengo otra pregunta']]
   },
   live: {
-    message: 'La formación incluye sesiones en vivo con especialistas, en grupos reducidos y con espacio para preguntar sobre casos reales; también queda la grabación por si no puedes conectarte en el horario. Por ejemplo, ya hemos impartido sesiones como la de People Analytics: indicadores, rotación y decisiones de talento.',
+    message: 'Con gusto. La formación incluye sesiones en vivo con especialistas, en grupos reducidos y con espacio para preguntar sobre casos reales; también queda la grabación por si no puedes conectarte en el horario. Por ejemplo, ya hemos impartido sesiones como la de People Analytics: indicadores, rotación y decisiones de talento.',
     options: [['courses', 'Ver los cursos'], ['question', 'Tengo otra pregunta']]
   },
   access: {
@@ -717,51 +717,51 @@ const GLOSARIO = [
   {
     etiqueta: 'Psicología',
     patrones: /\bpsicolog[ií]a\b(?!\s+forense)/,
-    respuesta: 'Es la ciencia que estudia la mente y el comportamiento humano: cómo pensamos, sentimos y actuamos, y por qué. Se aplica en consultorio, escuelas, empresas y procesos legales, entre otros contextos.'
+    respuesta: 'La <strong>psicología</strong> es la ciencia que estudia la mente y el comportamiento humano: cómo pensamos, sentimos y actuamos, y por qué. Se aplica en consultorio, escuelas, empresas y procesos legales, entre otros contextos.'
   },
   {
     etiqueta: 'Educación',
     patrones: /\beducaci[oó]n\b/,
-    respuesta: 'Es el proceso de enseñar y aprender, dentro y fuera del aula: no solo transmitir conocimiento, también desarrollar habilidades, valores y herramientas para la vida.'
+    respuesta: 'La <strong>educación</strong> es el proceso de enseñar y aprender, dentro y fuera del aula: no solo transmitir conocimiento, también desarrollar habilidades, valores y herramientas para la vida.'
   },
   {
     etiqueta: 'Neurociencias',
     patrones: /neurociencias?/,
-    respuesta: 'Es el estudio científico del sistema nervioso y el cerebro: cómo funcionan y cómo explican procesos como el aprendizaje, la memoria, las emociones y la conducta.'
+    respuesta: 'Las <strong>neurociencias</strong> son el estudio científico del sistema nervioso y el cerebro: cómo funcionan y cómo explican procesos como el aprendizaje, la memoria, las emociones y la conducta.'
   },
   {
     etiqueta: 'Primeros auxilios psicológicos',
     patrones: /primeros auxilios psicol[oó]gicos/,
-    respuesta: 'Son las primeras acciones de contención emocional que se brindan a una persona en crisis o después de un evento adverso, antes de una atención psicológica formal: escuchar, dar seguridad y detectar si necesita canalizarse a ayuda especializada.',
+    respuesta: 'Los <strong>primeros auxilios psicológicos</strong> son las primeras acciones de contención emocional que se brindan a una persona en crisis o después de un evento adverso, antes de una atención psicológica formal: escuchar, dar seguridad y detectar si necesita canalizarse a ayuda especializada.',
     curso: 'auxilios'
   },
   {
     etiqueta: 'Psicología forense',
     patrones: /psicolog[ií]a forense|dictamen pericial|peritaje psicol[oó]gico/,
-    respuesta: 'Es la aplicación de la psicología dentro de procesos legales: evalúa a las personas involucradas (por ejemplo en casos de guarda y custodia) y entrega un informe o dictamen que puede usarse como prueba pericial.',
+    respuesta: 'La <strong>psicología forense</strong> es la aplicación de la psicología dentro de procesos legales: evalúa a las personas involucradas (por ejemplo en casos de guarda y custodia) y entrega un informe o dictamen que puede usarse como prueba pericial.',
     curso: 'custodia'
   },
   {
     etiqueta: 'NOM-035 / riesgos psicosociales',
     patrones: /nom.?035|riesgos psicosociales/,
-    respuesta: 'La NOM-035-STPS-2018 es la norma oficial mexicana que obliga a las empresas a identificar y prevenir los riesgos psicosociales en el trabajo (como el estrés o la violencia laboral) y a promover un entorno organizacional favorable.',
+    respuesta: 'La <strong>NOM-035-STPS-2018</strong> es la norma oficial mexicana que obliga a las empresas a identificar y prevenir los riesgos psicosociales en el trabajo (como el estrés o la violencia laboral) y a promover un entorno organizacional favorable.',
     fuente: 'NOM-035-STPS-2018',
     curso: 'laboral'
   },
   {
     etiqueta: 'Terapia cognitivo-conductual',
     patrones: /terapia cognitivo.?conductual|\btcc\b/,
-    respuesta: 'Es un enfoque terapéutico que trabaja la relación entre pensamientos, emociones y conductas: identifica patrones de pensamiento poco útiles y ayuda a modificarlos con técnicas prácticas.'
+    respuesta: 'La <strong>terapia cognitivo-conductual</strong> es un enfoque terapéutico que trabaja la relación entre pensamientos, emociones y conductas: identifica patrones de pensamiento poco útiles y ayuda a modificarlos con técnicas prácticas.'
   },
   {
     etiqueta: 'Desarrollo humano',
     patrones: /desarrollo humano/,
-    respuesta: 'Es el área que estudia el crecimiento y bienestar de las personas a lo largo de la vida: autoconocimiento, vínculos, emociones y la forma en que nos desarrollamos como personas.'
+    respuesta: 'El <strong>desarrollo humano</strong> es el área que estudia el crecimiento y bienestar de las personas a lo largo de la vida: autoconocimiento, vínculos, emociones y la forma en que nos desarrollamos como personas.'
   },
   {
     etiqueta: 'Neurodiversidad',
     patrones: /neurodiversidad/,
-    respuesta: 'Es la idea de que las diferencias neurológicas (como el autismo, el TDAH o la dislexia) son parte natural de la variación humana, no solo "déficits" a corregir, y que los entornos deben adaptarse para incluirlas.'
+    respuesta: 'La <strong>neurodiversidad</strong> es la idea de que las diferencias neurológicas (como el autismo, el TDAH o la dislexia) son parte natural de la variación humana, no solo "déficits" a corregir, y que los entornos deben adaptarse para incluirlas.'
   }
 ];
 function buscarGlosarioIndex(texto){ return GLOSARIO.findIndex(e => e.patrones.test(texto)); }
@@ -779,7 +779,7 @@ GLOSARIO.forEach((entry, i) => {
   };
 });
 assistantCopy.conceptos = {
-  message: 'Elige un tema o escríbeme una pregunta como «¿qué es la NOM-035?»',
+  message: '¡Claro! Elige un tema o escríbeme una pregunta como «¿qué es la NOM-035?»',
   options: GLOSARIO.map((e, i) => ['glosario_' + i, e.etiqueta]).concat([['courses', 'Buscar un curso']])
 };
 
