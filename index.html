@@ -208,6 +208,8 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
 .assistant-body{padding:16px;max-height:min(385px,calc(100vh - 380px));min-height:205px;overflow:auto;background:#f3f7fb}
 .assistant-message{background:#fff;border:1px solid var(--line);border-radius:15px 15px 15px 4px;padding:12px 13px;color:var(--text);font-size:14px;line-height:1.5;box-shadow:0 2px 8px rgba(14,29,64,.04)}
 .assistant-message + .assistant-message{margin-top:10px}.assistant-message--note{font-size:12px;color:var(--muted);box-shadow:none;background:transparent;border:0;padding:4px 2px}
+.assistant-fuente{display:block;margin-top:8px;font-size:11px;color:var(--muted)}
+.assistant-message--error{border-color:#e3b341;background:#fff9ec}.assistant-message--error button{display:inline-flex;align-items:center;gap:5px;margin-top:9px;border:0;background:none;color:#145d43;font:600 12.5px 'Instrument Sans',sans-serif;padding:0;cursor:pointer;text-decoration:underline}
 .assistant-options{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.assistant-option{min-height:46px;display:flex;align-items:center;gap:8px;border:1px solid #c7d9e2;background:#fff;color:#234a5f;border-radius:11px;padding:8px 10px;cursor:pointer;font:600 13px/1.2 'Instrument Sans',sans-serif;text-align:left;transition:.15s}.assistant-option:hover{border-color:#2a7f61;background:#edf9f2;color:#175e45}.assistant-option__icon{width:27px;height:27px;flex:0 0 27px;display:grid;place-items:center;border-radius:8px;color:#2162c5;background:#eaf1ff}.assistant-option__icon svg{width:16px;height:16px;stroke:currentColor}.assistant-option:nth-child(2n) .assistant-option__icon{color:#23785b;background:#e7f6ed}.assistant-option:nth-child(3n) .assistant-option__icon{color:#86611a;background:#fff4d8}.assistant-option__arrow{width:14px;height:14px;margin-left:auto;opacity:.65}.assistant-option__arrow svg{display:block;width:14px;height:14px;stroke:currentColor}
 .assistant-option--wide{width:100%;justify-content:flex-start}.assistant-result{margin-top:12px;border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px}.assistant-result b{display:block;font-family:'Sora',sans-serif;font-size:14px}.assistant-result span{display:block;color:var(--muted);font-size:12.5px;margin-top:3px}.assistant-result button{display:inline-flex;align-items:center;gap:5px;margin-top:9px;border:0;background:none;color:var(--accent);font:600 12.5px 'Instrument Sans',sans-serif;padding:0;cursor:pointer}.assistant-result button svg{width:15px;height:15px;stroke:currentColor}
 .assistant-course{display:grid;grid-template-columns:58px 1fr;gap:10px;margin-top:12px;padding:8px;border:1px solid var(--line);border-radius:13px;background:#fff;cursor:pointer;transition:.15s}.assistant-course:hover{border-color:#2a7f61;transform:translateY(-1px)}.assistant-course__img{width:58px;height:58px;border-radius:9px;object-fit:cover;background:#e7edf8}.assistant-course__info{min-width:0}.assistant-course__title{display:block;font-family:'Sora',sans-serif;font-size:12.7px;line-height:1.28;color:var(--text)}.assistant-course__meta{display:block;margin-top:3px;color:var(--muted);font-size:11.5px}.assistant-course__footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;color:#23785b;font-size:11.5px;font-weight:600}.assistant-course__footer svg{width:15px;height:15px;stroke:currentColor}
@@ -500,7 +502,8 @@ document.getElementById('red-fb-2').href = SENTIA_FB;
    (club.sentiamx.com) — antes estaba copiado a mano en los 3 lugares y se
    desincronizaba (pasó con el precio). Se pide una sola vez al cargar y se
    comparte como promesa; quien la necesite espera a que resuelva. ═══ */
-window.SENTIA_CATALOGO = fetch('assets/cursos.json').then(r => r.json()).then(d => d.cursos || []).catch(e => { console.warn('[cursos] No se pudo cargar el catálogo:', e.message); return []; });
+let catalogoFallo = false;
+window.SENTIA_CATALOGO = fetch('assets/cursos.json').then(r => r.json()).then(d => d.cursos || []).catch(e => { console.warn('[cursos] No se pudo cargar el catálogo:', e.message); catalogoFallo = true; return []; });
 
 function pintarTarjetasCursos(cursos) {
   const cont = document.getElementById('courses-list');
@@ -655,8 +658,63 @@ const assistantCopy = {
   fuera_de_alcance: {
     message: 'Esa pregunta es más conceptual y no tengo una respuesta preparada para contestarla bien — prefiero no improvisarte algo a medias. Sí puedo ayudarte con esto:',
     options: [['courses', 'Buscar un curso'], ['vip', 'Ver beneficios VIP'], ['contact', 'Hablar con el equipo']]
+  },
+  social_saludo: {
+    message: '¡Hola! ¿En qué te puedo ayudar hoy?',
+    options: [['courses', 'Encontrar un curso'], ['vip', 'Ver beneficios VIP'], ['profile', 'Explorar por mi perfil'], ['question', 'Tengo una pregunta']]
+  },
+  social_gracias: {
+    message: 'Con mucho gusto. Si tienes otra duda, aquí sigo.',
+    options: [['courses', 'Encontrar un curso'], ['question', 'Tengo otra pregunta'], ['contact', 'Hablar con el equipo']]
+  },
+  social_despedida: {
+    message: '¡Hasta pronto! Si necesitas algo más, aquí voy a estar.',
+    options: [['courses', 'Encontrar un curso'], ['contact', 'Hablar con el equipo']]
+  },
+  social_quien: {
+    message: 'Soy <strong>Nora</strong>, la asistente de orientación de SENTIA. Te ayudo a encontrar cursos, resolver dudas frecuentes y conectarte con el equipo. No soy una persona ni uso inteligencia artificial: solo sigo rutas ya preparadas, para no arriesgarme a darte información inventada.',
+    options: [['courses', 'Encontrar un curso'], ['question', 'Tengo una pregunta']]
   }
 };
+
+/* Mini-glosario (sección "qué vale la pena copiar de Alintec" — ver memoria
+   del proyecto): términos conceptuales de psicología/educación que SÍ se
+   pueden responder con una definición breve y honesta, en vez de mandar
+   toda pregunta "qué es/significa..." directo a fuera_de_alcance. Nada de
+   citas inventadas: solo se pone "fuente" cuando es una norma/regulación
+   real y verificable (NOM-035); el resto son definiciones generales sin
+   atribución falsa. Los que conectan con un curso real lo enlazan. */
+const GLOSARIO = [
+  {
+    patrones: /primeros auxilios psicol[oó]gicos/,
+    respuesta: 'Son las primeras acciones de contención emocional que se brindan a una persona en crisis o después de un evento adverso, antes de una atención psicológica formal: escuchar, dar seguridad y detectar si necesita canalizarse a ayuda especializada.',
+    curso: 'auxilios'
+  },
+  {
+    patrones: /psicolog[ií]a forense|dictamen pericial|peritaje psicol[oó]gico/,
+    respuesta: 'Es la aplicación de la psicología dentro de procesos legales: evalúa a las personas involucradas (por ejemplo en casos de guarda y custodia) y entrega un informe o dictamen que puede usarse como prueba pericial.',
+    curso: 'custodia'
+  },
+  {
+    patrones: /nom.?035|riesgos psicosociales/,
+    respuesta: 'La NOM-035-STPS-2018 es la norma oficial mexicana que obliga a las empresas a identificar y prevenir los riesgos psicosociales en el trabajo (como el estrés o la violencia laboral) y a promover un entorno organizacional favorable.',
+    fuente: 'NOM-035-STPS-2018',
+    curso: 'laboral'
+  },
+  {
+    patrones: /terapia cognitivo.?conductual|\btcc\b/,
+    respuesta: 'Es un enfoque terapéutico que trabaja la relación entre pensamientos, emociones y conductas: identifica patrones de pensamiento poco útiles y ayuda a modificarlos con técnicas prácticas.'
+  },
+  {
+    patrones: /desarrollo humano/,
+    respuesta: 'Es el área que estudia el crecimiento y bienestar de las personas a lo largo de la vida: autoconocimiento, vínculos, emociones y la forma en que nos desarrollamos como personas.'
+  },
+  {
+    patrones: /neurodiversidad/,
+    respuesta: 'Es la idea de que las diferencias neurológicas (como el autismo, el TDAH o la dislexia) son parte natural de la variación humana, no solo "déficits" a corregir, y que los entornos deben adaptarse para incluirlas.'
+  }
+];
+function buscarGlosario(texto){ return GLOSARIO.find(e => e.patrones.test(texto)) || null; }
 
 function goAssistantTarget(target){
   if(target.startsWith('#')) {
@@ -747,10 +805,28 @@ function renderAssistant(route = 'home', labelUsuario){
   let html = burbujaUsuario(labelUsuario);
   html += `<div class="assistant-message">${step.message}</div>`;
   if(step.options) html += `<div class="assistant-options">${step.options.map(([id,label]) => assistantOption(id,label)).join('')}</div>`;
-  if(step.courses) html += step.courses.map(assistantCourseCard).join('');
+  if(step.courses) {
+    // Si el catálogo no cargó (o quedó incompleto), no se intenta pintar una
+    // tarjeta con datos vacíos: se avisa con claridad y se ofrece WhatsApp,
+    // en vez de dejar al usuario viendo huecos sin explicación.
+    const disponibles = step.courses.filter(id => assistantCatalog[id]);
+    if (catalogoFallo || !disponibles.length) {
+      html += '<div class="assistant-message assistant-message--error">No pudimos cargar la información de los cursos en este momento. <button type="button" data-assistant-wa="1">Escríbenos por WhatsApp</button> y te ayudamos directo.</div>';
+    } else {
+      html += disponibles.map(assistantCourseCard).join('');
+    }
+  }
   if(step.results) html += step.results.map(([title,desc,target]) => `<div class="assistant-result"><b>${title}</b><span>${desc}</span><button type="button" data-assistant-target="${target}">Ver opción ${assistantArrow}</button></div>`).join('');
   if(route !== 'home') html += '<button class="assistant-restart" type="button" data-assistant-route="home">← Volver al inicio</button>';
   agregarTurno(html, route === 'home' ? 'saludo' : step.results ? 'celebrar' : 'orientar');
+}
+function renderGlosario(entry, labelUsuario){
+  let html = burbujaUsuario(labelUsuario);
+  html += `<div class="assistant-message">${entry.respuesta}${entry.fuente ? `<span class="assistant-fuente">Fuente: ${entry.fuente}</span>` : ''}</div>`;
+  if (entry.curso && assistantCatalog[entry.curso]) html += assistantCourseCard(entry.curso);
+  html += `<div class="assistant-options">${assistantCopy.fuera_de_alcance.options.map(([id,label]) => assistantOption(id,label)).join('')}</div>`;
+  html += '<button class="assistant-restart" type="button" data-assistant-route="home">← Volver al inicio</button>';
+  agregarTurno(html, 'orientar');
 }
 function renderCourseDetail(id, labelUsuario){
   const course = assistantCatalog[id];
@@ -774,10 +850,12 @@ assistantBody.addEventListener('click', event => {
   const courseBtn = event.target.closest('[data-assistant-course]');
   const course = courseBtn?.dataset.assistantCourse;
   const info = event.target.closest('[data-assistant-info]')?.dataset.assistantInfo;
+  const wa = event.target.closest('[data-assistant-wa]');
   if(route) renderAssistant(route, routeBtn.dataset.assistantLabel);
   if(course) renderCourseDetail(course, courseBtn.getAttribute('aria-label')?.replace('Conocer ', 'Me interesa '));
   if(target) goAssistantTarget(target);
   if(info) requestCourseInfo(info);
+  if(wa) window.open(waBase + encodeURIComponent('Hola SENTIA, quiero información de los cursos.'), '_blank', 'noopener');
 });
 document.getElementById('assistant-reset')?.addEventListener('click', () => {
   assistantLog = []; guardarLog();
@@ -789,18 +867,41 @@ assistantCompose.addEventListener('submit', event => {
   const pregunta = assistantInput.value.trim();
   const question = pregunta.toLowerCase();
   if(!question) return;
-  // Preguntas conceptuales ("qué es/significa...") no tienen una respuesta
-  // preparada: es mejor decirlo con claridad que adivinar con una palabra
-  // clave suelta y mandar a un lugar que no responde lo que se preguntó.
+
+  // Charla social: saludo, gracias, despedida, "¿quién eres?" — barato de
+  // cubrir y mejora mucho la sensación de conversación real, sin depender
+  // del tamaño del catálogo. Va primero, antes de cualquier otra ruta.
+  if(/\b(qui[eé]n eres|eres (un )?bot|eres (una )?(ia|inteligencia artificial)|eres real|eres humano)\b/.test(question)) {
+    renderAssistant('social_quien', pregunta); assistantInput.value = ''; return;
+  }
+  if(/^\s*(hola|buenas|buenos? d[ií]as|buenas tardes|buenas noches|qu[eé] tal|hey|ola)\b/.test(question)) {
+    renderAssistant('social_saludo', pregunta); assistantInput.value = ''; return;
+  }
+  if(/\b(gracias|muchas gracias|te agradezco)\b/.test(question)) {
+    renderAssistant('social_gracias', pregunta); assistantInput.value = ''; return;
+  }
+  if(/\b(adi[oó]s|hasta luego|hasta pronto|nos vemos|bye|me voy)\b/.test(question)) {
+    renderAssistant('social_despedida', pregunta); assistantInput.value = ''; return;
+  }
+
+  // Preguntas conceptuales ("qué es/significa...") primero se buscan en el
+  // mini-glosario (definiciones reales, sin inventar); si no hay match, es
+  // mejor decirlo con claridad (fuera_de_alcance) que adivinar con una
+  // palabra clave suelta y mandar a un lugar que no responde lo preguntado.
   const esConceptual = /^(qu[eé]\s+(es|son|significa)|definici[oó]n|significado)\b/.test(question);
+  if (esConceptual) {
+    const match = buscarGlosario(question);
+    if (match) { renderGlosario(match, pregunta); assistantInput.value = ''; return; }
+  }
+
   let route = 'unsure';
-  if(/vip|membres[ií]a|acceso vip|precio|pago|plan mensual|plan anual/.test(question)) route = 'vip';
-  else if(/certificado|folio|c[oó]digo qr/.test(question)) route = 'certificates';
-  else if(/vivo|grabaci[oó]n|sesi[oó]n/.test(question)) route = 'live';
-  else if(/docente|aula|alumno|ni[ñn]|adolescen/.test(question)) route = 'education';
-  else if(/laboral|organizaci[oó]n|empresa|liderazgo/.test(question)) route = 'work';
+  if(/vip|membres[ií]a|acceso vip|precio|pago|plan mensual|plan anual|cu[aá]nto cuesta|costo|mensualidad|suscripci[oó]n/.test(question)) route = 'vip';
+  else if(/certificado|folio|c[oó]digo qr|diploma|constancia/.test(question)) route = 'certificates';
+  else if(/vivo|grabaci[oó]n|sesi[oó]n|horario|clases? grabadas?/.test(question)) route = 'live';
+  else if(/docente|aula|alumno|ni[ñn]|adolescen|maestro|profesor|sal[oó]n de clases|primaria|secundaria/.test(question)) route = 'education';
+  else if(/laboral|organizaci[oó]n|empresa|liderazgo|recursos humanos|clima laboral|equipo de trabajo|nom.?035/.test(question)) route = 'work';
   else if(esConceptual) route = 'fuera_de_alcance';
-  else if(/curso|psicolog|terapia|cl[ií]nic|ansiedad|evaluaci[oó]n|pericial|formaci[oó]n/.test(question)) route = 'psychology';
+  else if(/curso|psicolog|terapia|cl[ií]nic|ansiedad|evaluaci[oó]n|pericial|formaci[oó]n|diagn[oó]stico|consulta|paciente/.test(question)) route = 'psychology';
   renderAssistant(route, pregunta);
   assistantInput.value = '';
 });
