@@ -1,0 +1,43 @@
+{
+  "cursos": [
+    {
+      "id": "custodia",
+      "titulo": "Evaluación psicológica en guarda y custodia",
+      "area": "Psicología forense",
+      "resumen": "Entrevista, integración de fuentes y redacción del informe pericial.",
+      "detalle": "Aprende entrevista, integración de fuentes y redacción del informe pericial. Incluye manual y checklist, además de certificado con QR.",
+      "duracion": "3 clases · 6 h",
+      "modalidad": "En vivo + grabación",
+      "chips": ["En vivo + grabación", "Certificado con QR", "Manual y checklist"],
+      "imagen": "assets/cursos/guarda-custodia.jpg",
+      "anchor": "curso-custodia",
+      "gratis": true
+    },
+    {
+      "id": "auxilios",
+      "titulo": "Primeros auxilios psicológicos",
+      "area": "Intervención psicológica",
+      "resumen": "Contención emocional, detección de riesgo y canalización oportuna.",
+      "detalle": "Formación en contención emocional, detección de riesgo y canalización oportuna. Incluye formatos de apoyo y certificado con QR.",
+      "duracion": "5 clases · 8 h",
+      "modalidad": "En vivo + grabación",
+      "chips": ["En vivo + grabación", "Certificado con QR", "Formatos de apoyo"],
+      "imagen": "assets/cursos/primeros-auxilios.jpg",
+      "anchor": "curso-auxilios",
+      "gratis": false
+    },
+    {
+      "id": "laboral",
+      "titulo": "Salud psicológica laboral",
+      "area": "Psicología laboral",
+      "resumen": "Riesgos psicosociales, liderazgo y rutas de apoyo en la organización.",
+      "detalle": "Aborda riesgos psicosociales, liderazgo y rutas de apoyo en organizaciones. Incluye matriz NOM-035 y certificado con QR.",
+      "duracion": "3 clases · 6 h",
+      "modalidad": "En vivo + grabación",
+      "chips": ["En vivo + grabación", "Certificado con QR", "Matriz NOM-035"],
+      "imagen": "assets/cursos/salud-laboral.jpg",
+      "anchor": "curso-laboral",
+      "gratis": false
+    }
+  ]
+}

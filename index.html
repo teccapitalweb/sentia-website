@@ -368,48 +368,7 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
     <div class="eyebrow">Oferta académica</div>
     <h2>Cursos</h2>
     <p class="sub">Cada curso incluye clases en vivo, grabación, materiales descargables, comunidad y certificado con folio verificable.</p>
-    <div class="courses">
-
-      <article class="course" id="curso-custodia">
-        <div class="course__img" style="background-image:url('assets/cursos/guarda-custodia.jpg')"><span>Psicología forense</span></div>
-        <div class="course__body">
-          <h3>Evaluación psicológica en guarda y custodia</h3>
-          <p>Entrevista, integración de fuentes y redacción del informe pericial.</p>
-          <div class="chips"><span class="chip">En vivo + grabación</span><span class="chip">Certificado con QR</span><span class="chip">Manual y checklist</span></div>
-        </div>
-        <div class="course__foot--btn">
-          <a class="btn btn--g" data-wa-curso="Evaluación psicológica en guarda y custodia" href="#" target="_blank" rel="noopener">Solicitar información</a>
-        </div>
-        <div class="course__foot"><span>3 clases · 6 h</span><b>Consultar precio</b></div>
-      </article>
-
-      <article class="course" id="curso-auxilios">
-        <div class="course__img" style="background-image:url('assets/cursos/primeros-auxilios.jpg')"><span>Intervención psicológica</span></div>
-        <div class="course__body">
-          <h3>Primeros auxilios psicológicos</h3>
-          <p>Contención emocional, detección de riesgo y canalización oportuna.</p>
-          <div class="chips"><span class="chip">En vivo + grabación</span><span class="chip">Certificado con QR</span><span class="chip">Formatos de apoyo</span></div>
-        </div>
-        <div class="course__foot--btn">
-          <a class="btn btn--g" data-wa-curso="Primeros auxilios psicológicos" href="#" target="_blank" rel="noopener">Solicitar información</a>
-        </div>
-        <div class="course__foot"><span>5 clases · 8 h</span><b>Consultar precio</b></div>
-      </article>
-
-      <article class="course" id="curso-laboral">
-        <div class="course__img" style="background-image:url('assets/cursos/salud-laboral.jpg')"><span>Psicología laboral</span></div>
-        <div class="course__body">
-          <h3>Salud psicológica laboral</h3>
-          <p>Riesgos psicosociales, liderazgo y rutas de apoyo en la organización.</p>
-          <div class="chips"><span class="chip">En vivo + grabación</span><span class="chip">Certificado con QR</span><span class="chip">Matriz NOM-035</span></div>
-        </div>
-        <div class="course__foot--btn">
-          <a class="btn btn--g" data-wa-curso="Salud psicológica laboral" href="#" target="_blank" rel="noopener">Solicitar información</a>
-        </div>
-        <div class="course__foot"><span>3 clases · 6 h</span><b>Consultar precio</b></div>
-      </article>
-
-    </div>
+    <div class="courses" id="courses-list"></div>
   </section>
 </div>
 
@@ -536,6 +495,36 @@ document.querySelectorAll('[data-wa-curso]').forEach(a => {
 document.getElementById('wa-pie').href = waBase + encodeURIComponent('Hola SENTIA, quiero información de los cursos.');
 document.getElementById('red-fb-2').href = SENTIA_FB;
 
+/* ═══ Catálogo de cursos: una sola fuente (assets/cursos.json) para las
+   tarjetas de esta página, el chat de Nora y la encuesta de perfil-sentia
+   (club.sentiamx.com) — antes estaba copiado a mano en los 3 lugares y se
+   desincronizaba (pasó con el precio). Se pide una sola vez al cargar y se
+   comparte como promesa; quien la necesite espera a que resuelva. ═══ */
+window.SENTIA_CATALOGO = fetch('assets/cursos.json').then(r => r.json()).then(d => d.cursos || []).catch(e => { console.warn('[cursos] No se pudo cargar el catálogo:', e.message); return []; });
+
+function pintarTarjetasCursos(cursos) {
+  const cont = document.getElementById('courses-list');
+  if (!cont) return;
+  cont.innerHTML = cursos.map(c => `
+    <article class="course" id="curso-${c.id}">
+      <div class="course__img" style="background-image:url('${c.imagen}')"><span>${c.area}</span></div>
+      <div class="course__body">
+        <h3>${c.titulo}</h3>
+        <p>${c.resumen}</p>
+        <div class="chips">${c.chips.map(t => `<span class="chip">${t}</span>`).join('')}</div>
+      </div>
+      <div class="course__foot--btn">
+        <a class="btn btn--g" data-wa-curso="${c.titulo}" href="#" target="_blank" rel="noopener">Solicitar información</a>
+      </div>
+      <div class="course__foot"><span>${c.duracion}</span><b>Consultar precio</b></div>
+    </article>
+  `).join('');
+  cont.querySelectorAll('[data-wa-curso]').forEach(a => {
+    a.href = waBase + encodeURIComponent('Hola SENTIA, quiero información del curso: ' + a.dataset.waCurso + '.');
+  });
+}
+window.SENTIA_CATALOGO.then(pintarTarjetasCursos);
+
 /* Menú en celular */
 const burger = document.getElementById('burger');
 burger.addEventListener('click', () => document.getElementById('nav-links').classList.toggle('is-open'));
@@ -599,21 +588,21 @@ addEventListener('resize', agendarModoCompacto, { passive: true });
 new ResizeObserver(agendarModoCompacto).observe(document.body);
 agendarModoCompacto();
 
-/* Catálogo público actual: las fichas del asistente se corresponden con las tarjetas de esta página. */
-const assistantCatalog = {
-  custodia: {
-    title:'Evaluación psicológica en guarda y custodia', area:'Psicología forense', meta:'3 clases · 6 h · En vivo + grabación', price:'Consultar precio', image:'assets/cursos/guarda-custodia.jpg', anchor:'#curso-custodia',
-    description:'Aprende entrevista, integración de fuentes y redacción del informe pericial. Incluye manual y checklist, además de certificado con QR.'
-  },
-  auxilios: {
-    title:'Primeros auxilios psicológicos', area:'Intervención psicológica', meta:'5 clases · 8 h · En vivo + grabación', price:'Consultar precio', image:'assets/cursos/primeros-auxilios.jpg', anchor:'#curso-auxilios',
-    description:'Formación en contención emocional, detección de riesgo y canalización oportuna. Incluye formatos de apoyo y certificado con QR.'
-  },
-  laboral: {
-    title:'Salud psicológica laboral', area:'Psicología laboral', meta:'3 clases · 6 h · En vivo + grabación', price:'Consultar precio', image:'assets/cursos/salud-laboral.jpg', anchor:'#curso-laboral',
-    description:'Aborda riesgos psicosociales, liderazgo y rutas de apoyo en organizaciones. Incluye matriz NOM-035 y certificado con QR.'
-  }
-};
+/* Catálogo del asistente: se llena solo cuando SENTIA_CATALOGO resuelve (ver
+   arriba) — misma fuente que las tarjetas de esta página, ya no copiada a
+   mano. Nora lee este objeto por id; antes de que resuelva simplemente está
+   vacío, y como todas las interacciones con cursos requieren que la persona
+   abra el chat y navegue, en la práctica siempre está listo a tiempo. */
+const assistantCatalog = {};
+window.SENTIA_CATALOGO.then(cursos => {
+  cursos.forEach(c => {
+    assistantCatalog[c.id] = {
+      title: c.titulo, area: c.area, meta: c.duracion + ' · ' + c.modalidad,
+      price: 'Consultar precio', image: c.imagen, anchor: '#' + c.anchor,
+      description: c.detalle
+    };
+  });
+});
 
 const assistantCopy = {
   home: {
