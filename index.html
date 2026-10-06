@@ -609,10 +609,10 @@ window.SENTIA_CATALOGO.then(cursos => {
 
 const assistantCopy = {
   home: {
-    message: 'Hola, soy <strong>Nora</strong>, la asistente de SENTIA. Puedo orientarte para encontrar una formación o entender qué incluye el acceso VIP.',
+    message: 'Hola, soy <strong>Nora</strong>, la asistente de SENTIA. Puedo orientarte para encontrar una formación o contarte qué incluye la membresía.',
     options: [
       ['courses', 'Encontrar un curso'],
-      ['vip', 'Ver beneficios VIP'],
+      ['vip', 'Conocer la membresía'],
       ['profile', 'Explorar por mi perfil'],
       ['question', 'Tengo una pregunta'],
       ['unsure', 'No sé qué necesito']
@@ -634,34 +634,58 @@ const assistantCopy = {
     message: 'Para el trabajo con equipos y organizaciones, esta ruta está disponible:',
     courses: ['laboral']
   },
+  // Antes mandaba a "#areas" en el landing (cerraba el chat y se sentía muy
+  // desconectado de la conversación). Ahora el contenido real de esa
+  // sección se cuenta directo aquí, sin salir del chat.
   human: {
-    message: 'El área de desarrollo humano reúne bienestar, vínculos y crecimiento. Puedes conocer el enfoque de SENTIA aquí:',
-    results: [['Conoce las áreas de SENTIA', 'Fundamentos aplicados a contextos clínicos, educativos, familiares y organizacionales.', '#areas']]
+    message: 'El área de desarrollo humano reúne bienestar, vínculos y crecimiento a lo largo de la vida. SENTIA trabaja 4 áreas conectadas entre sí:<br><br>• <strong>Psicología clínica</strong> — evaluación, diagnóstico e intervención con base en evidencia.<br>• <strong>Educación</strong> — herramientas para docentes dentro y fuera del aula.<br>• <strong>Contexto laboral</strong> — competencias emocionales para organizaciones más sanas.<br>• <strong>Desarrollo humano</strong> — bienestar, vínculos y crecimiento a lo largo de la vida.',
+    options: [['courses', 'Buscar un curso'], ['profile', 'Descubrir mi perfil']]
   },
+  // "Ver beneficios VIP → #membresia" se reemplaza: el contenido real de la
+  // sección se cuenta aquí mismo, y el único link que queda es la acción de
+  // verdad (crear la cuenta), no un salto a leer la misma info en la página.
   vip: {
-    message: 'El acceso VIP se habilita con una membresía activa. Incluye cursos, clases en vivo, materiales, herramientas y certificados verificables.',
-    results: [['Ver beneficios del acceso VIP', 'Conoce qué se desbloquea y cómo funciona la membresía.', '#membresia']]
+    message: 'La <strong>membresía del Club SENTIA</strong> te da acceso a toda la biblioteca de cursos en un solo lugar:<br><br>✓ Herramientas Pro: notas de sesión, informes y tamizajes listos para usar<br>✓ Clases en vivo con especialistas y sus grabaciones<br>✓ Materiales descargables listos para tu práctica<br>✓ Certificados con folio y código QR verificable',
+    results: [['Quiero la membresía', 'Crea tu cuenta y entra al Club SENTIA.', 'https://club.sentiamx.com/vip-auth.html']]
   },
   profile: {
     message: 'Podemos empezar por tu perfil profesional. Te ayuda a identificar qué ruta de formación conecta mejor contigo.',
     results: [['Descubrir mi perfil SENTIA', 'Test gratuito de aproximadamente 2 minutos.', 'https://club.sentiamx.com/perfil-sentia.html']]
   },
   question: {
-    message: 'Elige una duda frecuente y te llevo a la información correspondiente:',
-    options: [['certificates', 'Certificados'], ['live', 'Clases en vivo'], ['access', 'Acceso VIP'], ['contact', 'Hablar con SENTIA']]
+    message: 'Elige una duda frecuente y te cuento aquí mismo:',
+    options: [['certificates', 'Certificados'], ['live', 'Clases en vivo'], ['access', 'Membresía'], ['contact', 'Hablar con SENTIA']]
   },
-  certificates: {message: 'Los cursos incluyen certificado con folio y código QR verificable en línea.', results: [['Conoce los cursos disponibles', 'Cada ficha señala lo que incluye.', '#cursos']]},
-  live: {message: 'La formación incluye sesiones en vivo con especialistas; también se contempla la grabación para consultar el contenido.', results: [['Así son las sesiones', 'Conoce la dinámica de las clases de SENTIA.', '#impartidos']]},
-  access: {message: 'El panel VIP se habilita para miembros con una membresía activa. Desde ahí se accede a la biblioteca y herramientas.', results: [['Ver beneficios VIP', 'Conoce el acceso antes de iniciar sesión.', '#membresia']]},
-  contact: {message: 'Si tu duda necesita atención personal, puedes enviarnos un mensaje directo.', results: [['Pedir informes', 'Escríbenos el curso o tema que buscas.', '#informacion']]},
+  // "Conoce los cursos disponibles → #cursos" se reemplaza por la misma
+  // ruta de cursos que ya existe dentro del chat (tarjetas reales, no un
+  // salto a la página).
+  certificates: {
+    message: 'Los cursos incluyen certificado con folio y código QR verificable en línea — se puede comprobar la autenticidad sin depender de SENTIA.',
+    options: [['courses', 'Ver los cursos'], ['question', 'Tengo otra pregunta']]
+  },
+  live: {
+    message: 'La formación incluye sesiones en vivo con especialistas, en grupos reducidos y con espacio para preguntar sobre casos reales; también queda la grabación por si no puedes conectarte en el horario. Por ejemplo, ya hemos impartido sesiones como la de People Analytics: indicadores, rotación y decisiones de talento.',
+    options: [['courses', 'Ver los cursos'], ['question', 'Tengo otra pregunta']]
+  },
+  access: {
+    message: 'El panel del Club se habilita para miembros con una membresía activa: desde ahí se accede a la biblioteca completa, clases en vivo, materiales y herramientas.',
+    results: [['Quiero la membresía', 'Crea tu cuenta y entra al Club SENTIA.', 'https://club.sentiamx.com/vip-auth.html']]
+  },
+  // "Pedir informes → #informacion" (el formulario de la página) se
+  // reemplaza por la acción de verdad: escribir directo por WhatsApp, sin
+  // salir del chat a llenar un formulario aparte.
+  contact: {
+    message: 'Con gusto. Cuéntanos tu nombre y qué curso te interesa y un asesor te contesta directo por WhatsApp.',
+    waButton: 'Escribir por WhatsApp'
+  },
   unsure: {message: 'No pasa nada. ¿Para qué te gustaría capacitarte?', options: [['psychology', 'Para mi práctica profesional'], ['education', 'Para mejorar como docente'], ['human', 'Para bienestar o desarrollo humano'], ['profile', 'Quiero descubrir mi ruta']]},
   fuera_de_alcance: {
     message: 'Esa pregunta es más conceptual y no tengo una respuesta preparada para contestarla bien — prefiero no improvisarte algo a medias. Sí puedo ayudarte con esto:',
-    options: [['courses', 'Buscar un curso'], ['vip', 'Ver beneficios VIP'], ['contact', 'Hablar con el equipo']]
+    options: [['courses', 'Buscar un curso'], ['vip', 'Conocer la membresía'], ['contact', 'Hablar con el equipo']]
   },
   social_saludo: {
     message: '¡Hola! ¿En qué te puedo ayudar hoy?',
-    options: [['courses', 'Encontrar un curso'], ['vip', 'Ver beneficios VIP'], ['profile', 'Explorar por mi perfil'], ['question', 'Tengo una pregunta']]
+    options: [['courses', 'Encontrar un curso'], ['vip', 'Conocer la membresía'], ['profile', 'Explorar por mi perfil'], ['question', 'Tengo una pregunta']]
   },
   social_gracias: {
     message: 'Con mucho gusto. Si tienes otra duda, aquí sigo.',
@@ -685,6 +709,18 @@ const assistantCopy = {
    real y verificable (NOM-035); el resto son definiciones generales sin
    atribución falsa. Los que conectan con un curso real lo enlazan. */
 const GLOSARIO = [
+  {
+    patrones: /\bpsicolog[ií]a\b(?!\s+forense)/,
+    respuesta: 'Es la ciencia que estudia la mente y el comportamiento humano: cómo pensamos, sentimos y actuamos, y por qué. Se aplica en consultorio, escuelas, empresas y procesos legales, entre otros contextos.'
+  },
+  {
+    patrones: /\beducaci[oó]n\b/,
+    respuesta: 'Es el proceso de enseñar y aprender, dentro y fuera del aula: no solo transmitir conocimiento, también desarrollar habilidades, valores y herramientas para la vida.'
+  },
+  {
+    patrones: /neurociencias?/,
+    respuesta: 'Es el estudio científico del sistema nervioso y el cerebro: cómo funcionan y cómo explican procesos como el aprendizaje, la memoria, las emociones y la conducta.'
+  },
   {
     patrones: /primeros auxilios psicol[oó]gicos/,
     respuesta: 'Son las primeras acciones de contención emocional que se brindan a una persona en crisis o después de un evento adverso, antes de una atención psicológica formal: escuchar, dar seguridad y detectar si necesita canalizarse a ayuda especializada.',
@@ -817,6 +853,7 @@ function renderAssistant(route = 'home', labelUsuario){
     }
   }
   if(step.results) html += step.results.map(([title,desc,target]) => `<div class="assistant-result"><b>${title}</b><span>${desc}</span><button type="button" data-assistant-target="${target}">Ver opción ${assistantArrow}</button></div>`).join('');
+  if(step.waButton) html += `<div class="assistant-result"><button type="button" data-assistant-wa="1">${step.waButton} ${assistantArrow}</button></div>`;
   if(route !== 'home') html += '<button class="assistant-restart" type="button" data-assistant-route="home">← Volver al inicio</button>';
   agregarTurno(html, route === 'home' ? 'saludo' : step.results ? 'celebrar' : 'orientar');
 }
