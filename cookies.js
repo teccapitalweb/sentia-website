@@ -34,8 +34,22 @@
 
     document.head.appendChild(st);
     document.body.appendChild(wrap);
+
+    // El launcher de Nora (abajo a la derecha en celular/tablet) tiene que
+    // quedar arriba de este aviso, no tapado por él — se publica la altura
+    // real del aviso como variable CSS para que el launcher la sume a su
+    // propio "bottom" (ver --cookie-h en index.html). Se vuelve a medir si
+    // cambia de tamaño (ej. al rotar el teléfono y el texto se reacomoda).
+    function medirAltura() {
+      document.documentElement.style.setProperty('--cookie-h', wrap.offsetHeight + 'px');
+    }
+    medirAltura();
+    window.addEventListener('resize', medirAltura);
+
     document.getElementById('sc-ok').addEventListener('click', function () {
       try { localStorage.setItem(KEY, '1'); } catch (e) {}
+      window.removeEventListener('resize', medirAltura);
+      document.documentElement.style.setProperty('--cookie-h', '0px');
       wrap.remove();
     });
   }
