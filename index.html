@@ -177,11 +177,19 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
 
 /* Asistente de orientación SENTIA */
 .sentia-assistant{font-family:'Instrument Sans',system-ui,sans-serif}
-.sentia-assistant__launcher{position:fixed;right:28px;top:40vh;z-index:70;width:352px;min-height:112px;padding:16px 20px 16px 134px;border:1px solid rgba(255,255,255,.55);border-radius:24px;cursor:pointer;text-align:left;color:#fff;background:linear-gradient(125deg,#092a62,#1b5df0);box-shadow:0 16px 34px rgba(14,29,64,.25);transition:transform .18s,box-shadow .18s;animation:assistant-intro .65s cubic-bezier(.2,.8,.3,1) .4s backwards}
+/* Un solo tamaño, un solo estilo, para cualquier pantalla — se dejó de
+   intentar un banner grande en escritorio y un círculo chico en celular:
+   eso fue lo que generó toda la inconsistencia de hoy (tamaños que
+   cambiaban entre breakpoints, recortes de cara pensados solo para el
+   círculo, choques con contenido que solo pasaban en una de las dos
+   versiones). Ahora siempre es el mismo círculo pequeño y fijo abajo a la
+   derecha, sin importar el dispositivo; se abre a pantalla completa al
+   tocarlo, así que no hace falta un banner con texto para "anunciarse". */
+.sentia-assistant__launcher{position:fixed;right:24px;bottom:calc(20px + var(--cookie-h, 0px));z-index:70;width:68px;height:68px;padding:0;border-radius:50%;overflow:hidden;cursor:pointer;border:2px solid #fff;box-shadow:0 16px 34px rgba(14,29,64,.25);transition:transform .18s,box-shadow .18s;animation:assistant-intro .65s cubic-bezier(.2,.8,.3,1) .4s backwards}
 @keyframes assistant-intro{from{opacity:0;transform:translateY(46px) scale(.88)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(prefers-reduced-motion:reduce){.sentia-assistant__launcher{animation:none}}
 .sentia-assistant__launcher:hover{transform:translateY(-3px);box-shadow:0 20px 38px rgba(14,29,64,.32)}
-.sentia-assistant__launcher img{position:absolute;left:4px;bottom:-4px;width:156px;height:188px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 7px 7px rgba(0,0,0,.16));animation:nora-float 3.8s ease-in-out infinite}
+.sentia-assistant__launcher img{position:absolute;left:0;bottom:0;width:100%;height:100%;object-fit:cover;object-position:50% 8%;transform:scale(2.0);filter:drop-shadow(0 7px 7px rgba(0,0,0,.16));animation:nora-float 3.8s ease-in-out infinite}
 @keyframes nora-float{0%,100%{translate:0 0}50%{translate:0 -5px}}
 @keyframes mascot-saludo{0%,100%{rotate:0deg}20%{rotate:-11deg}45%{rotate:9deg}70%{rotate:-5deg}}
 @keyframes mascot-celebrar{0%,100%{scale:1}30%{scale:1.08}55%{scale:.97}}
@@ -189,14 +197,8 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
 .sentia-assistant__launcher img.is-saludo,.assistant-head__avatar.is-saludo{animation:nora-float 3.8s ease-in-out infinite,mascot-saludo .7s ease-out 1}
 .sentia-assistant__launcher img.is-celebrar,.assistant-head__avatar.is-celebrar{animation:nora-float 3.8s ease-in-out infinite,mascot-celebrar .6s ease-out 1}
 .sentia-assistant__launcher img.is-orientar,.assistant-head__avatar.is-orientar{animation:nora-float 3.8s ease-in-out infinite,mascot-orientar .8s ease-in-out 1}
-.sentia-assistant__dot{position:absolute;right:20px;top:19px;width:10px;height:10px;background:#46d86b;border:2px solid rgba(255,255,255,.9);border-radius:50%}
-/* Modo compacto: se activa solo mientras el chat está cerrado, cuando el globo
-   taparía un título o un botón de la página al hacer scroll. */
-.sentia-assistant__launcher.is-compact{width:72px;min-height:72px;padding:0;border-radius:50%;overflow:hidden}
-.sentia-assistant__launcher.is-compact img{left:0;bottom:0;width:100%;height:100%;object-fit:cover;object-position:50% 14%;transform:scale(2.3)}
-.sentia-assistant__launcher.is-compact .sentia-assistant__label{display:none}
-.sentia-assistant__launcher.is-compact .sentia-assistant__dot{right:5px;top:5px}
-.sentia-assistant__label{display:block;font-family:'Sora',sans-serif;font-size:19.5px;line-height:1.22;font-weight:600}.sentia-assistant__label small{display:block;margin-top:6px;font-family:'Instrument Sans',system-ui,sans-serif;font-size:13px;font-weight:500;opacity:.83}
+.sentia-assistant__dot{position:absolute;right:5px;top:5px;width:10px;height:10px;background:#46d86b;border:2px solid rgba(255,255,255,.9);border-radius:50%}
+.sentia-assistant__label{display:none}
 .sentia-assistant__panel{position:fixed;right:28px;bottom:80px;z-index:70;width:min(416px,calc(100vw - 32px));overflow:hidden;border:1px solid var(--line-2);border-radius:24px;background:#fff;box-shadow:0 22px 60px rgba(14,29,64,.23);display:none}
 .sentia-assistant.is-open .sentia-assistant__panel{display:flex;flex-direction:column;animation:assistant-enter .2s ease-out}.sentia-assistant.is-open .sentia-assistant__launcher{display:none}
 @keyframes assistant-enter{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
@@ -222,29 +224,12 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
 .assistant-user{margin:0 0 13px auto;max-width:82%;padding:10px 12px;border-radius:14px 14px 4px 14px;background:#145d43;color:#fff;font-size:13px;line-height:1.4}.assistant-course-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:13px}.assistant-course-actions button{display:inline-flex;align-items:center;gap:6px;border:1px solid #c7d9e2;background:#fff;color:#234a5f;border-radius:10px;padding:9px 10px;cursor:pointer;font:600 12.5px 'Instrument Sans',sans-serif}.assistant-course-actions button:first-child{border-color:#145d43;background:#145d43;color:#fff}.assistant-course-actions svg{width:15px;height:15px;stroke:currentColor}
 .assistant-restart{margin-top:16px;border:0;background:transparent;color:var(--muted);font:600 12px 'Instrument Sans',sans-serif;text-decoration:underline;cursor:pointer;padding:0}
 .assistant-compose{padding:12px 14px 14px;border-top:1px solid var(--line);background:#fff}.assistant-compose__row{display:flex;gap:8px;align-items:center;border:1px solid var(--line-2);border-radius:14px;padding:5px 6px 5px 12px}.assistant-compose input{min-width:0;flex:1;border:0;outline:0;background:transparent;font:13.5px 'Instrument Sans',system-ui,sans-serif;color:var(--text)}.assistant-compose button{width:36px;height:36px;border:0;border-radius:50%;background:#145d43;color:#fff;font-size:18px;cursor:pointer}.assistant-compose small{display:block;margin:8px 2px 0;font-size:11px;color:var(--muted)}
-/* En pantallas angostas, el hero apila la ilustración arriba del texto
-   (ver .hero{grid-template-columns:1fr} en el breakpoint de 900px) y el
-   launcher posicionado por vh (pensado para la fila desktop de dos
-   columnas) terminaba flotando encima de esa ilustración de forma
-   accidental — se veía como un bug de layout, no como un widget flotante.
-   Abajo de 900px el launcher se ancla a bottom en vez de a un top en vh:
-   así siempre queda en la esquina, nunca encima del contenido del hero,
-   sin importar cuánto mida la pantalla. El sistema de "modo compacto"
-   (asistenteSeTraslapa) sigue protegiendo contra el aviso de cookies. */
-/* Abajo de 900px el launcher siempre es el círculo compacto (nunca el
-   banner completo con el texto "Te ayudo a elegir"). En celular, un
-   widget flotante fijo va a tener SIEMPRE algo del contenido detrás —
-   un botón, un chip, una cifra — sin importar en qué parte del scroll
-   quede; con el banner grande (320px) eso se notaba mucho (tapaba
-   botones reales, chips, cifras) y además alternaba de tamaño al vuelo
-   según con qué se topara, sintiéndose inconsistente entre un scroll y
-   otro. El círculo pequeño, siempre del mismo tamaño, es la solución
-   estándar de cualquier widget de chat flotante — nunca tapa gran cosa
-   y no cambia de forma a medio scroll. Se abre a pantalla completa al
-   tocarlo, así que no hace falta el banner con texto para "anunciarse". */
-@media(max-width:900px){.sentia-assistant__panel{right:24px;bottom:66px}.sentia-assistant__launcher{right:24px;top:auto;bottom:calc(20px + var(--cookie-h, 0px));width:72px;min-height:72px;padding:0;border-radius:50%;overflow:hidden}.sentia-assistant__launcher img{left:0;bottom:0;width:100%;height:100%;object-fit:cover;object-position:50% 8%;transform:scale(2.0)}.sentia-assistant__label{display:none}.sentia-assistant__dot{right:5px;top:5px}}
-@media(max-width:600px){.sentia-assistant__panel{right:12px;bottom:46px;width:calc(100vw - 24px);border-radius:22px}.sentia-assistant__launcher{right:16px;bottom:calc(16px + var(--cookie-h, 0px));width:64px;min-height:64px}.sentia-assistant__launcher.is-compact{width:64px;min-height:64px}.assistant-head{min-height:150px;padding:24px 44px 16px 145px}.assistant-head__avatar{left:0;height:160px;width:132px}.assistant-body{max-height:min(350px,calc(100vh - 375px))}}
-@media(max-width:380px){.sentia-assistant__panel{right:10px;bottom:32px;width:calc(100vw - 20px)}.sentia-assistant__launcher{right:10px;bottom:calc(12px + var(--cookie-h, 0px));width:56px;min-height:56px}.sentia-assistant__launcher.is-compact{width:56px;min-height:56px}}
+/* El launcher ya no cambia de tamaño ni de posición por breakpoint (ver la
+   regla única arriba) — estas reglas solo ajustan el PANEL del chat ya
+   abierto, que sí necesita adaptarse al ancho real de cada pantalla. */
+@media(max-width:900px){.sentia-assistant__panel{right:24px;bottom:66px}}
+@media(max-width:600px){.sentia-assistant__panel{right:12px;bottom:46px;width:calc(100vw - 24px);border-radius:22px}.assistant-head{min-height:150px;padding:24px 44px 16px 145px}.assistant-head__avatar{left:0;height:160px;width:132px}.assistant-body{max-height:min(350px,calc(100vh - 375px))}}
+@media(max-width:380px){.sentia-assistant__panel{right:10px;bottom:32px;width:calc(100vw - 20px)}}
 </style>
 </head>
 <body>
@@ -612,32 +597,6 @@ function jugarPostura(tipo){
   });
 }
 
-/* El globo flotante no debe tapar títulos ni botones de la página al hacer
-   scroll: si se cruza con alguno, se encoge a una burbuja circular (sin
-   texto) hasta que vuelva a haber espacio libre. Solo aplica con el chat
-   cerrado; con el chat abierto el contenido de fondo no importa. */
-function asistenteSeTraslapa(){
-  if (assistant.classList.contains('is-open')) return false;
-  const r = assistantLauncher.getBoundingClientRect();
-  const candidatos = document.querySelectorAll('button, a[href], h1, h2, h3');
-  for (const el of candidatos) {
-    if (assistant.contains(el)) continue;
-    const b = el.getBoundingClientRect();
-    if (b.width === 0 || b.height === 0) continue;
-    if (b.left < r.right && b.right > r.left && b.top < r.bottom && b.bottom > r.top) return true;
-  }
-  return false;
-}
-let asistenteFrame = 0;
-function actualizarModoCompacto(){
-  asistenteFrame = 0;
-  assistantLauncher.classList.toggle('is-compact', asistenteSeTraslapa());
-}
-function agendarModoCompacto(){ if (!asistenteFrame) asistenteFrame = requestAnimationFrame(actualizarModoCompacto); }
-addEventListener('scroll', agendarModoCompacto, { passive: true });
-addEventListener('resize', agendarModoCompacto, { passive: true });
-new ResizeObserver(agendarModoCompacto).observe(document.body);
-agendarModoCompacto();
 
 /* Catálogo del asistente: se llena solo cuando SENTIA_CATALOGO resuelve (ver
    arriba) — misma fuente que las tarjetas de esta página, ya no copiada a
