@@ -177,19 +177,15 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
 
 /* Asistente de orientación SENTIA */
 .sentia-assistant{font-family:'Instrument Sans',system-ui,sans-serif}
-/* Un solo tamaño, un solo estilo, para cualquier pantalla — se dejó de
-   intentar un banner grande en escritorio y un círculo chico en celular:
-   eso fue lo que generó toda la inconsistencia de hoy (tamaños que
-   cambiaban entre breakpoints, recortes de cara pensados solo para el
-   círculo, choques con contenido que solo pasaban en una de las dos
-   versiones). Ahora siempre es el mismo círculo pequeño y fijo abajo a la
-   derecha, sin importar el dispositivo; se abre a pantalla completa al
-   tocarlo, así que no hace falta un banner con texto para "anunciarse". */
-.sentia-assistant__launcher{position:fixed;right:24px;bottom:calc(20px + var(--cookie-h, 0px));z-index:70;width:68px;height:68px;padding:0;border-radius:50%;overflow:hidden;cursor:pointer;border:2px solid #fff;box-shadow:0 16px 34px rgba(14,29,64,.25);transition:transform .18s,box-shadow .18s;animation:assistant-intro .65s cubic-bezier(.2,.8,.3,1) .4s backwards}
+/* Un solo tamaño, un solo estilo, para cualquier pantalla — nada de
+   breakpoints para el launcher. Pastilla chica con la figura completa de
+   Nora asomando (no un círculo con la cara recortada) y una sola línea de
+   texto, siempre del mismo tamaño en escritorio, tablet y celular. */
+.sentia-assistant__launcher{position:fixed;right:24px;bottom:calc(20px + var(--cookie-h, 0px));z-index:70;width:214px;min-height:74px;padding:13px 16px 13px 80px;border:1px solid rgba(255,255,255,.55);border-radius:20px;cursor:pointer;text-align:left;color:#fff;background:linear-gradient(125deg,#092a62,#1b5df0);box-shadow:0 16px 34px rgba(14,29,64,.25);transition:transform .18s,box-shadow .18s;animation:assistant-intro .65s cubic-bezier(.2,.8,.3,1) .4s backwards}
 @keyframes assistant-intro{from{opacity:0;transform:translateY(46px) scale(.88)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(prefers-reduced-motion:reduce){.sentia-assistant__launcher{animation:none}}
 .sentia-assistant__launcher:hover{transform:translateY(-3px);box-shadow:0 20px 38px rgba(14,29,64,.32)}
-.sentia-assistant__launcher img{position:absolute;left:0;bottom:0;width:100%;height:100%;object-fit:cover;object-position:50% 8%;transform:scale(2.0);filter:drop-shadow(0 7px 7px rgba(0,0,0,.16));animation:nora-float 3.8s ease-in-out infinite}
+.sentia-assistant__launcher img{position:absolute;left:2px;bottom:-4px;width:78px;height:94px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 7px 7px rgba(0,0,0,.16));animation:nora-float 3.8s ease-in-out infinite}
 @keyframes nora-float{0%,100%{translate:0 0}50%{translate:0 -5px}}
 @keyframes mascot-saludo{0%,100%{rotate:0deg}20%{rotate:-11deg}45%{rotate:9deg}70%{rotate:-5deg}}
 @keyframes mascot-celebrar{0%,100%{scale:1}30%{scale:1.08}55%{scale:.97}}
@@ -197,8 +193,8 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
 .sentia-assistant__launcher img.is-saludo,.assistant-head__avatar.is-saludo{animation:nora-float 3.8s ease-in-out infinite,mascot-saludo .7s ease-out 1}
 .sentia-assistant__launcher img.is-celebrar,.assistant-head__avatar.is-celebrar{animation:nora-float 3.8s ease-in-out infinite,mascot-celebrar .6s ease-out 1}
 .sentia-assistant__launcher img.is-orientar,.assistant-head__avatar.is-orientar{animation:nora-float 3.8s ease-in-out infinite,mascot-orientar .8s ease-in-out 1}
-.sentia-assistant__dot{position:absolute;right:5px;top:5px;width:10px;height:10px;background:#46d86b;border:2px solid rgba(255,255,255,.9);border-radius:50%}
-.sentia-assistant__label{display:none}
+.sentia-assistant__dot{position:absolute;right:14px;top:13px;width:10px;height:10px;background:#46d86b;border:2px solid rgba(255,255,255,.9);border-radius:50%}
+.sentia-assistant__label{display:block;font-family:'Sora',sans-serif;font-size:13.5px;line-height:1.3;font-weight:700}
 .sentia-assistant__panel{position:fixed;right:28px;bottom:80px;z-index:70;width:min(416px,calc(100vw - 32px));overflow:hidden;border:1px solid var(--line-2);border-radius:24px;background:#fff;box-shadow:0 22px 60px rgba(14,29,64,.23);display:none}
 .sentia-assistant.is-open .sentia-assistant__panel{display:flex;flex-direction:column;animation:assistant-enter .2s ease-out}.sentia-assistant.is-open .sentia-assistant__launcher{display:none}
 @keyframes assistant-enter{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
@@ -474,7 +470,7 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
   <button class="sentia-assistant__launcher" id="assistant-launcher" type="button" aria-expanded="false" aria-controls="assistant-panel" aria-label="Abrir asistente de orientación SENTIA">
     <img src="assets/asistente/nora-sentia.png" alt="">
     <span class="sentia-assistant__dot" aria-hidden="true"></span>
-    <span class="sentia-assistant__label" aria-hidden="true">Te ayudo a elegir<small>Tu guía virtual de formación</small></span>
+    <span class="sentia-assistant__label" aria-hidden="true">Tu guía virtual de información</span>
   </button>
 </aside>
 
