@@ -211,6 +211,7 @@ footer{padding:56px 0 34px;color:var(--muted);font-size:13.5px}
 .assistant-fuente{display:block;margin-top:8px;font-size:11px;color:var(--muted)}
 .assistant-message--error{border-color:#e3b341;background:#fff9ec}.assistant-message--error button{display:inline-flex;align-items:center;gap:5px;margin-top:9px;border:0;background:none;color:#145d43;font:600 12.5px 'Instrument Sans',sans-serif;padding:0;cursor:pointer;text-decoration:underline}
 .assistant-message ul{margin:8px 0 0;padding-left:18px}.assistant-message li{margin-bottom:3px;line-height:1.4}.assistant-message li:last-child{margin-bottom:0}
+.assistant-message .assistant-precio{margin:10px 0 0}
 .assistant-typing{display:inline-flex;gap:4px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:15px 15px 15px 4px;padding:13px 15px;box-shadow:0 2px 8px rgba(14,29,64,.04)}
 .assistant-typing i{width:6px;height:6px;border-radius:50%;background:#aab7c4;display:inline-block;animation:assistant-typing-bounce 1.1s infinite ease-in-out}
 .assistant-typing i:nth-child(2){animation-delay:.15s}.assistant-typing i:nth-child(3){animation-delay:.3s}
@@ -510,6 +511,28 @@ document.getElementById('red-fb-2').href = SENTIA_FB;
 let catalogoFallo = false;
 window.SENTIA_CATALOGO = fetch('assets/cursos.json').then(r => r.json()).then(d => d.cursos || []).catch(e => { console.warn('[cursos] No se pudo cargar el catálogo:', e.message); catalogoFallo = true; return []; });
 
+/* ═══ Precio de la membresía: se lee en vivo de Firestore (config/club),
+   el mismo documento que ya usan vip-panel.html y vip-admin.html — nunca se
+   escribe un precio fijo aquí. Mientras nadie lo capture en el panel admin
+   (Firestore no trae precioMes/precioAno todavía), Nora simplemente no
+   menciona un número, igual que el resto del sitio ("Consultar precio" /
+   "Regístrate Gratis") — jamás un valor inventado. Patrón tomado del
+   chatbot de DulceLab Food, que lee su propio config/club de la misma
+   forma. ═══ */
+const SENTIA_PRECIOS_URL = 'https://firestore.googleapis.com/v1/projects/sentia-academy/databases/(default)/documents/config/club';
+let preciosClub = { mes: null, ano: null };
+const dinero = n => '$' + Number(n).toLocaleString('es-MX');
+window.SENTIA_PRECIOS_READY = fetch(SENTIA_PRECIOS_URL).then(r => r.ok ? r.json() : null).then(d => {
+  const f = (d && d.fields) || {};
+  const mes = f.precioMes && Number(f.precioMes.integerValue || f.precioMes.doubleValue);
+  const ano = f.precioAno && Number(f.precioAno.integerValue || f.precioAno.doubleValue);
+  preciosClub = { mes: mes || null, ano: ano || null };
+  // assistantCopy.vip.message ya se armó sin precio (lo normal, dado lo
+  // rápido que resuelve esto frente a lo que tarda alguien en abrir el chat
+  // y navegar hasta "Conocer la membresía") — se actualiza por si acaso.
+  if (typeof assistantCopy !== 'undefined' && assistantCopy.vip) assistantCopy.vip.message = textoVip();
+}).catch(e => console.warn('[precios] No se pudo leer el precio de la membresía:', e.message));
+
 function pintarTarjetasCursos(cursos) {
   const cont = document.getElementById('courses-list');
   if (!cont) return;
@@ -612,6 +635,19 @@ window.SENTIA_CATALOGO.then(cursos => {
   });
 });
 
+// Arma el mensaje de membresía con o sin precio según lo que haya en
+// Firestore en ese momento (ver SENTIA_PRECIOS_READY arriba). Se llama una
+// vez al definir assistantCopy.vip (probablemente sin precio todavía) y de
+// nuevo en cuanto la consulta resuelve, para no inventar un número mientras
+// se espera la respuesta ni quedarse pegado si llega después.
+function textoVip() {
+  const base = '¡Con gusto te cuento! La <strong>membresía del Club SENTIA</strong> te da acceso a toda la biblioteca de cursos en un solo lugar:<ul><li>Herramientas Pro: notas de sesión, informes y tamizajes listos para usar</li><li>Clases en vivo con especialistas y sus grabaciones</li><li>Materiales descargables listos para tu práctica</li><li>Certificados con folio y código QR verificable</li></ul>';
+  const cierre = (preciosClub.mes && preciosClub.ano)
+    ? `Registrarte y probar las primeras clases es gratis. Para desbloquearlo todo activas la membresía: <strong>${dinero(preciosClub.mes)} al mes</strong> o <strong>${dinero(preciosClub.ano)} al año</strong>, sin permanencia.`
+    : 'Puedes registrarte gratis y empezar a explorar; activas la membresía cuando quieras, sin permanencia.';
+  return base + '<p class="assistant-precio">' + cierre + '</p>';
+}
+
 const assistantCopy = {
   home: {
     message: '¡Hola! Soy <strong>Nora</strong>, tu guía en SENTIA. Con gusto te ayudo a encontrar la formación que buscas o te cuento qué incluye la membresía.',
@@ -650,7 +686,7 @@ const assistantCopy = {
   // sección se cuenta aquí mismo, y el único link que queda es la acción de
   // verdad (crear la cuenta), no un salto a leer la misma info en la página.
   vip: {
-    message: '¡Con gusto te cuento! La <strong>membresía del Club SENTIA</strong> te da acceso a toda la biblioteca de cursos en un solo lugar:<ul><li>Herramientas Pro: notas de sesión, informes y tamizajes listos para usar</li><li>Clases en vivo con especialistas y sus grabaciones</li><li>Materiales descargables listos para tu práctica</li><li>Certificados con folio y código QR verificable</li></ul>',
+    message: textoVip(),
     results: [['Quiero la membresía', 'Crea tu cuenta y entra al Club SENTIA.', 'https://club.sentiamx.com/vip-auth.html']]
   },
   profile: {
