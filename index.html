@@ -86,63 +86,64 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdro
 /* ── Demo del panel: modal con mockups animados, datos de ejemplo ── */
 .demo-modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
 .demo-modal.is-open{display:flex}
-.demo-modal__backdrop{position:absolute;inset:0;background:rgba(5,10,22,.72);backdrop-filter:blur(2px)}
-.demo-modal__box{position:relative;width:min(420px,100%);max-height:86vh;overflow:auto;background:#0b1530;border:1px solid rgba(255,230,200,.14);border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.5);animation:demo-pop .22s ease-out}
+.demo-modal__backdrop{position:absolute;inset:0;background:rgba(14,29,64,.45);backdrop-filter:blur(2px)}
+.demo-modal__box{position:relative;width:min(420px,100%);max-height:86vh;overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:20px;box-shadow:0 30px 80px rgba(14,29,64,.22);animation:demo-pop .22s ease-out}
 @keyframes demo-pop{from{opacity:0;transform:scale(.96) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.demo-modal__close{position:absolute;right:14px;top:14px;width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,230,200,.14);background:rgba(255,255,255,.06);color:#eaf2ff;font-size:18px;line-height:1;cursor:pointer;z-index:2}
-.demo-modal__label{margin:0;padding:20px 48px 0 20px;font:700 11px/1.3 'Instrument Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#3f7bff}
-.demo-panel{padding:14px 20px 22px;color:#eaf2ff;font-family:'Instrument Sans',system-ui,sans-serif}
+.demo-modal__close{position:absolute;right:14px;top:14px;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--soft);color:var(--muted);font-size:18px;line-height:1;cursor:pointer;z-index:2}
+.demo-modal__label{margin:0;padding:20px 48px 0 20px;font:700 11px/1.3 'Instrument Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.demo-panel{padding:14px 20px 22px;color:var(--text);font-family:'Instrument Sans',system-ui,sans-serif}
 
-.demo-search{display:flex;align-items:center;gap:10px;background:#0f1e3a;border:1px solid rgba(255,230,200,.14);border-radius:100px;padding:11px 16px;margin-bottom:16px;font-size:14px;color:#aebfd6;min-height:20px}
-.demo-search svg{width:16px;height:16px;flex:0 0 auto;stroke:#5b6b86}
-.demo-caret{display:inline-block;width:2px;height:15px;background:#3f7bff;margin-left:1px;animation:demo-blink 1s step-end infinite;vertical-align:middle}
+.demo-search{display:flex;align-items:center;gap:10px;background:var(--soft);border:1px solid var(--line);border-radius:100px;padding:11px 16px;margin-bottom:16px;font-size:14px;color:var(--muted);min-height:20px}
+.demo-search svg{width:16px;height:16px;flex:0 0 auto;stroke:var(--faint)}
+.demo-caret{display:inline-block;width:2px;height:15px;background:var(--accent);margin-left:1px;animation:demo-blink 1s step-end infinite;vertical-align:middle}
 @keyframes demo-blink{50%{opacity:0}}
 
 .demo-card,.demo-viewer,.demo-cert{opacity:0;transform:translateY(8px);transition:opacity .4s,transform .4s}
 .demo-reveal{opacity:1!important;transform:translateY(0)!important}
 
-.demo-card{background:#0f1e3a;border:1px solid rgba(255,230,200,.14);border-radius:16px;overflow:hidden}
+.demo-card{background:var(--soft);border:1px solid var(--line);border-radius:16px;overflow:hidden}
 .demo-card__cover{height:100px;background-size:cover;background-position:center;position:relative}
-.demo-card__cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,18,37,0) 40%,rgba(8,18,37,.85))}
-.demo-card__badge{position:absolute;left:10px;bottom:10px;z-index:1;background:#3DDC5A;color:#06230f;font:800 10px/1 'Instrument Sans',sans-serif;letter-spacing:.04em;padding:5px 9px;border-radius:999px}
+.demo-card__cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,29,64,0) 40%,rgba(14,29,64,.75))}
+.demo-card__badge{position:absolute;left:10px;bottom:10px;z-index:1;background:var(--ok);color:#fff;font:800 10px/1 'Instrument Sans',sans-serif;letter-spacing:.04em;padding:5px 9px;border-radius:999px}
 .demo-card__body{padding:14px 16px 16px}
-.demo-tag{display:inline-block;font:700 9.5px/1 'Instrument Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#aebfd6;background:rgba(255,255,255,.06);border:1px solid rgba(255,230,200,.14);padding:4px 9px;border-radius:999px;margin-bottom:8px}
-.demo-card__body h4{margin:0 0 4px;font-family:'Sora',sans-serif;font-size:16px}
-.demo-card__body p{margin:0 0 12px;font-size:12.5px;color:#aebfd6;line-height:1.5}
-.demo-progress{height:6px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin-bottom:12px}
-.demo-progress__fill{display:block;height:100%;width:0;background:linear-gradient(90deg,#1b5df0,#3f7bff);border-radius:99px;transition:width 1s ease-out}
-.demo-card__open{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#3f7bff}
+.demo-tag{display:inline-block;font:700 9.5px/1 'Instrument Sans',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--bg);border:1px solid var(--line);padding:4px 9px;border-radius:999px;margin-bottom:8px}
+.demo-card__body h4{margin:0 0 4px;font-family:'Sora',sans-serif;font-size:16px;color:var(--text)}
+.demo-card__body p{margin:0 0 12px;font-size:12.5px;color:var(--muted);line-height:1.5}
+.demo-progress{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:12px}
+.demo-progress__fill{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),#4f8bff);border-radius:99px;transition:width 1s ease-out}
+.demo-card__open{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--accent)}
 .demo-card__open svg{width:14px;height:14px}
 
 .demo-lesson-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-.demo-modulo{display:flex;align-items:center;gap:12px;background:#0f1e3a;border:1px solid rgba(255,230,200,.14);border-radius:12px;padding:11px 13px;transition:border-color .3s,background .3s}
-.demo-modulo__num{flex:0 0 26px;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:rgba(255,255,255,.06);color:#aebfd6}
-.demo-modulo.is-done .demo-modulo__num{background:#3DDC5A;color:#06230f}
-.demo-modulo b{display:block;font-size:13.5px;font-weight:700}
-.demo-modulo small{display:block;font-size:11.5px;color:#5b6b86;margin-top:2px;transition:color .3s}
-.demo-modulo.is-active{border-color:#3f7bff;background:rgba(27,93,240,.1)}
-.demo-modulo.is-active small{color:#3f7bff}
+.demo-modulo{display:flex;align-items:center;gap:12px;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:11px 13px;transition:border-color .3s,background .3s}
+.demo-modulo__num{flex:0 0 26px;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:var(--line);color:var(--muted)}
+.demo-modulo__num svg{width:14px;height:14px}
+.demo-modulo.is-done .demo-modulo__num{background:var(--ok);color:#fff}
+.demo-modulo b{display:block;font-size:13.5px;font-weight:700;color:var(--text)}
+.demo-modulo small{display:block;font-size:11.5px;color:var(--faint);margin-top:2px;transition:color .3s}
+.demo-modulo.is-active{border-color:var(--accent);background:var(--accent-soft)}
+.demo-modulo.is-active small{color:var(--accent)}
 
-.demo-viewer{background:#081225;border:1px solid rgba(255,230,200,.14);border-radius:14px;overflow:hidden}
-.demo-viewer__head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:1px solid rgba(255,230,200,.14)}
-.demo-viewer__title{font-size:13.5px;font-weight:700}
-.demo-tag--live{display:inline-flex;align-items:center;gap:5px;font:800 9.5px/1 'Instrument Sans',sans-serif;letter-spacing:.04em;color:#F87171;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.3);padding:5px 9px;border-radius:999px;flex:0 0 auto}
-.demo-tag--live i{width:6px;height:6px;border-radius:50%;background:#F87171;animation:demo-pulse 1.2s infinite}
-@keyframes demo-pulse{0%,100%{opacity:1}50%{opacity:.25}}
-.demo-viewer__frame{height:110px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0d1f44,#0b1530)}
-.demo-viewer__frame svg{width:38px;height:38px;color:#3f7bff}
+.demo-viewer{background:var(--soft);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.demo-viewer__head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.demo-viewer__title{font-size:13.5px;font-weight:700;color:var(--text)}
+.demo-tag--live{display:inline-flex;align-items:center;gap:5px;font:800 9.5px/1 'Instrument Sans',sans-serif;letter-spacing:.04em;color:#c53030;background:#fdecec;border:1px solid #f6c7c7;padding:5px 9px;border-radius:999px;flex:0 0 auto}
+.demo-tag--live i{width:6px;height:6px;border-radius:50%;background:#c53030}
+.demo-viewer__frame{height:110px;display:flex;align-items:center;justify-content:center;background:var(--accent-soft)}
+.demo-viewer__frame svg{width:38px;height:38px;color:var(--accent)}
 
-.demo-cert{background:#0f1e3a;border:1px solid rgba(255,230,200,.14);border-radius:16px;overflow:hidden}
-.demo-cert__top{position:relative;padding:20px 16px;background:linear-gradient(120deg,#1b5df0,#0d3fb8);display:flex;align-items:center;justify-content:space-between}
-.demo-cert__seal{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:18px}
+.demo-cert{background:var(--soft);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.demo-cert__top{position:relative;padding:20px 16px;background:linear-gradient(120deg,var(--accent),#0d3fb8);display:flex;align-items:center;justify-content:space-between}
+.demo-cert__seal{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;color:#fff}
+.demo-cert__seal svg{width:20px;height:20px}
 .demo-cert__qr{width:38px;height:38px;border-radius:8px;background:repeating-conic-gradient(#fff 0% 25%,transparent 0% 50%) 0/9px 9px;opacity:.85}
 .demo-cert__body{padding:16px}
-.demo-cert__eyebrow{display:inline-flex;align-items:center;gap:6px;font:800 10px/1 'Instrument Sans',sans-serif;letter-spacing:.06em;color:#3DDC5A;margin-bottom:8px}
-.demo-cert__eyebrow i{width:6px;height:6px;border-radius:50%;background:#3DDC5A;animation:demo-pulse 1.2s infinite}
-.demo-cert__body h4{margin:0 0 6px;font-family:'Sora',sans-serif;font-size:16.5px}
-.demo-cert__meta{margin:0 0 10px;font-size:11.5px;color:#5b6b86;font-family:monospace}
-.demo-cert__foot{display:flex;align-items:center;gap:6px;font-size:11.5px;color:#aebfd6;border-top:1px solid rgba(255,230,200,.14);padding-top:10px}
-.demo-cert__foot i{width:6px;height:6px;border-radius:50%;background:#3DDC5A}
+.demo-cert__eyebrow{display:inline-flex;align-items:center;gap:6px;margin-bottom:8px;font:800 10px/1 'Instrument Sans',sans-serif;letter-spacing:.06em;color:var(--ok)}
+.demo-cert__eyebrow svg{width:12px;height:12px}
+.demo-cert__body h4{margin:0 0 6px;font-family:'Sora',sans-serif;font-size:16.5px;color:var(--text)}
+.demo-cert__meta{margin:0 0 10px;font-size:11.5px;color:var(--faint);font-family:monospace}
+.demo-cert__foot{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.demo-cert__foot svg{width:13px;height:13px;color:var(--ok)}
 
 /* Cursos */
 .courses{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px}
@@ -1136,9 +1137,9 @@ if (assistantLog.length) pintarLog(); else renderAssistant();
   function demoClase(){
     content.innerHTML = `
       <div class="demo-lesson-list">
-        <div class="demo-modulo is-done"><span class="demo-modulo__num">✓</span><div><b>1. Bienvenida y encuadre</b><small>Vista</small></div></div>
+        <div class="demo-modulo is-done"><span class="demo-modulo__num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div><b>1. Bienvenida y encuadre</b><small>Vista</small></div></div>
         <div class="demo-modulo" id="demoModuloActivo"><span class="demo-modulo__num">2</span><div><b>2. Primeros auxilios psicológicos</b><small id="demoModuloEstado">Siguiente clase</small></div></div>
-        <div class="demo-modulo"><span class="demo-modulo__num">🔒</span><div><b>3. Canalización y seguimiento</b><small>Se desbloquea al terminar</small></div></div>
+        <div class="demo-modulo"><span class="demo-modulo__num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><div><b>3. Canalización y seguimiento</b><small>Se desbloquea al terminar</small></div></div>
       </div>
       <div class="demo-viewer" id="demoViewer">
         <div class="demo-viewer__head"><span class="demo-viewer__title">Primeros auxilios psicológicos</span><span class="demo-tag--live"><i></i>EN VIVO</span></div>
@@ -1146,7 +1147,7 @@ if (assistantLog.length) pintarLog(); else renderAssistant();
       </div>`;
     luego(() => {
       document.getElementById('demoModuloActivo').classList.add('is-active');
-      document.getElementById('demoModuloEstado').textContent = '▶ Viendo la clase';
+      document.getElementById('demoModuloEstado').textContent = 'Viendo la clase';
     }, 500);
     luego(() => document.getElementById('demoViewer').classList.add('demo-reveal'), 650);
   }
@@ -1154,12 +1155,12 @@ if (assistantLog.length) pintarLog(); else renderAssistant();
   function demoCertificado(){
     content.innerHTML = `
       <div class="demo-cert" id="demoCert">
-        <div class="demo-cert__top"><div class="demo-cert__seal">🏅</div><div class="demo-cert__qr"></div></div>
+        <div class="demo-cert__top"><div class="demo-cert__seal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M9 13.5 7 22l5-3 5 3-2-8.5"/></svg></div><div class="demo-cert__qr"></div></div>
         <div class="demo-cert__body">
-          <div class="demo-cert__eyebrow"><i></i>CERTIFICADO VERIFICADO</div>
+          <div class="demo-cert__eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>CERTIFICADO VERIFICADO</div>
           <h4>Primeros auxilios psicológicos</h4>
           <p class="demo-cert__meta">Folio SENTIA-DEMO-0001</p>
-          <div class="demo-cert__foot"><i></i>Verificable en línea con código QR</div>
+          <div class="demo-cert__foot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Verificable en línea con código QR</div>
         </div>
       </div>`;
     luego(() => document.getElementById('demoCert').classList.add('demo-reveal'), 250);
