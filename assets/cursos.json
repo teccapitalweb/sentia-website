@@ -2,6 +2,7 @@
   "cursos": [
     {
       "id": "custodia",
+      "cursoId": "excjtj7H79Dtdhy2VtTI",
       "titulo": "Evaluación psicológica en guarda y custodia",
       "area": "Psicología forense",
       "resumen": "Entrevista, integración de fuentes y redacción del informe pericial.",
@@ -15,6 +16,7 @@
     },
     {
       "id": "auxilios",
+      "cursoId": "rOmxbD93VmuqdgK1oE5t",
       "titulo": "Primeros auxilios psicológicos",
       "area": "Intervención psicológica",
       "resumen": "Contención emocional, detección de riesgo y canalización oportuna.",
@@ -28,6 +30,7 @@
     },
     {
       "id": "laboral",
+      "cursoId": "STrtNmcZbsS4RxLkjDRM",
       "titulo": "Salud psicológica laboral",
       "area": "Psicología laboral",
       "resumen": "Riesgos psicosociales, liderazgo y rutas de apoyo en la organización.",
