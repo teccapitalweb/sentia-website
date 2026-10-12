@@ -1189,5 +1189,17 @@ if (assistantLog.length) pintarLog(); else renderAssistant();
 })();
 </script>
 <script src="cookies.js" defer></script>
+<script>
+// Analítica de visitas (fase 1) — pulso anónimo, sin UI, nunca bloquea nada.
+(function () {
+  try {
+    fetch('https://sentia-academy-webhook-production.up.railway.app/api/visitas/registrar', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ site: 'landing', pagina: location.pathname, referrer: document.referrer || '' })
+    }).catch(function () {});
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>
